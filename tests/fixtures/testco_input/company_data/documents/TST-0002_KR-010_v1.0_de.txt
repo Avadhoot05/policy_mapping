@@ -1,0 +1,38 @@
+
+
+Richtlinie Umwelt-, Arbeits- und Gesundheitsschutz
+Konzernrichtlinie
+Dokumentnummer
+TST-0002
+Version
+1.0
+Gültig ab
+2026-01-01
+Gesellschaft
+Testfirma GmbH
+Status
+Approved
+Vertraulichkeit
+Internal
+Zweck und Geltungsbereich
+Diese Richtlinie legt für Testfirma GmbH verbindliche Regeln zum Thema „EHS“ fest.
+Pflichten und Zuständigkeiten
+Evakuierungsübung durchführen – Jährliche Übung mit Dokumentation der Räumungszeit.
+Wiederanlaufübung der IT durchführen – Wiederherstellung des ERP-Systems üben und Ergebnisse dokumentieren.
+Richtlinie
+nummer: KR-010
+titel: Richtlinie Umwelt-, Arbeits- und Gesundheitsschutz
+thema: EHS
+geltung: Konzern
+aktuelle_version: 1.0
+status: gültig
+naechste_ueberpruefung: 2027-01-01
+master_sprache: de
+vertraulichkeit: intern
+Richtlinienversion
+version: 1.0
+sprache: de
+status: Gültig
+gueltig_ab: 2026-01-01
+freigabe_datum: 2025-12-20
+aenderungsgrund: Erstfassung

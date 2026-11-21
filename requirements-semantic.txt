@@ -1,0 +1,5 @@
+# Only needed for the optional hybrid (keyword + semantic) search: ./run.sh --semantic
+# Keyword mode (default) uses the Python standard library only.
+# Install CPU-only PyTorch first (run.sh does this):
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+sentence-transformers>=3.0

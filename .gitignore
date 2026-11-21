@@ -1,0 +1,24 @@
+# ---- Input data never belongs in the repo (it lives next to this folder: ../COBACK_Marenthal_Inputs)
+COBACK_Marenthal_Inputs/
+*.zip
+*.sql
+
+# ---- Generated per company: parse cache (parsed documents, embeddings), reports, reviewer decisions
+companies/*/cache/
+companies/*/runs/
+companies/*/review/
+
+# ---- Python / environment
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.tmp
+
+# ---- Local tooling, editors, OS
+.fxprof/
+screenshot.png
+.vscode/
+.idea/
+.claude/
+.DS_Store

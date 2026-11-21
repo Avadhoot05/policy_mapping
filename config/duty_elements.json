@@ -1,0 +1,478 @@
+{
+  "_about": "Law-level configuration shared by all companies (IMPLEMENTATION.md D-07, D-27, D-41). Elements are derived from each duty's text and its Nachweisfrage. Terms: 'x*' prefix, '*x*' contains, phrases match in order. Nothing here refers to a specific company. 'record_sources': rows of registers whose title contains one of these words are candidates when their topic fits (e.g. every IT risk in a risk register is evidence of risk identification, even without the word 'risk' in the row). 'twin_topics': twin questions are linked only from these topics. 'sentence_topic_patterns' (case-sensitive, raw text): a sentence matching one of them concerns the topic even inside a document with another topic (D-47).",
+  "topics": [
+    "informationssicherheit",
+    "information security",
+    "it-sicherheit",
+    "it security",
+    "cyber",
+    "informationstechnik"
+  ],
+  "facets": {
+    "object": {
+      "label": "What (systems / scope)",
+      "patterns": [
+        "\\berp\\b",
+        "prozessleitsystem",
+        "\\bserver",
+        "\\bsystem",
+        "netzwerk",
+        "anwendung",
+        "produktionssteuerung",
+        "buero-it",
+        "\\bit\\b",
+        "\\bdaten"
+      ]
+    },
+    "action": {
+      "label": "Action required",
+      "patterns": [
+        "durchfuehren",
+        "pruefen",
+        "testen",
+        "ueben\\b",
+        "dokumentieren",
+        "sicherstellen",
+        "\\bmuss",
+        "\\bmuessen",
+        "\\bist zu\\b",
+        "\\bsind zu\\b",
+        "verpflichtet",
+        "bewerten",
+        "fortschreiben",
+        "einrichten",
+        "festlegen",
+        "\\bmust\\b",
+        "\\bshall\\b",
+        "perform",
+        "ensure",
+        "durchzufuehren",
+        "\\bzu (pruefen|testen|dokumentieren|ueben|bewerten|sichern|melden)\\b",
+        "\\w+zu(pruefen|testen|stellen|fuehren)\\b",
+        "dokumentiert\\b",
+        "\\bwird .{0,40}(geprueft|getestet|durchgefuehrt)"
+      ]
+    },
+    "owner": {
+      "label": "Responsible role",
+      "patterns": [
+        "beauftragt",
+        "verantwortlich",
+        "zustaendig",
+        "leitung",
+        "\\bowner\\b",
+        "responsible"
+      ]
+    },
+    "interval": {
+      "label": "Frequency / interval",
+      "patterns": [
+        "jaehrlich",
+        "halbjaehrlich",
+        "quartal",
+        "monatlich",
+        "woechentlich",
+        "taeglich",
+        "annual",
+        "quarterly",
+        "monthly",
+        "alle \\d+ monate",
+        "intervall"
+      ]
+    },
+    "target": {
+      "label": "Target or measure (e.g. recovery time)",
+      "patterns": [
+        "\\brto\\b",
+        "\\brpo\\b",
+        "stunden",
+        "minuten",
+        "wiederherstellungszeit",
+        "recovery time",
+        "zielwert",
+        "\\bkpi",
+        "\\d+ ?h\\b",
+        "frist"
+      ]
+    },
+    "documentation": {
+      "label": "Documentation / evidence",
+      "patterns": [
+        "dokumentier",
+        "dokumentation",
+        "protokoll",
+        "nachweis",
+        "aufzeichn",
+        "\\brecord",
+        "bericht"
+      ]
+    },
+    "approval_review": {
+      "label": "Approval and review",
+      "patterns": [
+        "freigabe",
+        "freigegeben",
+        "genehmig",
+        "ueberpruef",
+        "\\breview",
+        "approv"
+      ]
+    }
+  },
+  "normative_patterns": [
+    "durchfuehren",
+    "pruefen",
+    "testen",
+    "ueben\\b",
+    "dokumentieren",
+    "sicherstellen",
+    "\\bmuss",
+    "\\bmuessen",
+    "\\bist zu\\b",
+    "\\bsind zu\\b",
+    "\\bhat zu\\b",
+    "verpflichtet",
+    "schulen",
+    "unterweisen",
+    "inspizieren",
+    "bewerten",
+    "fortschreiben",
+    "einrichten",
+    "festlegen",
+    "\\bmust\\b",
+    "\\bshall\\b",
+    "perform",
+    "ensure",
+    "durchzufuehren",
+    "\\bzu (pruefen|testen|dokumentieren|ueben|bewerten|sichern|melden)\\b",
+    "\\w+zu(pruefen|testen|stellen|fuehren)\\b",
+    "dokumentiert\\b",
+    "\\bwird .{0,40}(geprueft|getestet|durchgefuehrt)"
+  ],
+  "duties": {
+    "04-P02-1": {
+      "elements": [
+        {
+          "id": "risk_analysis",
+          "label": "Information-security risk analysis",
+          "terms": [
+            "*risikoanalyse*",
+            "risikobewertung*",
+            "informationssicherheitsrisik*",
+            "risk analysis",
+            "risk assessment"
+          ],
+          "facets_required": [
+            "object",
+            "action",
+            "interval",
+            "approval_review",
+            "documentation"
+          ],
+          "next_step": "a section on the information-security risk analysis: scope (e.g. ERP, production control, office IT), method, responsible role, annual review and formal approval",
+          "twin_keywords": [
+            "risk analysis",
+            "risikoanalyse",
+            "information security management",
+            "isms"
+          ],
+          "record_sources": [
+            "risk register",
+            "risikoregister"
+          ]
+        },
+        {
+          "id": "security_concept",
+          "label": "IT security concept / ISMS",
+          "terms": [
+            "sicherheitskonzept*",
+            "it-sicherheitskonzept*",
+            "isms",
+            "informationssicherheitsmanagement*",
+            "security concept",
+            "27001",
+            "informationssicherheit",
+            "information security"
+          ],
+          "facets_required": [
+            "object",
+            "action",
+            "owner",
+            "approval_review"
+          ],
+          "next_step": "a section that defines the IT security concept: systems covered, protection measures, responsibilities, approval and review cycle",
+          "twin_keywords": [
+            "isms",
+            "27001",
+            "security protocols",
+            "information security management"
+          ]
+        }
+      ]
+    },
+    "04-P02-2": {
+      "elements": [
+        {
+          "id": "detection_reporting",
+          "label": "Detection and internal reporting of security incidents",
+          "terms": [
+            "sicherheitsvorfall*",
+            "*sicherheitsvorfall*",
+            "it-vorfall*",
+            "security incident*",
+            "vorfallbewaeltigung*",
+            "erkennung*",
+            "detect*",
+            "meldeweg*",
+            "meldepflicht*"
+          ],
+          "facets_required": [
+            "action",
+            "owner",
+            "target",
+            "documentation"
+          ],
+          "next_step": "a section on detecting and reporting IT security incidents: what counts as an incident, reporting channel, responsible role and deadlines",
+          "twin_keywords": [
+            "security incident",
+            "notified",
+            "ransomware"
+          ]
+        },
+        {
+          "id": "escalation_containment",
+          "label": "Escalation and containment",
+          "terms": [
+            "eskalation*",
+            "*eindaemm*",
+            "containment",
+            "alarmier*",
+            "alarmkette*",
+            "notfallkontakt*",
+            "isolier*"
+          ],
+          "facets_required": [
+            "action",
+            "owner",
+            "target"
+          ],
+          "next_step": "a section on escalation levels and containment steps for IT security incidents, with decision rights",
+          "twin_keywords": [
+            "security incident",
+            "incident response"
+          ]
+        },
+        {
+          "id": "incident_test",
+          "label": "Practical test of the incident procedures",
+          "terms": [
+            "*uebung*",
+            "exercise*",
+            "testprotokoll*",
+            "wiederherstellungstest*",
+            "incident response",
+            "notfallhandbuch*",
+            "wiederanlauf*"
+          ],
+          "facets_required": [
+            "action",
+            "interval",
+            "documentation"
+          ],
+          "next_step": "a rule requiring regular practical tests of the incident procedures with a documented test protocol",
+          "twin_keywords": [
+            "incident response",
+            "security incident"
+          ]
+        }
+      ]
+    },
+    "04-P02-3": {
+      "elements": [
+        {
+          "id": "continuity",
+          "label": "Business continuity (keeping operations running)",
+          "terms": [
+            "betriebsaufrechterhalt*",
+            "business continuity",
+            "bcm",
+            "kontinuitaet*",
+            "notfallhandbuch*",
+            "notfallplan*",
+            "wiederanlaufplan*"
+          ],
+          "facets_required": [
+            "object",
+            "action",
+            "owner",
+            "target"
+          ],
+          "next_step": "a section on business continuity for critical IT services: priorities, emergency manual, responsible role and target times",
+          "twin_keywords": [
+            "business continuity",
+            "backup"
+          ]
+        },
+        {
+          "id": "backup",
+          "label": "Backups",
+          "terms": [
+            "backup*",
+            "*datensicherung*",
+            "sicherungskopie*",
+            "datensicher*"
+          ],
+          "facets_required": [
+            "object",
+            "action",
+            "interval",
+            "documentation"
+          ],
+          "next_step": "a section on backups: systems and data in scope, frequency, offline/isolated copy, responsible role",
+          "twin_keywords": [
+            "backup",
+            "restore"
+          ]
+        },
+        {
+          "id": "recovery",
+          "label": "Restore and recovery",
+          "terms": [
+            "wiederherstell*",
+            "*wiederherstellung*",
+            "wiederanlauf*",
+            "*wiederanlauf*",
+            "restore*",
+            "recover*"
+          ],
+          "facets_required": [
+            "object",
+            "action",
+            "owner",
+            "interval",
+            "target",
+            "documentation"
+          ],
+          "next_step": "a section on restore and recovery: critical systems, restore tests with interval, recovery-time target, documented results and responsible role",
+          "twin_keywords": [
+            "backup",
+            "restore"
+          ]
+        },
+        {
+          "id": "crisis_management",
+          "label": "IT crisis management",
+          "terms": [
+            "krise*",
+            "krisenmanagement*",
+            "*krisen*",
+            "crisis*"
+          ],
+          "facets_required": [
+            "action",
+            "owner",
+            "target"
+          ],
+          "next_step": "a section on IT crisis management: crisis team, activation criteria, decision rights and communication for cyber incidents and IT outages",
+          "twin_keywords": [
+            "crisis",
+            "ransomware"
+          ]
+        }
+      ]
+    },
+    "04-P02-6": {
+      "elements": [
+        {
+          "id": "effectiveness_method",
+          "label": "Assessment method and plan",
+          "terms": [
+            "wirksamkeit*",
+            "*wirksamkeitspruef*",
+            "*wirksamkeitsbewert*",
+            "pruefplan*",
+            "messplan*",
+            "kennzahl*",
+            "effectiveness",
+            "audit*",
+            "kontrolltest*"
+          ],
+          "facets_required": [
+            "object",
+            "action",
+            "interval",
+            "documentation"
+          ],
+          "next_step": "a section on effectiveness assessment: which measures, method (test, audit, metric), frequency and responsible role",
+          "twin_keywords": [
+            "effectiveness",
+            "internal audit"
+          ]
+        },
+        {
+          "id": "effectiveness_results",
+          "label": "Assessment results",
+          "terms": [
+            "wirksam",
+            "unwirksam",
+            "teilweise",
+            "pruefprotokoll*",
+            "testergebnis*"
+          ],
+          "facets_required": [
+            "object",
+            "documentation"
+          ],
+          "next_step": "a rule that effectiveness results are recorded per measure with date, method and outcome",
+          "twin_keywords": [
+            "effectiveness"
+          ],
+          "record_sources": [
+            "internal controls",
+            "interne kontrollen"
+          ]
+        },
+        {
+          "id": "follow_up",
+          "label": "Follow-up and corrective action",
+          "terms": [
+            "nachbesser*",
+            "korrekturmassnahme*",
+            "*korrektur*",
+            "corrective*",
+            "massnahmenplan*",
+            "fortschreib*"
+          ],
+          "facets_required": [
+            "action",
+            "owner",
+            "documentation"
+          ],
+          "next_step": "a rule that failed or partly effective measures lead to documented corrective action with an owner and deadline",
+          "twin_keywords": [
+            "corrective"
+          ]
+        }
+      ]
+    }
+  },
+  "twin_topics": [
+    "it_security",
+    "governance"
+  ],
+  "sentence_topic_patterns": [
+    "\\bIT\\b",
+    "\\bERP\\b",
+    "Prozessleitsystem",
+    "[Ii]nformationssicherheit",
+    "[Ii]nformation security",
+    "IT-Sicherheit",
+    "[Cc]yber",
+    "Datensicherung",
+    "\\b[Bb]ackups?\\b",
+    "Phishing",
+    "Ransomware",
+    "Schadsoftware",
+    "Server\\b"
+  ]
+}

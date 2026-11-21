@@ -1,0 +1,10 @@
+{
+  "name": "Marenthal Chemie AG",
+  "entity_id": "1764010d-db68-42e2-8aa2-db89242548ad",
+  "entity_name": "Marenthal Chemie AG",
+  "entity_codes": ["CMS-DE-01"],
+  "snapshot_date": "2026-11-18",
+  "input_dir": "../../../COBACK_Marenthal_Inputs",
+  "company_data_subdir": "company_data",
+  "notes": "Input folder is referenced, not copied, so the original files stay untouched."
+}

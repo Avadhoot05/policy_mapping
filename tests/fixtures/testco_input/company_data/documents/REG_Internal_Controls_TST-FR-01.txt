@@ -1,0 +1,7 @@
+# Register of internal controls and their execution - Testfirma France SAS
+
+Company: Testfirma France SAS (FR). As of 2026-11-01.
+
+| Control | Type | Interval | Risk covered | Legal duty covered | Site | Status | Executions | Last run | Next due |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Datensicherung Frankreich | präventiv | monatlich | Ausfall des ERP-Systems | - | - | aktiv | 12 runs: wirksam 12 | 2026-10-01 | 2026-11-01 |

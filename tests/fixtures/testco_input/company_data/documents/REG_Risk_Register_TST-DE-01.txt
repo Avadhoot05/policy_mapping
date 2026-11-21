@@ -1,0 +1,7 @@
+# Risk register - Testfirma GmbH
+
+Company: Testfirma GmbH (DE). As of 2026-11-01.
+
+| Risk | Category | Site | Description | Likelihood (net) | Impact (net) | Score (net) | Status | Last review | Next review |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Ausfall des ERP-Systems | Informationssicherheit | - | Systemausfall. | 2 | 3 | 6 | in Behandlung | 2026-06-01 | 2027-06-01 |

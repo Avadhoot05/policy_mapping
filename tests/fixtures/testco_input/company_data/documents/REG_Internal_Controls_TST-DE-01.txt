@@ -1,0 +1,7 @@
+# Register of internal controls and their execution - Testfirma GmbH
+
+Company: Testfirma GmbH (DE). As of 2026-11-01.
+
+| Control | Type | Interval | Risk covered | Legal duty covered | Site | Status | Executions | Last run | Next due |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Tägliche Datensicherung mit Wiederherstellungstest | präventiv | quartalsweise | Ausfall des ERP-Systems | - | - | aktiv | 4 runs: wirksam 3, unwirksam 1 | 2026-10-01 | 2027-01-01 |

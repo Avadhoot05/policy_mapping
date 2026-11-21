@@ -1,0 +1,3 @@
+id,name,country,city,entityType,status,employees,revenueAnnual,activities,parentId,lei,register
+e0000001-0000-0000-0000-000000000001,Testfirma GmbH,DE,Teststadt,GmbH,active,,,Synthetic,,,
+e0000001-0000-0000-0000-000000000002,Testfirma France SAS,FR,Testville,SAS,active,,,Synthetic,e0000001-0000-0000-0000-000000000001,,
