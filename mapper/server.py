@@ -12,6 +12,7 @@ Routes
 import json
 import threading
 import time
+from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, unquote, urlparse
 
@@ -31,8 +32,18 @@ def _company_lock(slug):
         return _run_locks.setdefault(slug, threading.Lock())
 
 
+def run_time(run_id):
+    """A run id is its start time in UTC (e.g. 20261121T193115721023Z); shown in local time, or as is if not."""
+    try:
+        t = datetime.strptime(run_id, "%Y%m%dT%H%M%S%fZ").replace(tzinfo=timezone.utc).astimezone()
+    except ValueError:
+        return run_id
+    return t.strftime("%d %b %Y, %H:%M:%S")
+
+
 def list_runs(company):
-    return [{"run_id": r, "url": f"/c/{company.slug}/runs/{r}/report.html"} for r in company.store.list_runs()]
+    return [{"run_id": r, "time": run_time(r), "url": f"/c/{company.slug}/runs/{r}/report.html"}
+            for r in company.store.list_runs()]
 
 
 def execute_run(company):

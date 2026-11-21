@@ -14,14 +14,13 @@
     </div>
     <div class="actions">
       <button class="primary run">Start analysis</button>
-      {% if ci.runs %}<a class="btn" href="{{ ci.runs[0].url }}">Open latest report</a>{% endif %}
     </div>
   </div>
   <div class="status muted" style="margin-top:8px"></div>
   {% if ci.runs %}
   <details>
     <summary>Earlier runs ({{ ci.runs|length }})</summary>
-    <ul>{% for r in ci.runs[:10] %}<li><a href="{{ r.url }}">{{ r.run_id }}</a></li>{% endfor %}</ul>
+    <ul>{% for r in ci.runs[:10] %}<li><a href="{{ r.url }}">{{ r.time }}</a> <small>{{ r.run_id }}</small></li>{% endfor %}</ul>
   </details>
   {% endif %}
 </section>

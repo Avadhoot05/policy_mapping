@@ -1,5 +1,6 @@
-# Installed by ./setup.sh. Install CPU-only PyTorch first (setup.sh does this):
-#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+# Installed by ./setup.sh, which installs PyTorch first (without GPU libraries):
+#   Linux:  pip install torch --index-url https://download.pytorch.org/whl/cpu
+#   macOS:  pip install torch
 jinja2>=3.1                  # HTML templates for the report
 sentence-transformers>=3.0   # semantic search and cross-language matching (local model, no API)
 langdetect>=1.0.9            # flags sentences written in the other language (language versions card)
