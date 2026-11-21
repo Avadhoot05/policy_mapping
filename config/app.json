@@ -12,6 +12,6 @@
     ],
     "top_k": 5,
     "min_similarity": 0.3,
-    "_about": "Hybrid mode only. Semantic search proposes up to top_k policy sentences per element with cosine similarity >= min_similarity; the same 7 gates decide. Calibrated on the Marenthal data (D-70)."
+    "_about": "Hybrid mode only. Semantic search proposes up to top_k policy sentences per element with cosine similarity >= min_similarity; the same 7 gates decide. Calibrated on the Marenthal data."
   }
 }

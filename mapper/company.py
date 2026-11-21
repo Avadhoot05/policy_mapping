@@ -1,7 +1,7 @@
 """Company discovery, source selection and the per-company parse cache.
 
 Every path is derived from the company folder, so companies never share inputs,
-cache, runs or reviews (IMPLEMENTATION.md D-37).
+cache, runs or reviews.
 """
 import csv
 import json
@@ -47,7 +47,7 @@ class Company:
             p = load_app_config()["legal_input"]
             self.duties_file = p if os.path.isabs(p) else os.path.normpath(os.path.join(APP_ROOT, p))
         self.runs_dir = os.path.join(self.folder, "runs")   # only used to print the report path in CLI mode
-        self.store = store_for(self)                        # all persistent state goes through the store (D-67)
+        self.store = store_for(self)                        # all persistent state goes through the store
 
     def _abs(self, p):
         return p if os.path.isabs(p) else os.path.normpath(os.path.join(self.folder, p))
@@ -92,7 +92,7 @@ def get_company(slug):
     return Company(folder) if os.path.exists(os.path.join(folder, "company.json")) else None
 
 
-# ---------------------------------------------------------------- cache (D-34)
+# ---------------------------------------------------------------- cache
 
 def load_sources(company):
     """Parse every source in scope, reusing the on-disk cache when content and parser are unchanged.

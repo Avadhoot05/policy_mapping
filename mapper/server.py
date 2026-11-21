@@ -1,4 +1,4 @@
-"""Local web UI (IMPLEMENTATION.md D-35): Python standard library only, bound to localhost.
+"""Local web UI: Python standard library only, bound to localhost.
 
 Routes
   GET  /                                        start page (companies, Start analysis, earlier runs)

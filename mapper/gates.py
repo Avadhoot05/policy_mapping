@@ -1,4 +1,4 @@
-"""The seven gates applied to every candidate passage (IMPLEMENTATION.md D-27, D-28).
+"""The seven gates applied to every candidate passage.
 
 Gates 1-5 read metadata from the files (deterministic). Gates 6-7 interpret wording with
 patterns and only propose. Every gate records its result, the reason and, where possible,
@@ -132,7 +132,7 @@ class GateContext:
             return "unknown", how
         if any(t in normalize(topic) for t in self.topics):
             return "fit", how
-        # sentence-level scope (D-47): a sentence about the topic inside an unrelated document still
+        # sentence-level scope: a sentence about the topic inside an unrelated document still
         # concerns the duty (e.g. an IT rule in an anti-corruption policy); an evacuation drill does not
         if unit["kind"] in ("policy_sentence", "text_sentence"):
             hits = [m.group(0) for p in self.sentence_topic_res for m in [p.search(unit["text"])] if m]

@@ -1,4 +1,4 @@
-"""Optional semantic search for hybrid mode (IMPLEMENTATION.md D-70).
+"""Optional semantic search for hybrid mode.
 
 A free, local multilingual embedding model proposes additional candidate passages. It only widens the
 search: every candidate still passes the same seven gates, which decide. Calibration on the Marenthal
@@ -62,7 +62,7 @@ class SemanticIndex:
 
     def assign(self, queries):
         """queries: element key -> query text. Remembers, for every embedded sentence, the element it is closest
-        to; search(query, key) then only returns sentences assigned to that element (D-73). Without this, one IT
+        to; search(query, key) then only returns sentences assigned to that element. Without this, one IT
         rule would be proposed to every element and could be counted for elements it is not about."""
         keys = list(queries)
         if not self.idx or not keys:

@@ -1,4 +1,4 @@
-"""Storage interface (IMPLEMENTATION.md D-67).
+"""Storage interface.
 
 All persistent state goes through a `Store`: the parse cache (manifest + parsed documents), the
 embedding cache (hybrid search), the run

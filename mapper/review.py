@@ -1,4 +1,4 @@
-"""Reviewer decisions, stored per company on the server (IMPLEMENTATION.md D-38).
+"""Reviewer decisions, stored per company on the server.
 
 Decisions are append-only (history). The latest decision per duty element is the current one.
 Each decision stores the fingerprint of the proposal it was made on; if a later run proposes

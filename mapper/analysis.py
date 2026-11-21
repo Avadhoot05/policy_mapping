@@ -1,4 +1,4 @@
-"""The mapping pipeline: duties -> elements -> candidates -> gates -> proposal (PLAN.md section 3)."""
+"""The mapping pipeline: duties -> elements -> candidates -> gates -> proposal."""
 import hashlib
 import json
 import os
@@ -163,7 +163,7 @@ def assess_element(ctx, index, units, docs, element, snapshot, sem=None):
     cands = [build_candidate(ctx, units[i], docs[units[i]["source_id"]], element, s, m, snapshot) for i, s, m in hits]
     for c in cands:
         c["found_by"] = "keyword"
-    # hybrid mode: semantic search proposes more policy sentences; the same gates decide (D-70)
+    # hybrid mode: semantic search proposes more policy sentences; the same gates decide
     if sem is not None:
         by_uid = {c["uid"]: c for c in cands}
         for i, sim in sem.search(sem_query(element), element["_key"]):
@@ -175,7 +175,7 @@ def assess_element(ctx, index, units, docs, element, snapshot, sem=None):
             c = build_candidate(ctx, u, docs[u["source_id"]], element, 0.0, [f"semantic similarity {sim:.2f}"], snapshot)
             c["found_by"], c["similarity"] = "semantic", round(sim, 3)
             cands.append(c)
-    # record sources: every in-topic row of a matching register is a candidate (D-41)
+    # record sources: every in-topic row of a matching register is a candidate
     if element.get("record_sources"):
         seen = {c["uid"] for c in cands}
         keys = [normalize(k) for k in element["record_sources"]]
@@ -206,7 +206,7 @@ def assess_element(ctx, index, units, docs, element, snapshot, sem=None):
         status = "partial"
     elif any(c["relation"] == "topic_only" and c["doc"]["lifecycle"] == "current"
              and "translation_only" not in c["qualifiers"]
-             and c.get("found_by") != "semantic"    # similarity is not "naming the subject" (D-70)
+             and c.get("found_by") != "semantic"    # similarity is not "naming the subject"
              for c in not_counted):
         status = "topic_only"
     else:
@@ -299,7 +299,7 @@ def _effectiveness(supporting):
             "controls_with_results": len(runs), "failed_runs": failures, "partly_effective_runs": partial}
 
 
-# ---------------------------------------------------------------- company-derived helpers (D-41)
+# ---------------------------------------------------------------- company-derived helpers
 
 def target_policy(ctx, docs):
     """Current, master-language policy whose topic fits the duties: where new sections should go."""
@@ -379,11 +379,11 @@ def explain(el):
             where = f"The {lang} version {c['doc']['policy_no']} v{c['doc']['version']} ({c['doc']['doc_number']}, {c['location']})"
             if s in ("covered", "partial"):
                 parts.append(f"{where} also contains a rule on this, but its text does not appear identically in the "
-                             f"{master} master; only the master's own rule is counted (D-12).")
+                             f"{master} master; only the master's own rule is counted.")
             else:
                 parts.append(f"{where} contains a matching rule whose text does not appear in the {master} master. "
                              f"The master language is authoritative, so it is not counted; it is flagged as a language "
-                             f"difference (D-12).")
+                             f"difference.")
     # wrong-topic matches, grouped per document
     groups = {}
     for c in el["not_counted"]:
@@ -407,7 +407,7 @@ def explain(el):
     return " ".join(dict.fromkeys(parts))
 
 
-# ---------------------------------------------------------------- fingerprint (D-38)
+# ---------------------------------------------------------------- fingerprint
 
 def fingerprint(el):
     key = {
@@ -439,7 +439,7 @@ def run_analysis(company, run_id=None):
     if search_mode == "hybrid":
         from .semantic import SemanticIndex  # imported only in hybrid mode (optional packages)
         sem = SemanticIndex(units, company.store, app_cfg["semantic"])
-        # each semantic-only sentence is offered only to the element it is closest to (D-73)
+        # each semantic-only sentence is offered only to the element it is closest to
         sem.assign({f"{d}/{e['id']}": sem_query(e) for d in duties_json["primary_ids"]
                     for e in cfg["duties"].get(d, {}).get("elements", [])})
     target = target_policy(ctx, docs)
@@ -534,7 +534,7 @@ def sources_checked(docs, el):
 
 
 def save_run(company, result, docs, report_html):
-    """Persist one run through the company's store (D-67)."""
+    """Persist one run through the company's store."""
     cited = {c["source_id"] for du in result["duties"] for e in du.get("elements", [])
              for b in ("passages", "not_counted", "supporting") for c in e[b]}
     company.store.save_run(result["run_id"], {

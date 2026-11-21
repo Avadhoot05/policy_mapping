@@ -1,6 +1,6 @@
 """Parse source files into a structured, citable form.
 
-Line convention (IMPLEMENTATION.md D-09):
+Line convention:
 - the file is decoded as strict UTF-8 and split on '\n' only; nothing is stripped or merged
 - line numbers start at 1 (index + 1), so they match `cat -n` and editors
 - a text location is line_start/char_start .. line_end/char_end; lines include both ends,

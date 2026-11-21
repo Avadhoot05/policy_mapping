@@ -1,4 +1,4 @@
-"""Candidate retrieval: term matching over natural units plus BM25 ranking (D-17, D-30, D-40).
+"""Candidate retrieval: term matching over natural units plus BM25 ranking.
 
 BM25 only orders candidates for display. It never decides whether a passage covers a duty;
 the gates and the reviewer do.

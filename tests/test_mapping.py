@@ -144,7 +144,7 @@ class TestGatesAndResults(Base):
 
     def test_translation_only_not_counted(self):
         el = element(self.result, "04-P02-3", "recovery")
-        self.assertEqual(el["policy_status"], "not_found")                # German master is authoritative (D-12)
+        self.assertEqual(el["policy_status"], "not_found")                # German master is authoritative
         self.assertIn("translation_only", el["flags"])
         c = next(c for c in el["not_counted"] if c["source_id"] == EN_V2)
         self.assertEqual(c["location"], "L22–23")
@@ -215,7 +215,7 @@ class TestMultiCompany(unittest.TestCase):
         self.assertEqual(element(rt, "04-P02-3", "backup")["effectiveness"]["failed_runs"], 1)
         vt = checks(t, dt, rt)
         self.assertEqual(vt["failed"], 0, vt["checks"])
-        # sentence-level scope (D-47): IT rule inside an EHS policy counts, flagged; evacuation drill does not
+        # sentence-level scope: IT rule inside an EHS policy counts, flagged; evacuation drill does not
         rec = element(rt, "04-P02-3", "recovery")
         self.assertEqual(rec["policy_status"], "partial")
         self.assertNotIn("No current", rec["explanation"])
@@ -262,7 +262,7 @@ class TestStoreContract(unittest.TestCase):
 
 @unittest.skipUnless(importlib.util.find_spec("sentence_transformers"), "semantic packages not installed (./setup.sh --semantic)")
 class TestSemanticHybrid(unittest.TestCase):
-    """Hybrid mode: semantic search may propose more passages, but the gates decide (D-70)."""
+    """Hybrid mode: semantic search may propose more passages, but the gates decide."""
 
     @classmethod
     def setUpClass(cls):
@@ -301,7 +301,7 @@ class TestSemanticHybrid(unittest.TestCase):
 
 
     def test_semantic_sentence_offered_to_one_element_only(self):
-        # D-73: a sentence found only by semantic search goes to the element it is closest to, not to all of them
+        # a sentence found only by semantic search goes to the element it is closest to, not to all of them
         seen = {}
         for d in self.hybrid["duties"]:
             for e in d["elements"]:

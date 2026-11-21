@@ -1,4 +1,4 @@
-"""Version and language comparison of policy documents (task section 6.3, PLAN.md section 4.4).
+"""Version and language comparison of policy documents (task section 6.3).
 
 Two comparisons per policy family, when both documents are in the sources:
 - version: superseded -> current, same language (does the body change? does coverage change?)
@@ -139,7 +139,7 @@ def compare_versions(docs):
                         "coverage_change": (
                             (f"The {t['derived']['language'].upper()} version contains {len(extra)} passage(s) in "
                              f"{master_lang.upper()} that do not exist in the {master_lang.upper()} master. "
-                             f"The master language is authoritative, so they are not counted as policy text (D-12)."
+                             f"The master language is authoritative, so they are not counted as policy text."
                              if extra else "No passage of the translation is missing from the master.")
                             + (f" {translated} translated sentence(s) are in another language and are not compared "
                                f"word for word." if translated else "")),

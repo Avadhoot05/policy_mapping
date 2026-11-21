@@ -1,4 +1,4 @@
-"""Data and result validation checks (IMPLEMENTATION.md D-33, D-52).
+"""Data and result validation checks.
 
 Run by the test suite only; nothing is stored. They verify every quote, the version invariants,
 the legal input and the entity gate against the real data.
