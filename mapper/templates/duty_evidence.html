@@ -27,7 +27,7 @@
       </td>
       <td>
         {% for d in rec.due %}
-        {{ d.field }} {{ d.date }}{% if d.days_overdue is not none %} <span class="stale">({{ d.days_overdue }} days overdue)</span>{% endif %}{% if not loop.last %}<br>{% endif %}
+        {{ d.field }} {{ d.date }}{% if d.days_overdue is not none %} <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">({{ d.days_overdue }} days overdue as of {{ d.as_of }})</span>{% endif %}{% if not loop.last %}<br>{% endif %}
         {% else %}–{% endfor %}
       </td>
     </tr>

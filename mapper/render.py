@@ -59,7 +59,8 @@ def record_view(c):
     overdue = {o["field"]: o for o in c.get("overdue", [])}
     for k in DUE_FIELDS:
         if k in overdue:
-            view["due"].append({"field": k, "date": overdue[k]["date"], "days_overdue": overdue[k]["days_overdue"]})
+            view["due"].append({"field": k, "date": overdue[k]["date"], "days_overdue": overdue[k]["days_overdue"],
+                                "as_of": overdue[k]["as_of"]})
         elif values.get(k) not in (None, "", "-"):
             view["due"].append({"field": k, "date": values[k], "days_overdue": None})
     return view

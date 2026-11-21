@@ -91,14 +91,16 @@ def _locator_text(unit):
     return f"row {loc['row_id']}, field {loc['field']}"
 
 
-def _overdue(cells_or_fields, snapshot):
+def _overdue(cells_or_fields, as_of):
+    """Due dates before `as_of`: the source's own date (a register's "As of"), else the data snapshot date.
+    A register only shows the state on its own date, so an item can only be called overdue as of that date."""
     out = []
     for key in ("Next due", "Next review", "naechste_frist"):
         v = cells_or_fields.get(key)
         v = v["value"] if isinstance(v, dict) else v
         dt = _date(v) if v else None
-        if dt and dt < snapshot:
-            out.append({"field": key, "date": v, "days_overdue": (snapshot - dt).days})
+        if dt and dt < as_of:
+            out.append({"field": key, "date": v, "days_overdue": (as_of - dt).days, "as_of": as_of.isoformat()})
     return out
 
 
@@ -143,14 +145,15 @@ def build_candidate(ctx, unit, doc, element, score, matched, snapshot):
         "section": unit.get("section", ""), "score": round(score, 3), "matched_terms": matched,
         "doc": _doc_meta(doc), **ev,
     }
+    as_of = _date(c["doc"]["as_of"]) or snapshot      # the source's own date; the snapshot date if it has none
     if unit["kind"] == "register_row":
         c["cells"] = unit["cells"]
-        c["overdue"] = _overdue(unit["cells"], snapshot)
+        c["overdue"] = _overdue(unit["cells"], as_of)
         ex = _executions(unit["cells"])
         if ex:
             c["executions"] = ex
     if doc["kind"] == "evidence_record":
-        c["overdue"] = _overdue(doc.get("record_fields", {}), snapshot)
+        c["overdue"] = _overdue(doc.get("record_fields", {}), as_of)
     st, raw = _record_status(unit, doc)
     if st:
         c["record_status"] = {"signal": st, "value": raw}
@@ -280,7 +283,7 @@ def _implementation(supporting):
     short = {"mixed": f"Mixed: {done} done, {open_} open", "record_exists": f"Records exist ({done})",
              "open_or_planned": f"Open only ({open_})", "unknown": "Unknown"}[state]
     if overdue:
-        label += f"; {overdue} overdue at the snapshot date"
+        label += f"; {overdue} overdue as of the source's date"
     return {"state": state, "label": label, "short": short, "records": len(supporting), "done": done, "open": open_,
             "overdue_records": overdue}
 

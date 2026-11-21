@@ -11,6 +11,7 @@ import shutil
 import sys
 import tempfile
 import threading
+from datetime import date
 import unittest
 import urllib.request
 from http.server import ThreadingHTTPServer
@@ -187,6 +188,9 @@ class TestGatesAndResults(Base):
         el = element(self.result, "04-P02-3", "backup")
         c = next(c for c in el["supporting"] if c.get("cells", {}).get("Control") == "Offline-Datensicherung und Wiederherstellungstest")
         self.assertEqual(c["overdue"][0]["date"], "2026-01-21")
+        # compared with the register's own "As of 2026-11-09", not the 2026-11-18 snapshot
+        self.assertEqual(c["overdue"][0]["as_of"], "2026-11-09")
+        self.assertEqual(c["overdue"][0]["days_overdue"], (date(2026, 11, 9) - date(2026, 1, 21)).days)
 
     def test_all_sources_parsed_and_citations_verbatim(self):
         self.assertEqual(self.result["cache"]["missing"], [])
