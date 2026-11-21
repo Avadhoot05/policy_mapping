@@ -33,12 +33,11 @@ cd coback_policy_mapping
 | `./start.sh` | Starts the UI · `--port 8080`: another port |
 | `./test.sh` | Runs all tests, verbose |
 
-The scripts are safe to run again: steps that are already done are skipped. If the inputs are elsewhere, edit
-`input_dir` in `companies/marenthal/company.json` and `legal_input` in `config/app.json`;
-`./setup.sh` and `./start.sh` report what they cannot find.
+The scripts are safe to run again: steps that are already done are skipped.
 
-Use `.venv/bin/python app.py --run marenthal` for one analysis without the UI, and `.venv/bin/python app.py --check`
-to check the inputs.
+> [!IMPORTANT]
+> **Inputs in another folder?** Edit `input_dir` in `companies/marenthal/company.json` and `legal_input` in
+> `config/app.json`. `./setup.sh` and `./start.sh` report what they cannot find.
 
 ## Results for Marenthal Chemie AG (sources reviewed: 15 starter files + 3 structured company files)
 
