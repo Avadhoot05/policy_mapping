@@ -103,11 +103,16 @@
 
 {% set with_diff = result.comparisons|selectattr("has_differences")|list %}
 {% set without_diff = result.comparisons|rejectattr("has_differences")|list %}
-{# a policy counts once however many of its versions are in the sources; a comparison counts once as a pair #}
-{% set multi_version = result.comparisons|selectattr("kind", "equalto", "version")|map(attribute="policy_no")|unique|list %}
+{# each comparison is one pair; "mismatched" = the body differs (version: changed text; language: a sentence without
+   a counterpart), whichever kind of pair it is #}
+{% set version_pairs = result.comparisons|selectattr("kind", "equalto", "version")|list %}
+{% set language_pairs = result.comparisons|selectattr("kind", "equalto", "language")|list %}
 
 <div class="card meta stats">
-  <div><span>Documents with multiple versions</span><b>{{ multi_version|length }}</b></div>
+  <div><span>Document pairs with multiple versions</span><b>{{ version_pairs|length }}</b></div>
+  <div><span>Document pairs with multiple translations</span><b>{{ language_pairs|length }}</b></div>
+  <div><span>Mismatched pairs</span><b>{{ result.comparisons|selectattr("body_changed")|list|length }}</b></div>
+</div>
   <div><span>Document pairs with content mismatch</span><b>{{ with_diff|length }}</b>
     <small>of {{ result.comparisons|length }} pair{{ "s" if result.comparisons|length != 1 }} compared</small></div>
 </div>
