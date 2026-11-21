@@ -1,0 +1,32 @@
+{# Stand-alone page with the original German legal analysis of one duty (opened from the duty heading). #}
+{% extends "base.html" %}
+{% block title %}{{ du.duty_id }} – legal duty{% endblock %}
+
+{% block main %}
+<h1>{{ du.duty_id }} · {{ du.title }}</h1>
+<div class="muted">{{ du.label_de }}</div>
+
+<div class="meta">
+  <div><span>Legal input</span>{{ legal.file }}</div>
+  <div><span>Workbook</span>{{ legal.workbook }}, row {{ du.source_row }}</div>
+  <div><span>Analysis dated</span>{{ legal.analysis_date }}</div>
+  <div><span>Assessed entity</span>{{ company.entity_name }}</div>
+</div>
+
+<div class="card">
+  <div class="kv">
+    <div>Addressees</div><div>{{ du.addressees_de }}</div>
+    <div>Criterion</div><div>{{ du.criterion_de }}</div>
+    <div>Evidence question</div><div>{{ du.evidence_question_de }}</div>
+    <div>Expected evidence</div><div>{{ du.expected_evidence_de }}</div>
+  </div>
+  <h4>Duties / evaluation guidance (original)</h4>
+  <pre class="de">{{ du.guidance_de }}</pre>
+  <h4>Source links</h4>
+  <ul>
+    {% for u in du.source_links if u.strip() %}
+    <li><a href="{{ u.split(' ')[0] }}" target="_blank">{{ u }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

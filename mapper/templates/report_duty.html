@@ -1,0 +1,21 @@
+{# One duty card with its four sub-tabs. `du` is the duty from the loop in report.html. #}
+{% from "_macros.html" import badge %}
+<section class="card duty" id="duty-{{ du.duty_id }}">
+  <div class="elhead">
+    <h2 style="margin:0"><a href="legal/{{ du.duty_id|urlencode }}" target="_blank" title="Open the legal duty">{{ du.duty_id }} · {{ du.title }}</a></h2>
+    {{ badge(du.status_label, STATUS_CLASS[du.status]) }}
+    <button class="toggle" aria-expanded="true" aria-label="Collapse" title="Collapse">▾</button>
+  </div>
+  <div class="dbody">
+    <div class="tabs">
+      <button class="on" data-tab="{{ du.duty_id }}-map">Mapping</button>
+      <button data-tab="{{ du.duty_id }}-ev">Evidence</button>
+      <button data-tab="{{ du.duty_id }}-q">Missing information</button>
+      <button data-tab="{{ du.duty_id }}-src">Sources checked</button>
+    </div>
+    <div class="panel on" id="{{ du.duty_id }}-map">{% include "duty_mapping.html" %}</div>
+    <div class="panel" id="{{ du.duty_id }}-ev">{% include "duty_evidence.html" %}</div>
+    <div class="panel" id="{{ du.duty_id }}-q">{% include "duty_missing.html" %}</div>
+    <div class="panel" id="{{ du.duty_id }}-src">{% include "duty_sources.html" %}</div>
+  </div>
+</section>

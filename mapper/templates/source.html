@@ -1,0 +1,36 @@
+{# Source viewer: a document with the cited lines highlighted, a JSON path, or a CSV row with the cited field. #}
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block main %}
+<h1>{{ title }}</h1>
+<p class="muted">{{ company_name }} · {{ doc.file }} · document_id {{ doc.document_id }} · sha256 {{ doc.sha256 }}</p>
+<div class="card">
+{% if doc.lines is defined %}
+  {# text document: every line, cited lines highlighted #}
+  <table>
+    {% for line in doc.lines %}
+    {% set n = loop.index %}
+    <tr id="L{{ n }}" class="src-line{{ ' hl' if ls is not none and ls <= n and n <= (le or ls) }}">
+      <td class="n">{{ n }}</td><td class="t">{{ line }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% elif path is not none %}
+  {# JSON file: the units at the cited path #}
+  <p><b>{{ path }}</b></p>
+  {% for u in doc.units if u.loc.get("json_path") == path %}<div class="quote">{{ u.text }}</div>{% endfor %}
+{% else %}
+  {# CSV file: the cited row, cited field highlighted #}
+  <table>
+    {% for k, v in row_data.items() %}
+    <tr class="{{ 'hl' if k == field }}"><td>{{ k }}</td><td>{{ v }}</td></tr>
+    {% endfor %}
+  </table>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if doc.lines is defined and ls %}<script>location.hash = 'L{{ [1, ls - 3]|max }}';</script>{% endif %}
+{% endblock %}

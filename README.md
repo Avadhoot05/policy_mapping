@@ -17,9 +17,9 @@ some-folder/
 
 ```bash
 cd coback_policy_mapping
-./setup.sh               # 1. creates .venv and checks the inputs (keyword mode needs no packages)
+./setup.sh               # 1. creates .venv, installs requirements.txt (Jinja2) and checks the inputs
 ./start.sh               # 2. starts http://127.0.0.1:8000/
-./test.sh                # 3. optional: runs the 21 tests
+./test.sh                # 3. optional: runs the 26 tests
 ```
 
 1. On the start page, press **Start analysis**. A run takes well under a second.
@@ -111,7 +111,7 @@ Set `"search_mode"` in `config/app.json`, or use `./start.sh --semantic` (after 
 
 | Mode | How candidates are found | Needs |
 |---|---|---|
-| `keyword` (default) | DE/EN term matching over all units, ranked with BM25 | Standard library only |
+| `keyword` (default) | DE/EN term matching over all units, ranked with BM25 | Jinja2 only (requirements.txt) |
 | `hybrid` | Keyword as above, **plus** a free local multilingual embedding model (`paraphrase-multilingual-MiniLM-L12-v2`) that proposes the 5 most similar **policy sentences** per element (cosine similarity ≥ 0.30) | `./setup.sh --semantic` (CPU PyTorch + sentence-transformers + model, ~0.8 GB once) |
 
 In both modes **the same seven gates decide**. Semantic search only widens the net:
@@ -260,8 +260,10 @@ mapper/analysis.py      pipeline: elements, dimensions, explanations, questions,
 mapper/compare.py       version and language comparison
 mapper/validate.py      10 data and result checks, run by the test suite (nothing stored)
 mapper/review.py        reviewer decisions and re-review detection
-mapper/render.py        report, start page, source viewer
-mapper/server.py        local web server (stdlib)
+mapper/render.py        prepares data and renders the pages with Jinja2
+mapper/templates/       page layout as HTML templates (report, duty tabs, comparison, legal duty, start, source)
+mapper/static/          report.css, report.js, start.js (inlined, so each report.html is self-contained)
+mapper/server.py        local web server (Python standard library)
 config/duty_elements.json  law-level configuration (elements, terms, facets, questions)
 companies/marenthal/company.json
 tests/                  unit and integration tests, synthetic test company

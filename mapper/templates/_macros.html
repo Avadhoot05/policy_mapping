@@ -1,0 +1,15 @@
+{# Small reusable pieces. Import with: {% from "_macros.html" import badge, chip, flag_chips, source_link %} #}
+
+{# A coloured status pill, e.g. "Covered" (ok) or "No supporting passage found" (bad). #}
+{% macro badge(text, cls) %}<span class="badge {{ cls }}">{{ text }}</span>{% endmacro %}
+
+{# A small grey label, e.g. "Current" or "Only in translation". #}
+{% macro chip(text, cls="") %}<span class="chip {{ cls }}">{{ text }}</span>{% endmacro %}
+
+{# The flags of an element (wrong-topic match, only in translation, ...). #}
+{% macro flag_chips(flags) %}
+{% for f in flags %}{{ chip(FLAG_LABEL.get(f, f), "mis" if f == "scope_mismatch" else "info") }}{% endfor %}
+{% endmacro %}
+
+{# Link that opens the source document with the cited location highlighted. #}
+{% macro source_link(slug, c, text="View source") %}<a href="{{ source_url(slug, c) }}" target="_blank" title="Open the source with this location highlighted">{{ text }}</a>{% endmacro %}

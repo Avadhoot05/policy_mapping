@@ -1,0 +1,80 @@
+{# Version comparison tab: same-language version comparisons, plus a compact box per language difference. #}
+{% from "_macros.html" import badge, source_link %}
+{% for cmp in result.comparisons %}
+{% set L = cmp.left %}
+{% set R = cmp.right %}
+
+{% if cmp.kind == "language" %}
+{# ---- language difference: text that appears only in the translation #}
+<section class="card">
+  <div class="elhead">
+    <h3>Language difference: {{ cmp.policy_no }} v{{ cmp.version }} {{ L.language|upper }} (master) ↔ {{ R.language|upper }}</h3>
+    {{ badge("Content differs", "warn") if cmp.extra_in_translation else badge("No missing passage", "ok") }}
+  </div>
+  <div class="kv">
+    <div>Master</div><div>{{ L.doc_number }} · {{ L.file }} · valid from {{ L.valid_from }}</div>
+    <div>Translation</div><div>{{ R.doc_number }} · {{ R.file }} · valid from {{ R.valid_from }}</div>
+  </div>
+  <p>{{ cmp.coverage_change }}</p>
+  {% if cmp.extra_in_translation %}
+  <h4>Only in the {{ R.language|upper }} version (text in {{ L.language|upper }}, not in the master)</h4>
+  {% for s in cmp.extra_in_translation %}
+  <div class="qcard">
+    <div class="qhead"><b>{{ R.doc_number }}</b> · {{ R.file }} · <b>{{ line_label(s.loc) }}</b> · section “{{ s.section }}” ·
+      {{ source_link(slug, {"source_id": R.source_id, "loc": s.loc}) }}</div>
+    <div class="quote nc">{{ s.text }}</div>
+  </div>
+  {% endfor %}
+  {% endif %}
+  <p class="muted"><small>Language versions are kept separate and never combined. Only identical text is compared; no translation or AI is used.</small></p>
+</section>
+
+{% else %}
+{# ---- version comparison: metadata table and body text side by side #}
+<section class="card">
+  <div class="elhead">
+    <h3>{{ "Version comparison" if cmp.kind == "version" else "Language comparison" }}: {{ cmp.policy_no }} {{ cmp.title }}</h3>
+    {{ badge("Body changed", "warn") if cmp.body_changed else badge("Body identical", "ok") }}
+  </div>
+  <div class="muted">{{ L.doc_number }} v{{ L.version }} {{ L.language|upper }} ({{ L.lifecycle }}) → {{ R.doc_number }} v{{ R.version }} {{ R.language|upper }} ({{ R.lifecycle }})</div>
+  <p>{{ cmp.coverage_change }}</p>
+  {% if cmp.validity_note %}<p class="muted">{{ cmp.validity_note }}</p>{% endif %}
+
+  {% set notes = L.notes + R.notes %}
+  {% if notes %}
+  <h4>Version notes</h4>
+  <ul>{% for n in notes %}<li>{{ n }}</li>{% endfor %}</ul>
+  {% endif %}
+
+  <h4>Metadata</h4>
+  <table>
+    <tr><th>Field</th><th>{{ L.doc_number }} <small>{{ L.file }}</small></th><th>{{ R.doc_number }} <small>{{ R.file }}</small></th></tr>
+    {% for m in cmp.metadata %}
+    <tr class="{{ 'changed' if m.changed }}">
+      <td>{{ m.field }}</td>
+      <td>{{ m.left.value if m.left else "–" }} <small>{{ ("L" ~ m.left.line) if m.left }}</small></td>
+      <td>{{ m.right.value if m.right else "–" }} <small>{{ ("L" ~ m.right.line) if m.right }}</small></td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h4>Body text, side by side</h4>
+  <p class="muted"><small>Highlighted sentences have no identical counterpart on the other side.</small></p>
+  {% for s in cmp.sections %}
+  <div class="side">
+    {% for items, head, head_line in [(s.left, s.left_heading, s.left_heading_line), (s.right, s.right_heading, s.right_heading_line)] %}
+    <div>
+      <div class="qhead"><b>{{ head }}</b> {{ ("(L" ~ head_line ~ ")") if head_line }}</div>
+      {% for it in items %}
+      <div class="sent {{ it.status }}"><small>{{ line_label(it.loc) }}</small> {{ it.text }}</div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% else %}
+<p class="muted">No policy family with two versions in the sources.</p>
+{% endfor %}

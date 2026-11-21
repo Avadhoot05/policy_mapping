@@ -1,0 +1,54 @@
+{# Evidence sub-tab: implementation records (register rows, evidence records) per element. #}
+{% from "_macros.html" import badge, chip, source_link %}
+{% for el in du.elements %}
+<div class="el">
+  <div class="elhead"><h3>{{ el.label }}</h3></div>
+  <div class="kv">
+    <div>Implementation</div><div>{{ badge(el.implementation.label, IMPL_CLASS[el.implementation.state]) }}</div>
+    <div>Effectiveness</div><div>{{ badge(el.effectiveness.label, "muted") }}</div>
+  </div>
+
+  {% if el.supporting %}
+  <table>
+    <tr><th>Source</th><th>Record</th><th>Next due</th></tr>
+    {% for c in el.supporting %}
+    {% set rec = record_view(c) %}
+    <tr>
+      <td>{{ source_link(slug, c, c.doc.title) }}<br><small>{{ c.location }}</small></td>
+      <td>
+        {% if rec.name %}
+        <b>{{ rec.name }}</b>{% if rec.status %} {{ badge(rec.status, rec.status_class) }}{% endif %}<br>
+        <small>{{ rec.details }}</small>
+        {% else %}
+        {% if rec.status %}{{ badge(rec.status, rec.status_class) }}{% endif %}
+        <span class="quote" style="display:block">{{ c.quote }}</span>
+        {% endif %}
+        {% for q in c.qualifiers if q in FLAG_LABEL %}{{ chip(FLAG_LABEL[q], "info") }}{% endfor %}
+      </td>
+      <td>
+        {% for d in rec.due %}
+        {{ d.field }} {{ d.date }}{% if d.days_overdue is not none %} <span class="stale">({{ d.days_overdue }} days overdue)</span>{% endif %}{% if not loop.last %}<br>{% endif %}
+        {% else %}–{% endfor %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="muted">No supporting record found in the sources reviewed.</p>
+  {% endif %}
+
+  {% if el.supporting_scope_mismatch %}
+  <details>
+    <summary>Records matched by terms but with another topic ({{ el.supporting_scope_mismatch|length }}, not used)</summary>
+    <ul>
+      {% for c in el.supporting_scope_mismatch %}
+      <li>{{ c.file }} {{ c.location }}: {{ c.quote[:140] }} <small>({{ gate_reason(c, "5 scope") }})</small></li>
+      {% endfor %}
+    </ul>
+  </details>
+  {% endif %}
+</div>
+{% endfor %}
+<p class="muted"><small>Records describe implementation, not policy text. Per 17-AUS-17, register summaries such as “erfüllt” or
+“wirksam” are source metadata and do not prove effectiveness of the duty; missing proof means “not demonstrated”, only a
+proven failure means “ineffective”.</small></p>

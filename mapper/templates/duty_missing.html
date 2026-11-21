@@ -1,0 +1,31 @@
+{# Missing information sub-tab: expected evidence (verbatim from the legal input), missing facets of partial
+   rules (computed by gate 7) and the company's own open twin questions. No hand-written text. #}
+<div class="el">
+  <p class="muted" title="Verbatim from the legal input ({{ du.duty_id }})"><small>
+    <b>Expected evidence:</b> {{ du.expected_evidence_de }}<br>
+    <b>Evidence question:</b> {{ du.evidence_question_de }}
+  </small></p>
+</div>
+{% for el in du.elements %}
+<div class="el">
+  <h3>{{ el.label }}</h3>
+  <p>
+  {% if el.policy_status == "covered" %}
+    <span class="muted">Covered – nothing missing in the policy text.</span>
+  {% elif el.policy_status == "partial" %}
+    {% set p0 = el.passages[0] %}
+    The rule at {{ p0.doc.policy_no }} v{{ p0.doc.version }} {{ p0.location }} does not state: <b>{{ p0.facets_missing_labels|join(", ") }}</b>.
+  {% else %}
+    No policy rule found ({{ el.policy_status_label }}).
+  {% endif %}
+  </p>
+  {% if el.twin_questions %}
+  <h4>Related open questions in the company's digital twin</h4>
+  <ul>
+    {% for q in el.twin_questions %}
+    <li><b>#{{ q.shortId }}</b> {{ q.text }} <small>({{ q.topic }}, status: {{ q.status }}, answer: {{ q.answer or "none – unknown, not “no”" }})</small></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+{% endfor %}

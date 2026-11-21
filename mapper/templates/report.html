@@ -1,0 +1,47 @@
+{# The report of one run: header and three tabs. Each tab lives in its own template. #}
+{% extends "base.html" %}
+{% block title %}Policy mapping · NIS2 / BSIG §30 – {{ company.name }} – {{ result.run_id }}{% endblock %}
+
+{% block main %}
+<div class="top">
+  <div>
+    <h1>Policy mapping · NIS2 / BSIG §30</h1>
+    <div class="muted">Run {{ result.run_id }}</div>
+  </div>
+  <div class="actions"><a class="btn" href="/">Start page</a></div>
+</div>
+
+<div class="meta">
+  <div><span>Assessed entity</span>{{ company.entity_name }} ({{ company.entity_codes|join(", ") }})<br><small>{{ company.entity_id }}</small></div>
+  <div><span>Data snapshot</span>{{ company.snapshot_date }}</div>
+  <div><span>Legal input</span>{{ legal.file }} · {{ legal.workbook }}<br><small>analysis dated {{ legal.analysis_date }}</small></div>
+  <div><span>Generated</span>{{ result.generated_at }}</div>
+</div>
+
+<div class="mtabs">
+  <button class="on" data-main="overview">Overview</button>
+  <button data-main="duties">Duty results</button>
+  <button data-main="comparison">Version comparison</button>
+</div>
+
+<div class="mpanel on" id="overview">
+  <div class="card">{% include "report_overview.html" %}</div>
+</div>
+
+<div class="mpanel" id="duties">
+{% for du in duties %}
+  {% include "report_duty.html" %}
+{% endfor %}
+</div>
+
+<div class="mpanel" id="comparison">
+  {% include "report_comparison.html" %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const RUN = {{ run_info|tojson }};
+{{ js }}
+</script>
+{% endblock %}

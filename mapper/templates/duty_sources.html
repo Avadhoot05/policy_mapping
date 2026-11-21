@@ -1,0 +1,33 @@
+{# Sources checked sub-tab: sources with hits in a table; the rest in one folded line, so a "not found"
+   stays visibly about all sources reviewed. #}
+{% for el in du.elements %}
+{% set hit = el.sources_checked|selectattr("hits")|list %}
+{% set nohit = el.sources_checked|rejectattr("hits")|list %}
+<details>
+  <summary>{{ el.label }} – search terms: {{ el.terms|join(", ") }}
+    <span class="muted"><small>({{ hit|length }} of {{ el.sources_checked|length }} sources with hits)</small></span></summary>
+
+  {% if hit %}
+  <table>
+    <tr><th>Source</th><th>Kind</th><th>Hits</th><th>Outcome</th></tr>
+    {% for s in hit %}
+    <tr>
+      <td>{{ s.title }}<br><small>{{ s.file }}</small></td>
+      <td>{{ s.kind }}</td>
+      <td>{{ s.hits }}</td>
+      <td>{% for r in s.relations %}{{ REL_LABEL.get(r, r) }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+
+  {% if nohit and not hit %}
+  <p class="muted"><small>No hits in any of the {{ nohit|length }} sources reviewed.</small></p>
+  {% elif nohit %}
+  <details>
+    <summary class="muted"><small>{{ nohit|length }} other source{{ "s" if nohit|length != 1 }} without hits</small></summary>
+    <p class="muted"><small>{{ nohit|map(attribute="file")|map("basename")|join("; ") }}</small></p>
+  </details>
+  {% endif %}
+</details>
+{% endfor %}

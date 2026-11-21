@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Step 1 – create the virtual environment (Linux / macOS).
 #
-#   ./setup.sh               keyword search (default): creates .venv, no packages needed
+#   ./setup.sh               keyword search (default): creates .venv and installs requirements.txt (Jinja2)
 #   ./setup.sh --semantic    also installs CPU-only PyTorch + sentence-transformers and the model (~0.8 GB, once)
 #
 # Safe to run again: steps that are already done are skipped.
@@ -31,6 +31,13 @@ else
 fi
 PY=".venv/bin/python"
 
+if ! "$PY" -c "import jinja2" >/dev/null 2>&1; then
+  say "Installing required packages (requirements.txt: Jinja2 for the report templates)"
+  "$PY" -m pip install -r requirements.txt
+else
+  say "Required packages already installed"
+fi
+
 if [ "$SEMANTIC" = "1" ]; then
   if ! "$PY" -c "import sentence_transformers" >/dev/null 2>&1; then
     say "Installing semantic-search packages (CPU-only PyTorch + sentence-transformers)"
@@ -42,8 +49,6 @@ if [ "$SEMANTIC" = "1" ]; then
   fi
   say "Downloading the embedding model if needed (~470 MB, once)"
   "$PY" -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('$MODEL')" >/dev/null
-else
-  say "Keyword mode needs no packages (standard library only)"
 fi
 
 say "Checking input files"

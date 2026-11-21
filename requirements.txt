@@ -1,0 +1,2 @@
+# Required for every mode: HTML templates for the report (mapper/templates).
+jinja2>=3.1

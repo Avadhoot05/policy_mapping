@@ -1,0 +1,24 @@
+{# Overview tab: one row per duty element. Policy text, records, effectiveness and review stay separate columns. #}
+{% from "_macros.html" import badge, chip, flag_chips %}
+<table>
+  <tr>
+    <th>Duty</th><th>Element</th><th>Policy text</th><th>Implementation records</th><th>Effectiveness</th><th>Review</th>
+  </tr>
+{% for du in duties %}
+  {% for el in du.elements %}
+  <tr>
+    {% if loop.first %}
+    <td rowspan="{{ du.elements|length }}"><a href="#duty-{{ du.duty_id }}"><b>{{ du.duty_id }}</b></a><br>{{ du.title }}</td>
+    {% endif %}
+    <td><a href="#el-{{ du.duty_id }}-{{ el.id }}">{{ el.label }}</a></td>
+    <td>{{ badge(el.policy_status_label, STATUS_CLASS[el.policy_status]) }} {{ flag_chips(el.flags) }}</td>
+    <td>
+      {{ badge(el.implementation.short, IMPL_CLASS[el.implementation.state]) }}
+      {% if el.implementation.overdue_records %}{{ chip(el.implementation.overdue_records ~ " overdue") }}{% endif %}
+    </td>
+    <td><small>{{ el.effectiveness.short }}</small></td>
+    <td class="ovrev" data-key="{{ du.duty_id }}/{{ el.id }}"><small class="muted">not reviewed</small></td>
+  </tr>
+  {% endfor %}
+{% endfor %}
+</table>

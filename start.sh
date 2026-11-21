@@ -20,6 +20,7 @@ done
 
 PY=".venv/bin/python"
 [ -x "$PY" ] || { echo "No .venv found. Run ./setup.sh first."; exit 1; }
+"$PY" -c "import jinja2" >/dev/null 2>&1 || { echo "Required packages are missing. Run ./setup.sh first."; exit 1; }
 if [ "$MODE" = "hybrid" ] && ! "$PY" -c "import sentence_transformers" >/dev/null 2>&1; then
   echo "Semantic packages are not installed. Run ./setup.sh --semantic first."; exit 1
 fi
