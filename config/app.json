@@ -11,5 +11,10 @@
     "min_similarity": 0.3,
     "_about": "Semantic search runs next to keyword search: it proposes up to top_k policy sentences per element with cosine similarity >= min_similarity; the same 7 gates decide, and a sentence found only this way is reported only when the gates count it. Language versions are matched sentence by sentence; a pair with similarity >= language_match_cutoff is shown as likely the same content. Calibrated on the Marenthal data.",
     "language_match_cutoff": 0.8
+  },
+  "language_detection": {
+    "min_words": 6,
+    "min_confidence": 0.9,
+    "_about": "Language versions card: a sentence is flagged when the langdetect library says it is written in the language of the other version (e.g. German text in the EN version). Only sentences with at least min_words words and a detector confidence of at least min_confidence are flagged, so single foreign words, quoted terms and uncertain cases are not. A proposal for the reviewer; never changes coverage."
   }
 }

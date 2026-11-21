@@ -19,7 +19,7 @@ some-folder/
 cd coback_policy_mapping
 ./setup.sh               # 1. creates .venv, installs the packages and the model (~1 GB, once), checks the inputs
 ./start.sh               # 2. starts http://127.0.0.1:8000/
-./test.sh                # 3. optional: runs the 24 tests
+./test.sh                # 3. optional: runs the 25 tests
 ```
 
 1. On the start page, press **Start analysis**. A run takes about 2 seconds (the model loads once per server start).
@@ -59,8 +59,10 @@ continuous (until 2024-07-08 / from 2024-07-09). The superseded v1.1 still conta
 v2.0 matches the sentences of both versions by meaning, with the same local multilingual model as the search (no
 machine translation). A pair with similarity ≥ 0.80 is shown as *likely the same*: the three purpose/scope sentences
 match at 0.89–0.93. Without a partner (≤ 0.61): EN L22–23 (recovery rule) and L24 (rack inspection) exist only in
-EN, and DE L22–23 ("Dieses Dokument wird … verbindlich") only in DE. This is a proposal for the reviewer and never
-changes coverage.
+EN, and DE L22–23 ("Dieses Dokument wird … verbindlich") only in DE. Both EN-only lines are also written in German
+and flagged *DE sentence detected*: the `langdetect` library names the language of each sentence, and a sentence is
+flagged only when it is in the other version's language, has at least 6 words and a confidence of at least 0.90
+(`config/app.json` → `language_detection`). A quoted term such as "Informationssicherheit" in L18 is not flagged. This is a proposal for the reviewer and never changes coverage.
 KR-017 v1.1 → v2.0 is shown as well.
 
 ## Full-corpus cross-check (not part of the report's scope)

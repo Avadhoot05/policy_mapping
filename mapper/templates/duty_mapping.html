@@ -5,7 +5,6 @@
 {% macro passage(slug, c, counted) %}
 <div class="qcard">
   <div class="qhead">
-    {{ badge(REL_LABEL.get(c.relation, c.relation), "ok" if counted else ("mis" if c.relation == "scope_mismatch" else "muted")) }}
     <b>{{ c.doc.title }}</b> · {{ c.file }} · <b>{{ c.location }}</b> · {{ source_link(slug, c) }}
   </div>
   <div>

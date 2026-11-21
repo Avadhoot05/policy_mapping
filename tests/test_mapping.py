@@ -304,6 +304,21 @@ class TestSemantic(Base):
         self.assertEqual(by("only_translation", "translation"), [22, 24])  # recovery rule + rack inspection
         self.assertEqual(by("only_master", "master"), [22])          # "Dieses Dokument wird ... verbindlich"
         self.assertTrue(all(r["similarity"] >= lang["cutoff"] for r in lang["rows"] if r["status"] == "likely_same"))
+        # whole German sentences in the EN version are flagged; no master sentence is
+        wrong = [r["translation"]["loc"]["line_start"] for r in lang["rows"]
+                 if r["translation"] and r["translation"]["wrong_language"] == "DE"]
+        self.assertEqual(wrong, [22, 24])
+        self.assertFalse(any(r["master"]["wrong_language"] for r in lang["rows"] if r["master"]))
+        self.assertEqual(lang["wrong_language"], 2)
+
+    def test_sentence_language_needs_a_whole_sentence(self):
+        from mapper.compare import sentence_language
+        detect = lambda t: sentence_language(t, min_words=6, min_confidence=0.9)
+        self.assertEqual(detect("Die IT-Sicherheit wird jährlich durch den ISB geprüft."), "de")
+        self.assertEqual(detect("The officer reviews the IT backup plan every year."), "en")
+        # a quoted German term in an English sentence, or a short phrase, is not a German sentence
+        self.assertEqual(detect("This policy sets binding rules on “Informationssicherheit” for Marenthal Chemie AG."), "en")
+        self.assertIsNone(detect("Wiederherstellung kritischer Systeme"))
 
 
 class TestCache(unittest.TestCase):

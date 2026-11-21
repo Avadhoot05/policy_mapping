@@ -18,7 +18,7 @@ done
 
 PY=".venv/bin/python"
 [ -x "$PY" ] || { echo "No .venv found. Run ./setup.sh first."; exit 1; }
-"$PY" -c "import jinja2, sentence_transformers" >/dev/null 2>&1 || { echo "Required packages are missing. Run ./setup.sh first."; exit 1; }
+"$PY" -c "import jinja2, sentence_transformers, langdetect" >/dev/null 2>&1 || { echo "Required packages are missing. Run ./setup.sh first."; exit 1; }
 "$PY" app.py --check
 printf '\n==> Starting the app – open http://127.0.0.1:%s/  (Ctrl+C to stop)\n' "$PORT"
 exec "$PY" app.py --port "$PORT"

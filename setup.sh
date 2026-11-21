@@ -28,7 +28,7 @@ else
 fi
 PY=".venv/bin/python"
 
-if ! "$PY" -c "import jinja2, sentence_transformers" >/dev/null 2>&1; then
+if ! "$PY" -c "import jinja2, sentence_transformers, langdetect" >/dev/null 2>&1; then
   say "Installing packages (CPU-only PyTorch, then requirements.txt)"
   "$PY" -m pip install --upgrade pip
   "$PY" -m pip install torch --index-url https://download.pytorch.org/whl/cpu

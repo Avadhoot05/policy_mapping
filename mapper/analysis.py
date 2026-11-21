@@ -510,8 +510,8 @@ def run_analysis(company, run_id=None):
         "cache": cache_report,
         "target_policy": target,
         "duties": duties_out,
-        "comparisons": compare.compare_versions(docs, sem.similarity,
-                                                app_cfg["semantic"].get("language_match_cutoff", 0.80)),
+        "comparisons": compare.compare_versions(docs, sem.similarity, app_cfg["semantic"]["language_match_cutoff"],
+                                                app_cfg["language_detection"]),
     }
     return result, docs
 

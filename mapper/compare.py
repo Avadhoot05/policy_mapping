@@ -4,10 +4,20 @@ Two comparisons per policy family, when both documents are in the sources:
 - version: superseded -> current, same language (does the body change? does coverage change?)
 - language: master <-> translation, same version. Sentences are matched across languages by meaning with the
   multilingual model of the semantic search (no machine translation). A pair at or above the cut-off is "likely the same
-  content"; a sentence without such a partner exists only in one language version. This is a proposal for the
-  reviewer and never changes coverage (gate 4 still counts master-language text only).
+  content"; a sentence without such a partner exists only in one language version. Whole sentences written in the
+  other language (e.g. German text in the EN version) are flagged. This is a proposal for the reviewer and never
+  changes coverage (gate 4 still counts master-language text only).
 """
+import re
+
+from langdetect import DetectorFactory, detect_langs
+from langdetect.lang_detect_exception import LangDetectException
+
 from .textutil import normalize
+
+DetectorFactory.seed = 0        # langdetect is random by default; a fixed seed makes every run give the same result
+
+
 
 
 META_FIELDS = [
@@ -86,8 +96,9 @@ def _vkey(v):
         return (-1,)
 
 
-def compare_versions(docs, similarity, cutoff=0.80):
-    """similarity(texts_a, texts_b) -> matrix of cross-language similarities (the multilingual model)."""
+def compare_versions(docs, similarity, cutoff, detect):
+    """similarity(texts_a, texts_b) -> matrix of cross-language similarities (the multilingual model).
+    detect: {"min_words", "min_confidence"} for flagging sentences written in the other language."""
     fams = {}
     for d in docs.values():
         if d.get("kind") == "policy" and d["derived"].get("policy_no"):
@@ -116,35 +127,56 @@ def compare_versions(docs, similarity, cutoff=0.80):
             others = [d for d in ds if d["derived"]["language"] != d["derived"]["master_language"]]
             for m in masters:
                 for t in others:
-                    out.append(_language(pno, ver, m, t, similarity, cutoff))
+                    out.append(_language(pno, ver, m, t, similarity, cutoff, detect))
     return out
 
 
-def _language(pno, ver, m, t, similarity, cutoff):
+def sentence_language(text, min_words, min_confidence):
+    """Language code of a whole sentence (e.g. 'de'), or None when it is too short or the detector is unsure."""
+    if len(re.findall(r"\w+", text)) < min_words:
+        return None
+    try:
+        best = detect_langs(text)[0]
+    except LangDetectException:                    # no letters to detect from
+        return None
+    return best.lang.split("-")[0] if best.prob >= min_confidence else None    # 'zh-cn' -> 'zh'
+
+
+def _language(pno, ver, m, t, similarity, cutoff, detect):
     """Align master and translation sentence by sentence (by meaning, across languages)."""
     entry = {"kind": "language", "policy_no": pno, "title": m.get("title", ""), "version": ver,
              "left": ref(m), "right": ref(t), "metadata": _meta(m, t), "cutoff": cutoff}
     ms = [u for u in m["units"] if u["kind"] == "policy_sentence"]
     ts = [u for u in t["units"] if u["kind"] == "policy_sentence"]
     sim = similarity([u["text"] for u in ms], [u["text"] for u in ts]) if ms and ts else []
-    sent = lambda u: {"loc": u["loc"], "text": u["text"], "section": u.get("section", "")}
+
+    m_lang, t_lang = ref(m)["language"], ref(t)["language"]
+
+    def sent(u, other_lang):
+        # flagged only when the sentence is written in the language of the other version (German text in the EN
+        # version and vice versa); a sentence the detector is unsure about is never flagged
+        found = sentence_language(u["text"], detect["min_words"], detect["min_confidence"])
+        return {"loc": u["loc"], "text": u["text"], "section": u.get("section", ""),
+                "wrong_language": found.upper() if found == other_lang else None}
     rows, matched = [], set()
     for j, u in enumerate(ts):                      # each translation sentence -> its closest master sentence
         i = max(range(len(ms)), key=lambda k: sim[k][j]) if ms else None
         score = round(float(sim[i][j]), 2) if i is not None else 0.0
         if score >= cutoff:
             matched.add(i)
-            rows.append({"master": sent(ms[i]), "translation": sent(u), "similarity": score, "status": "likely_same"})
+            rows.append({"master": sent(ms[i], t_lang), "translation": sent(u, m_lang), "similarity": score, "status": "likely_same"})
         else:
-            rows.append({"master": None, "translation": sent(u), "similarity": score, "status": "only_translation"})
+            rows.append({"master": None, "translation": sent(u, m_lang), "similarity": score, "status": "only_translation"})
     for i, u in enumerate(ms):                      # master sentences that no translation sentence matches
         if i not in matched:
             best = max((sim[i][j] for j in range(len(ts))), default=0.0)
-            rows.append({"master": sent(u), "translation": None, "similarity": round(float(best), 2),
+            rows.append({"master": sent(u, t_lang), "translation": None, "similarity": round(float(best), 2),
                          "status": "only_master"})
     order = lambda r: (r["master"] or r["translation"])["loc"]["line_start"]
     rows.sort(key=lambda r: (order(r), r["status"] != "likely_same"))
     n_t = sum(r["status"] == "only_translation" for r in rows)
     n_m = sum(r["status"] == "only_master" for r in rows)
-    entry.update(rows=rows, only_in_master=n_m, only_in_translation=n_t, body_changed=bool(n_t or n_m))
+    n_w = sum(bool(x and x["wrong_language"]) for r in rows for x in (r["master"], r["translation"]))
+    entry.update(rows=rows, only_in_master=n_m, only_in_translation=n_t, wrong_language=n_w,
+                 body_changed=bool(n_t or n_m))
     return entry

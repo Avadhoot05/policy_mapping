@@ -11,6 +11,7 @@
     <h3>Language versions: {{ cmp.policy_no }} v{{ cmp.version }} {{ L.language|upper }} (master) ↔ {{ R.language|upper }}</h3>
     {% if cmp.body_changed %}{{ badge("Content likely differs", "warn") }}
     {% else %}{{ badge("Content likely the same", "ok") }}{% endif %}
+    {% if cmp.wrong_language %}{{ badge(cmp.wrong_language ~ " sentence" ~ ("s" if cmp.wrong_language != 1) ~ " in the wrong language", "bad") }}{% endif %}
     {{ fold_toggle() }}
   </div>
   <div class="dbody">
@@ -18,14 +19,15 @@
     <div>Master</div><div>{{ L.doc_number }} · {{ L.file }} · valid from {{ L.valid_from }}</div>
     <div>Translation</div><div>{{ R.doc_number }} · {{ R.file }} · valid from {{ R.valid_from }}</div>
   </div>
-  <p>{{ cmp.coverage_change }}</p>
-  {% set same = cmp.rows|selectattr("status", "equalto", "likely_same")|list %}
-  {% set diff = cmp.rows|rejectattr("status", "equalto", "likely_same")|list %}
+  {# a row is listed when a sentence has no counterpart or is written in the other language #}
+  {% set same = cmp.rows|selectattr("status", "equalto", "likely_same")
+                |rejectattr("master.wrong_language")|rejectattr("translation.wrong_language")|list %}
+  {% set diff = cmp.rows|reject("in", same)|list %}
   {% if same %}
   <p><b>{{ same|length }} sentence pair{{ "s" if same|length != 1 }}</b> likely the same content.</p>
   {% endif %}
   {% if diff %}
-  <h4>Sentences without a counterpart in the other version</h4>
+  <h4>Sentences to check</h4>
   <table>
     <tr><th>{{ L.language|upper }} master</th><th>{{ R.language|upper }} version</th><th>Match</th></tr>
     {% for r in diff %}
@@ -33,7 +35,11 @@
       <td>{% if r.master %}<small>{{ line_label(r.master.loc) }}</small> {{ r.master.text }}{% else %}–{% endif %}</td>
       <td>{% if r.translation %}<small>{{ line_label(r.translation.loc) }}</small> {{ r.translation.text }}
         · {{ source_link(slug, {"source_id": R.source_id, "loc": r.translation.loc}) }}{% else %}–{% endif %}</td>
-      <td>{{ badge("Only in " ~ (R.language if r.status == "only_translation" else L.language)|upper, "warn") }}</td>
+      <td>
+        {% if r.status == "likely_same" %}{{ badge("Likely the same", "ok") }}
+        {% else %}{{ badge("Only in " ~ (R.language if r.status == "only_translation" else L.language)|upper, "warn") }}{% endif %}
+        {% for x in (r.master, r.translation) if x and x.wrong_language %}{{ badge(x.wrong_language ~ " sentence detected", "bad") }}{% endfor %}
+      </td>
     </tr>
     {% endfor %}
   </table>
@@ -56,7 +62,6 @@
     <div>{{ v.doc_number }} v{{ v.version }} {{ v.language|upper }} · {{ v.file }} · valid from {{ v.valid_from }}{% if v.valid_until %} until {{ v.valid_until }}{% endif %}</div>
     {% endfor %}
   </div>
-  {% if cmp.body_changed %}<p>{{ cmp.coverage_change }}</p>{% endif %}
 
   <h4>Metadata</h4>
   <table>

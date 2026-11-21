@@ -21,6 +21,8 @@ Python 3.10+, Linux or macOS. The COBACK input package must sit next to this fol
 ```
 `./start.sh` runs a server that does not exit. Start it in the background; it `exec`s Python, so the PID you get is
 the server (stop it with `kill <PID>`). It is ready when `GET /` returns 200, after about 5 seconds (it loads PyTorch).
+When it is ready, give the user the URL to open in a browser (`http://127.0.0.1:<port>/`). Leave the server
+running and don't start an analysis unless asked.
 
 HTTP API (`<slug>` = company folder, e.g. `marenthal`; `<run>` = run id returned by POST runs):
 ```

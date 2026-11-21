@@ -2,3 +2,4 @@
 #   pip install torch --index-url https://download.pytorch.org/whl/cpu
 jinja2>=3.1                  # HTML templates for the report
 sentence-transformers>=3.0   # semantic search and cross-language matching (local model, no API)
+langdetect>=1.0.9            # flags sentences written in the other language (language versions card)
