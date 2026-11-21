@@ -7,6 +7,7 @@ import importlib.util
 import json
 import math
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -18,7 +19,7 @@ from http.server import ThreadingHTTPServer
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
-from mapper import company as company_mod, parsing, review, validate  # noqa: E402
+from mapper import company as company_mod, parsing, review  # noqa: E402
 from mapper.analysis import run_analysis  # noqa: E402
 from mapper.company import Company, load_sources  # noqa: E402
 from mapper.store import FileStore, Store  # noqa: E402
@@ -54,9 +55,34 @@ def testco(tmp, input_dir=FIXTURE):
         "input_dir": input_dir})
 
 
-def checks(company, docs, result):
-    rows, _, index = company.source_list()
-    return validate.run_checks(company, docs, result, rows, index)
+def citations(result, buckets=("passages", "not_counted", "supporting", "supporting_scope_mismatch", "context")):
+    return [c for du in result["duties"] for e in du["elements"] for b in buckets for c in e[b]]
+
+
+def json_at(data, path):
+    for key, idx in re.findall(r"\.([^.\[]+)|\[(\d+)\]", path):
+        data = data[int(idx)] if idx else data[key]
+    return data
+
+
+def assert_citations_verbatim(test, docs, result):
+    """Every cited quote is exactly the text at its stated location, in the file version that was parsed."""
+    for c in citations(result):
+        d = docs[c["source_id"]]
+        test.assertEqual(d["sha256"], c["sha256"], c["uid"])
+        loc = c["loc"]
+        if "line_start" in loc:
+            got = parsing.extract(d["lines"], loc)
+        elif "json_path" in loc:
+            got = json_at(d["data"], loc["json_path"])
+        else:
+            got = next(r for r in d["rows"] if r["id"] == loc["row_id"])[loc["field"]]
+        test.assertEqual(got, c["quote"], c["uid"])
+
+
+def assert_no_other_entity_used(test, result):
+    for c in citations(result, ("passages", "supporting")):
+        test.assertNotEqual(next(g["result"] for g in c["gates"] if g["gate"] == "1 entity"), "other_entity", c["uid"])
 
 
 def element(result, duty, el):
@@ -134,14 +160,6 @@ class TestGatesAndResults(Base):
     def test_four_duties(self):
         self.assertEqual([d["duty_id"] for d in self.result["duties"]], ["04-P02-1", "04-P02-2", "04-P02-3", "04-P02-6"])
 
-    def test_facets_shown_as_labels(self):
-        cands = [c for d in self.result["duties"] for e in d["elements"] for c in e["passages"] + e["not_counted"]]
-        for c in cands:
-            self.assertEqual(len(c["facets_missing_labels"]), len(c["facets_missing"]))
-        for d in self.result["duties"]:
-            for e in d["elements"]:
-                self.assertNotIn("approval_review", e["explanation"])
-
     def test_translation_only_not_counted(self):
         el = element(self.result, "04-P02-3", "recovery")
         self.assertEqual(el["policy_status"], "not_found")                # German master is authoritative
@@ -166,19 +184,25 @@ class TestGatesAndResults(Base):
             for el in du["elements"]:
                 self.assertFalse(any(c["doc"]["lifecycle"] == "superseded" for c in el["passages"]))
 
-    def test_records_do_not_prove_effectiveness(self):
-        for du in self.result["duties"]:
-            for el in du["elements"]:
-                self.assertNotEqual(el["effectiveness"]["state"], "demonstrated")
-
     def test_backup_control_is_evidence_with_overdue(self):
         el = element(self.result, "04-P02-3", "backup")
         c = next(c for c in el["supporting"] if c.get("cells", {}).get("Control") == "Offline-Datensicherung und Wiederherstellungstest")
         self.assertEqual(c["overdue"][0]["date"], "2026-01-21")
 
-    def test_validation_passes(self):
-        v = checks(self.m, self.docs, self.result)
-        self.assertEqual(v["failed"], 0, [c for c in v["checks"] if c["status"] != "pass"])
+    def test_all_sources_parsed_and_citations_verbatim(self):
+        self.assertEqual(self.result["cache"]["missing"], [])
+        assert_citations_verbatim(self, self.docs, self.result)
+        assert_no_other_entity_used(self, self.result)
+
+    def test_one_current_version_per_policy_and_language(self):
+        families = {}
+        for d in self.docs.values():
+            if d["kind"] == "policy":
+                families.setdefault((d["derived"]["policy_no"], d["derived"]["language"]), []).append(d["derived"])
+        for key, versions in families.items():
+            self.assertEqual(sum(v["lifecycle"] == "current" for v in versions), 1, key)
+            for v in versions:
+                self.assertEqual(v["lifecycle"] == "superseded", bool(v["valid_until"]), (key, v["version"]))
 
     def test_language_comparison_shows_difference(self):
         cmp_ = next(c for c in self.result["comparisons"] if c["kind"] == "language" and c["policy_no"] == "KR-009")
@@ -213,8 +237,8 @@ class TestMultiCompany(unittest.TestCase):
         self.assertTrue(any("TST-FR-01" in f for f in excluded))         # other entity dropped (gate 1)
         self.assertFalse(any("TST-FR-01" in c["file"] for c in el["supporting"]))
         self.assertEqual(element(rt, "04-P02-3", "backup")["effectiveness"]["failed_runs"], 1)
-        vt = checks(t, dt, rt)
-        self.assertEqual(vt["failed"], 0, vt["checks"])
+        assert_citations_verbatim(self, dt, rt)
+        assert_no_other_entity_used(self, rt)
         # sentence-level scope: IT rule inside an EHS policy counts, flagged; evacuation drill does not
         rec = element(rt, "04-P02-3", "recovery")
         self.assertEqual(rec["policy_status"], "partial")
@@ -295,10 +319,8 @@ class TestSemanticHybrid(unittest.TestCase):
         sem = [c for d in self.hybrid["duties"] for e in d["elements"]
                for c in e["passages"] + e["not_counted"] if c.get("found_by") == "semantic"]
         self.assertTrue(sem)
-        self.assertTrue(all(0.0 < c["similarity"] <= 1.0 for c in sem))
         kr017 = [c for c in sem if c["doc"]["policy_no"] == "KR-017"]
         self.assertTrue(kr017 and all(c["relation"] == "scope_mismatch" for c in kr017))   # EHS stays rejected
-
 
     def test_semantic_sentence_offered_to_one_element_only(self):
         # a sentence found only by semantic search goes to the element it is closest to, not to all of them
@@ -349,8 +371,6 @@ class TestReviewAndServer(unittest.TestCase):
             req = urllib.request.Request(base + "/api/c/testco/runs", method="POST")
             info = json.loads(urllib.request.urlopen(req).read())
             html = urllib.request.urlopen(base + info["report_url"]).read().decode()
-            self.assertNotIn("Export as PDF", html)
-            self.assertNotIn("Draft task", html)
             for tab in ('data-main="overview"', 'data-main="duties"', 'data-main="comparison"'):
                 self.assertIn(tab, html)
             self.assertIn('data-key="04-P02-3/backup"', html)

@@ -1,6 +1,5 @@
 {
   "legal_input": "../COBACK_Marenthal_Inputs/NIS2_selected_duties.json",
-  "legal_input_txt": "../COBACK_Marenthal_Inputs/NIS2_selected_duties.txt",
   "host": "127.0.0.1",
   "port": 8000,
   "search_mode": "keyword",

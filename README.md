@@ -19,7 +19,7 @@ some-folder/
 cd coback_policy_mapping
 ./setup.sh               # 1. creates .venv, installs requirements.txt (Jinja2) and checks the inputs
 ./start.sh               # 2. starts http://127.0.0.1:8000/
-./test.sh                # 3. optional: runs the 26 tests
+./test.sh                # 3. optional: runs the 25 tests
 ```
 
 1. On the start page, press **Start analysis**. A run takes well under a second.
@@ -34,7 +34,7 @@ cd coback_policy_mapping
 | `./test.sh` | Runs all tests, verbose (24; the 3 hybrid tests are skipped without the semantic packages) |
 
 The scripts are safe to run again: steps that are already done are skipped. If the inputs are elsewhere, edit
-`input_dir` in `companies/marenthal/company.json` and `legal_input` / `legal_input_txt` in `config/app.json`;
+`input_dir` in `companies/marenthal/company.json` and `legal_input` in `config/app.json`;
 `./setup.sh` and `./start.sh` report what they cannot find.
 
 Without the script, the default mode also runs directly with `python3 app.py`. Use `python3 app.py --run marenthal`
@@ -258,7 +258,6 @@ mapper/semantic.py      optional semantic search (hybrid mode)
 mapper/gates.py         the 7 gates
 mapper/analysis.py      pipeline: elements, dimensions, explanations, questions, next steps
 mapper/compare.py       version and language comparison
-mapper/validate.py      10 data and result checks, run by the test suite (nothing stored)
 mapper/review.py        reviewer decisions and re-review detection
 mapper/render.py        prepares data and renders the pages with Jinja2
 mapper/templates/       page layout as HTML templates (report, duty tabs, comparison, legal duty, start, source)
