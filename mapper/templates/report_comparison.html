@@ -1,18 +1,20 @@
-{# Version comparison tab: same-language version comparisons, plus one box per language pair (master <-> translation). #}
+{# Version comparison tab: same-language version comparisons, plus one box per language pair (master <-> translation).
+   Comparisons with a difference (changed body, sentences to check) are shown first; the others are listed in one
+   folded block at the end, each card closed, so a large corpus stays readable and nothing is dropped. #}
 {% from "_macros.html" import badge, source_link, fold_toggle %}
-{% for cmp in result.comparisons %}
+
+{% macro card(cmp, slug, open=true) %}
 {% set L = cmp.left %}
 {% set R = cmp.right %}
-
 {% if cmp.kind == "language" %}
 {# ---- language versions: sentences matched across languages by meaning (proposal for the reviewer) #}
-<section class="card fold">
+<section class="card fold{{ '' if open else ' collapsed' }}">
   <div class="elhead">
     <h3>Language versions: {{ cmp.policy_no }} v{{ cmp.version }} {{ L.language|upper }} (master) ↔ {{ R.language|upper }}</h3>
     {% if cmp.body_changed %}{{ badge("Content likely differs", "warn") }}
     {% else %}{{ badge("Content likely the same", "ok") }}{% endif %}
     {% if cmp.wrong_language %}{{ badge(cmp.wrong_language ~ " sentence" ~ ("s" if cmp.wrong_language != 1) ~ " in the wrong language", "bad") }}{% endif %}
-    {{ fold_toggle() }}
+    {{ fold_toggle(open) }}
   </div>
   <div class="dbody">
   <div class="kv">
@@ -49,11 +51,11 @@
 
 {% else %}
 {# ---- version comparison: metadata table and body text side by side #}
-<section class="card fold">
+<section class="card fold{{ '' if open else ' collapsed' }}">
   <div class="elhead">
-    <h3>{{ "Version comparison" if cmp.kind == "version" else "Language comparison" }}: {{ cmp.policy_no }} {{ cmp.title }}</h3>
+    <h3>Version comparison: {{ cmp.policy_no }} {{ cmp.title }} · v{{ L.version }} → v{{ R.version }} {{ R.language|upper }}</h3>
     {{ badge("Body changed", "warn") if cmp.body_changed else badge("Body identical", "ok") }}
-    {{ fold_toggle() }}
+    {{ fold_toggle(open) }}
   </div>
   <div class="dbody">
   <div class="kv">
@@ -97,7 +99,30 @@
   </div>
 </section>
 {% endif %}
+{% endmacro %}
 
-{% else %}
+{% set with_diff = result.comparisons|selectattr("has_differences")|list %}
+{% set without_diff = result.comparisons|rejectattr("has_differences")|list %}
+{# a policy counts once however many of its versions are in the sources; a comparison counts once as a pair #}
+{% set multi_version = result.comparisons|selectattr("kind", "equalto", "version")|map(attribute="policy_no")|unique|list %}
+
+<div class="card meta stats">
+  <div><span>Documents with multiple versions</span><b>{{ multi_version|length }}</b></div>
+  <div><span>Document pairs with content mismatch</span><b>{{ with_diff|length }}</b>
+    <small>of {{ result.comparisons|length }} pair{{ "s" if result.comparisons|length != 1 }} compared</small></div>
+</div>
+
+{% if not result.comparisons %}
 <p class="muted">No policy family with two versions in the sources.</p>
-{% endfor %}
+{% elif not with_diff %}
+<p>No differences found in the {{ without_diff|length }} comparison{{ "s" if without_diff|length != 1 }}.</p>
+{% endif %}
+
+{% for cmp in with_diff %}{{ card(cmp, slug) }}{% endfor %}
+
+{% if without_diff %}
+<details class="nodiff">
+  <summary>{{ without_diff|length }} comparison{{ "s" if without_diff|length != 1 }} without differences</summary>
+  {% for cmp in without_diff %}{{ card(cmp, slug, false) }}{% endfor %}
+</details>
+{% endif %}

@@ -56,6 +56,8 @@ button.primary, .btn.primary { background: var(--accent); color: #fff; border-co
 button:disabled { opacity: .5; cursor: default; }
 .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px 24px; margin: 16px 0; font-size: 14px; }
 .meta div span { display: block; color: var(--muted); font-size: 12px; }
+.stats { margin: 12px 0; grid-template-columns: repeat(6, 1fr); }   /* all six counts in one row */
+.stats b { font-size: 20px; }
 
 /* ---- cards, tables, key-value lists */
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; margin: 12px 0; }

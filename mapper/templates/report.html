@@ -25,6 +25,16 @@
 </div>
 
 <div class="mpanel on" id="overview">
+  {# review counts are filled in by report.js from the reviewer decisions; without the server they stay "–" #}
+  {% set n_el = duties|map(attribute="elements")|map("length")|sum %}
+  <div class="card meta stats">
+    <div><span>Duties</span><b>{{ duties|length }}</b></div>
+    <div><span>Duty elements</span><b>{{ n_el }}</b></div>
+    <div><span>Policy documents searched</span><b>{{ result.policy_documents_count }}</b></div>
+    <div><span>Reviewed</span><b data-count="reviewed">–</b></div>
+    <div><span>Needs clarification</span><b data-count="needs_clarification">–</b></div>
+    <div><span>Pending review</span><b data-count="pending">–</b></div>
+  </div>
   <div class="card">{% include "report_overview.html" %}</div>
 </div>
 

@@ -11,8 +11,9 @@
 {% for f in flags %}{{ chip(FLAG_LABEL.get(f, f), "mis" if f == "scope_mismatch" else "info") }}{% endfor %}
 {% endmacro %}
 
-{# Arrow button that collapses / expands its card (the card needs class "fold" and a <div class="dbody">). #}
-{% macro fold_toggle() %}<button class="toggle" aria-expanded="true" aria-label="Collapse" title="Collapse">▾</button>{% endmacro %}
+{# Arrow button that collapses / expands its card (the card needs class "fold" and a <div class="dbody">;
+   a card that starts closed also needs class "collapsed" and fold_toggle(false)). #}
+{% macro fold_toggle(open=true) %}{% set label = "Collapse" if open else "Expand" %}<button class="toggle" aria-expanded="{{ 'true' if open else 'false' }}" aria-label="{{ label }}" title="{{ label }}">▾</button>{% endmacro %}
 
 {# Link that opens the source document with the cited location highlighted. #}
 {% macro source_link(slug, c, text="View source") %}<a href="{{ source_url(slug, c) }}" target="_blank" title="Open the source with this location highlighted">{{ text }}</a>{% endmacro %}

@@ -515,6 +515,7 @@ def run_analysis(company, run_id=None):
                    "min_similarity": sem.min_sim, "unit_kinds": app_cfg["semantic"].get("unit_kinds"),
                    "embedded_now": sem.embedded},
         "sources_reviewed_count": len(docs),
+        "policy_documents_count": sum(d.get("kind") == "policy" for d in docs.values()),
         "cache": cache_report,
         "target_policy": target,
         "duties": duties_out,

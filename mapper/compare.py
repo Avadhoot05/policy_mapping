@@ -116,7 +116,7 @@ def compare_versions(docs, similarity, cutoff, detect):
                 out.append({
                     "kind": "version", "policy_no": pno, "title": b.get("title", ""), "language": lang,
                     "left": ref(a), "right": ref(b), "metadata": _meta(a, b), "sections": sections,
-                    "body_changed": changed,
+                    "body_changed": changed, "has_differences": changed,
                 })
         # language comparisons within one version (master vs translation)
         by_ver = {}
@@ -178,5 +178,5 @@ def _language(pno, ver, m, t, similarity, cutoff, detect):
     n_m = sum(r["status"] == "only_master" for r in rows)
     n_w = sum(bool(x and x["wrong_language"]) for r in rows for x in (r["master"], r["translation"]))
     entry.update(rows=rows, only_in_master=n_m, only_in_translation=n_t, wrong_language=n_w,
-                 body_changed=bool(n_t or n_m))
+                 body_changed=bool(n_t or n_m), has_differences=bool(n_t or n_m or n_w))
     return entry

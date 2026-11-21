@@ -53,7 +53,20 @@ const api = `/api/c/${RUN.slug}/runs/${RUN.run_id}/reviews`;
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
 const DECISION_CLASS = {confirmed: 'ok', rejected: 'bad', needs_clarification: 'warn'};
 
+// overview counts: reviewed = confirmed or rejected; a decision made on an older proposal counts as pending again
+function showCounts(data) {
+  const n = {pending: 0, reviewed: 0, needs_clarification: 0};
+  document.querySelectorAll('.ovrev').forEach(cell => {
+    const c = data[cell.dataset.key] && data[cell.dataset.key].current;
+    if (!c || c.stale) n.pending++;
+    else if (c.decision === 'needs_clarification') n.needs_clarification++;
+    else n.reviewed++;
+  });
+  Object.entries(n).forEach(([k, v]) => { const el = document.querySelector(`[data-count="${k}"]`); if (el) el.textContent = v; });
+}
+
 function show(data) {
+  showCounts(data);
   Object.entries(data).forEach(([key, d]) => {
     const c = d && d.current;
     if (!c) return;
