@@ -13,14 +13,14 @@ Python 3.10+, Linux or macOS. The COBACK input package must sit next to this fol
 <parent>/COBACK_Marenthal_Inputs/    ← input data (not in the repo)
 ```
 ```bash
-./setup.sh                    # creates .venv, installs requirements.txt (jinja2), checks inputs
+./setup.sh                    # creates .venv, installs CPU PyTorch + requirements.txt, downloads the model (~1 GB), checks inputs
 ./start.sh                    # web UI at http://127.0.0.1:8000/  (--port N to change)
-./test.sh                     # unit + integration tests, all must pass (4 semantic tests skip without --semantic)
+./test.sh                     # unit + integration tests, all must pass
 .venv/bin/python app.py --run marenthal   # one analysis without the UI; prints the report path
 .venv/bin/python app.py --check           # input check only
 ```
 `./start.sh` runs a server that does not exit. Start it in the background; it `exec`s Python, so the PID you get is
-the server (stop it with `kill <PID>`). It is ready when `GET /` returns 200, usually within a second.
+the server (stop it with `kill <PID>`). It is ready when `GET /` returns 200, after about 5 seconds (it loads PyTorch).
 
 HTTP API (`<slug>` = company folder, e.g. `marenthal`; `<run>` = run id returned by POST runs):
 ```
@@ -31,13 +31,13 @@ POST /api/c/<slug>/runs/<run>/reviews      {"duty_id", "element_id", "decision":
                                            "reviewer", "comment"}
 ```
 
-Optional semantic search: `./setup.sh --semantic` (≈1 GB download), then `./start.sh --semantic`.
+Every run uses keyword and semantic search; there is no mode switch. setup.sh needs internet access once.
 
 ## Layout
-- `mapper/` pipeline: `parsing` → `search` (BM25) / `semantic` (optional) → `gates` (7 checks) → `analysis` →
+- `mapper/` pipeline: `parsing` → `search` (BM25) + `semantic` (embeddings) → `gates` (7 checks) → `analysis` →
   `render` (Jinja2, `templates/`, `static/`) · `server` (stdlib HTTP) · `store` (all persistence) · `review`
 - `config/duty_elements.json` duty elements, search terms, required facets (law-level, shared by all companies)
-- `config/app.json` legal input path, search mode, semantic settings
+- `config/app.json` legal input path, semantic search settings
 - `companies/<slug>/company.json` one folder per company; `cache/`, `runs/`, `review/` are generated (gitignored)
 - `tests/` tests and a synthetic test company (`tests/fixtures/testco_input/`)
 

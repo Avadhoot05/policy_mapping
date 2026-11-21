@@ -18,13 +18,9 @@ SLUG = re.compile(r"^[a-z0-9][a-z0-9_-]{0,63}$")
 STRUCTURED = ("company_profile.json", "legal_entities.csv", "twin_questions.csv")
 
 
-OVERRIDES = {}   # set from the command line (e.g. --search-mode); wins over config/app.json
-
-
 def load_app_config():
     with open(os.path.join(APP_ROOT, "config", "app.json"), encoding="utf-8") as f:
         cfg = json.load(f)
-    cfg.update(OVERRIDES)
     return cfg
 
 

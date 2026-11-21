@@ -9,6 +9,7 @@ from . import compare
 from .company import APP_ROOT, load_app_config, load_sources
 from .gates import GateContext, evaluate
 from .search import Index
+from .semantic import SemanticIndex
 from .textutil import normalize
 
 STATUS_LABEL = {
@@ -158,23 +159,22 @@ def build_candidate(ctx, unit, doc, element, score, matched, snapshot):
 
 # ---------------------------------------------------------------- element assessment
 
-def assess_element(ctx, index, units, docs, element, snapshot, sem=None):
+def assess_element(ctx, index, units, docs, element, snapshot, sem):
     hits = index.search(element["terms"])
     cands = [build_candidate(ctx, units[i], docs[units[i]["source_id"]], element, s, m, snapshot) for i, s, m in hits]
     for c in cands:
         c["found_by"] = "keyword"
-    # hybrid mode: semantic search proposes more policy sentences; the same gates decide
-    if sem is not None:
-        by_uid = {c["uid"]: c for c in cands}
-        for i, sim in sem.search(sem_query(element), element["_key"]):
-            u = units[i]
-            if u["uid"] in by_uid:
-                by_uid[u["uid"]]["found_by"] = "keyword+semantic"
-                by_uid[u["uid"]]["similarity"] = round(sim, 3)
-                continue
-            c = build_candidate(ctx, u, docs[u["source_id"]], element, 0.0, [f"semantic similarity {sim:.2f}"], snapshot)
-            c["found_by"], c["similarity"] = "semantic", round(sim, 3)
-            cands.append(c)
+    # semantic search proposes more policy sentences (same meaning, other wording); the same gates decide
+    by_uid = {c["uid"]: c for c in cands}
+    for i, sim in sem.search(sem_query(element), element["_key"]):
+        u = units[i]
+        if u["uid"] in by_uid:
+            by_uid[u["uid"]]["found_by"] = "keyword+semantic"
+            by_uid[u["uid"]]["similarity"] = round(sim, 3)
+            continue
+        c = build_candidate(ctx, u, docs[u["source_id"]], element, 0.0, [f"semantic similarity {sim:.2f}"], snapshot)
+        c["found_by"], c["similarity"] = "semantic", round(sim, 3)
+        cands.append(c)
     # record sources: every in-topic row of a matching register is a candidate
     if element.get("record_sources"):
         seen = {c["uid"] for c in cands}
@@ -187,14 +187,17 @@ def assess_element(ctx, index, units, docs, element, snapshot, sem=None):
             c["found_by"] = "record source"
             if c["relation"] == "supporting":
                 cands.append(c)
-    excluded = [c for c in cands if c["relation"] == "excluded"]
-    policy = [c for c in cands if c["relation"] in ("covers", "partial", "topic_only", "scope_mismatch")
-              and c["doc"]["kind"] == "policy"]
-
     def counts(c):
         lang = next(g["result"] for g in c["gates"] if g["gate"] == "4 language")
         return (c["relation"] in ("covers", "partial") and c["doc"]["lifecycle"] == "current"
                 and lang in ("master", "also_in_master") and "entity_not_stated" not in c["qualifiers"])
+
+    # a sentence found only by meaning is reported only when the gates count it: close meaning alone is no
+    # reason to list or explain a passage (it would read as a match that the text does not support)
+    cands = [c for c in cands if c.get("found_by") != "semantic" or counts(c)]
+    excluded = [c for c in cands if c["relation"] == "excluded"]
+    policy = [c for c in cands if c["relation"] in ("covers", "partial", "topic_only", "scope_mismatch")
+              and c["doc"]["kind"] == "policy"]
 
     counted = [c for c in policy if counts(c)]
     not_counted = [c for c in policy if not counts(c)]
@@ -205,9 +208,7 @@ def assess_element(ctx, index, units, docs, element, snapshot, sem=None):
     elif counted:
         status = "partial"
     elif any(c["relation"] == "topic_only" and c["doc"]["lifecycle"] == "current"
-             and "translation_only" not in c["qualifiers"]
-             and c.get("found_by") != "semantic"    # similarity is not "naming the subject"
-             for c in not_counted):
+             and "translation_only" not in c["qualifiers"] for c in not_counted):
         status = "topic_only"
     else:
         status = "not_found"
@@ -355,7 +356,7 @@ def explain(el):
                      f"facets are not stated: {', '.join(f.lower() for f in p['facets_missing_labels']) or 'none'}.")
     elif s == "topic_only":
         opts = [c for c in el["not_counted"] if c["relation"] == "topic_only" and c["doc"]["lifecycle"] == "current"
-                and "translation_only" not in c["qualifiers"] and c.get("found_by") != "semantic"]
+                and "translation_only" not in c["qualifiers"]]
         p = sorted(opts, key=lambda c: (c["unit_kind"] == "title", c["loc"].get("line_start", 0)))[0]
         parts.append(f"{p['doc']['policy_no']} v{p['doc']['version']} ({p['doc']['language'].upper()} master, "
                      f"{p['location']}) only names the subject and states no rule for {label}.")
@@ -427,21 +428,15 @@ def run_analysis(company, run_id=None):
     docs, cache_report, source_rows, index_rows = load_sources(company)
     cfg = load_element_config()
     app_cfg = load_app_config()
-    search_mode = app_cfg.get("search_mode", "keyword")
-    if search_mode not in ("keyword", "hybrid"):
-        raise RuntimeError(f"Unknown search_mode '{search_mode}' (use 'keyword' or 'hybrid').")
     duties_json = load_duties(company.duties_file)
     records = {r["source_id"]: r for r in duties_json["records"]}
     units = [u for d in docs.values() for u in d["units"]]
     index = Index(units)
     ctx = GateContext(company, docs, cfg)
-    sem = None
-    if search_mode == "hybrid":
-        from .semantic import SemanticIndex  # imported only in hybrid mode (optional packages)
-        sem = SemanticIndex(units, company.store, app_cfg["semantic"])
-        # each semantic-only sentence is offered only to the element it is closest to
-        sem.assign({f"{d}/{e['id']}": sem_query(e) for d in duties_json["primary_ids"]
-                    for e in cfg["duties"].get(d, {}).get("elements", [])})
+    sem = SemanticIndex(units, company.store, app_cfg["semantic"])
+    # each semantic-only sentence is offered only to the element it is closest to
+    sem.assign({f"{d}/{e['id']}": sem_query(e) for d in duties_json["primary_ids"]
+                for e in cfg["duties"].get(d, {}).get("elements", [])})
     target = target_policy(ctx, docs)
 
     duties_out = []
@@ -508,14 +503,15 @@ def run_analysis(company, run_id=None):
                         "workbook": duties_json.get("source_workbook"),
                         "primary_ids": duties_json["primary_ids"]},
         "source_scope": cache_report["scope"],
-        "search": ({"mode": "hybrid", "model": app_cfg["semantic"]["model"], "top_k": sem.top_k,
-                    "min_similarity": sem.min_sim, "unit_kinds": app_cfg["semantic"].get("unit_kinds"),
-                    "embedded_now": sem.embedded} if sem else {"mode": "keyword"}),
+        "search": {"mode": "keyword + semantic", "model": app_cfg["semantic"]["model"], "top_k": sem.top_k,
+                   "min_similarity": sem.min_sim, "unit_kinds": app_cfg["semantic"].get("unit_kinds"),
+                   "embedded_now": sem.embedded},
         "sources_reviewed_count": len(docs),
         "cache": cache_report,
         "target_policy": target,
         "duties": duties_out,
-        "comparisons": compare.compare_versions(docs),
+        "comparisons": compare.compare_versions(docs, sem.similarity,
+                                                app_cfg["semantic"].get("language_match_cutoff", 0.80)),
     }
     return result, docs
 

@@ -1,2 +1,4 @@
-# Required for every mode: HTML templates for the report (mapper/templates).
-jinja2>=3.1
+# Installed by ./setup.sh. Install CPU-only PyTorch first (setup.sh does this):
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+jinja2>=3.1                  # HTML templates for the report
+sentence-transformers>=3.0   # semantic search and cross-language matching (local model, no API)

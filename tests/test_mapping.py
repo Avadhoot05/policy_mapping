@@ -3,7 +3,6 @@
 All runs happen in temporary company folders, so the real companies/ cache, runs and reviews
 are never touched. The synthetic "Testfirma GmbH" fixture is a labelled test variant.
 """
-import importlib.util
 import json
 import math
 import os
@@ -204,13 +203,9 @@ class TestGatesAndResults(Base):
             for v in versions:
                 self.assertEqual(v["lifecycle"] == "superseded", bool(v["valid_until"]), (key, v["version"]))
 
-    def test_language_comparison_shows_difference(self):
-        cmp_ = next(c for c in self.result["comparisons"] if c["kind"] == "language" and c["policy_no"] == "KR-009")
-        extra = [(s["loc"]["line_start"], s["text"][:20]) for s in cmp_["extra_in_translation"]]
-        self.assertEqual([x[0] for x in extra], [22, 24])            # recovery rule + rack inspection, in German
-        self.assertEqual(cmp_["translated_not_compared"], 3)          # English purpose sentences are not compared
+    def test_version_comparison(self):
         ver = next(c for c in self.result["comparisons"] if c["kind"] == "version" and c["policy_no"] == "KR-009")
-        self.assertFalse(ver["body_changed"])
+        self.assertFalse(ver["body_changed"])                         # v1.1 -> v2.0: same body text
 
 
 class TestMultiCompany(unittest.TestCase):
@@ -246,6 +241,10 @@ class TestMultiCompany(unittest.TestCase):
         self.assertTrue(rec["next_step"]["text"].startswith("Complete the rule in"))
         self.assertIn("off_topic_policy", rec["flags"])
         self.assertTrue(all("off_topic_policy" in c["qualifiers"] for c in rec["passages"]))
+        # incident-reporting rule worded without any search term: found only by meaning, then counted by the gates
+        det = element(rt, "04-P02-2", "detection_reporting")
+        self.assertEqual(det["policy_status"], "covered")
+        self.assertEqual([(c["found_by"], c["location"]) for c in det["passages"]], [("semantic", "L22")])
         test_el = element(rt, "04-P02-2", "incident_test")
         evac = [c for c in test_el["not_counted"] if c["quote"].startswith("Evakuierungsübung")]
         self.assertTrue(evac and all(c["relation"] == "scope_mismatch" for c in evac))
@@ -284,54 +283,27 @@ class TestStoreContract(unittest.TestCase):
             shutil.rmtree(tmp, ignore_errors=True)
 
 
-@unittest.skipUnless(importlib.util.find_spec("sentence_transformers"), "semantic packages not installed (./setup.sh --semantic)")
-class TestSemanticHybrid(unittest.TestCase):
-    """Hybrid mode: semantic search may propose more passages, but the gates decide."""
+class TestSemantic(Base):
+    """Semantic search runs next to keyword search: it may propose more passages, but the gates decide."""
 
-    @classmethod
-    def setUpClass(cls):
-        cls.tmp = tempfile.mkdtemp(prefix="pm-sem-")
-        m = marenthal(cls.tmp)
-        cls.keyword, _ = run_analysis(m)
-        company_mod.OVERRIDES["search_mode"] = "hybrid"
-        try:
-            cls.hybrid, _ = run_analysis(m)
-            cls.second, _ = run_analysis(m)                       # embeddings now come from the cache
-        finally:
-            company_mod.OVERRIDES.pop("search_mode", None)
+    def test_embeddings_cached(self):
+        self.assertGreater(self.result["search"]["embedded_now"], 0)
+        again, _ = run_analysis(self.m)                               # embeddings now come from the cache
+        self.assertEqual(again["search"]["embedded_now"], 0)
 
-    @classmethod
-    def tearDownClass(cls):
-        shutil.rmtree(cls.tmp, ignore_errors=True)
+    def test_meaning_only_matches_reported_only_when_counted(self):
+        for du in self.result["duties"]:
+            for el in du["elements"]:
+                for c in el["not_counted"] + el["supporting"] + el["context"] + el["excluded"]:
+                    self.assertNotEqual(c.get("found_by"), "semantic", c["uid"])
 
-    def statuses(self, r):
-        return [(d["duty_id"], e["id"], e["policy_status"]) for d in r["duties"] for e in d["elements"]]
-
-    def test_mode_recorded_and_cache_used(self):
-        self.assertEqual(self.hybrid["search"]["mode"], "hybrid")
-        self.assertGreater(self.hybrid["search"]["embedded_now"], 0)
-        self.assertEqual(self.second["search"]["embedded_now"], 0)
-
-    def test_same_statuses_as_keyword(self):
-        self.assertEqual(self.statuses(self.hybrid), self.statuses(self.keyword))
-
-    def test_semantic_proposals_are_gated(self):
-        sem = [c for d in self.hybrid["duties"] for e in d["elements"]
-               for c in e["passages"] + e["not_counted"] if c.get("found_by") == "semantic"]
-        self.assertTrue(sem)
-        kr017 = [c for c in sem if c["doc"]["policy_no"] == "KR-017"]
-        self.assertTrue(kr017 and all(c["relation"] == "scope_mismatch" for c in kr017))   # EHS stays rejected
-
-    def test_semantic_sentence_offered_to_one_element_only(self):
-        # a sentence found only by semantic search goes to the element it is closest to, not to all of them
-        seen = {}
-        for d in self.hybrid["duties"]:
-            for e in d["elements"]:
-                for c in e["passages"] + e["not_counted"]:
-                    if c.get("found_by") == "semantic":
-                        seen.setdefault(c["uid"], set()).add(e["id"])
-        self.assertTrue(seen)
-        self.assertTrue(all(len(v) == 1 for v in seen.values()), seen)
+    def test_language_versions_matched_by_meaning(self):
+        lang = next(c for c in self.result["comparisons"] if c["kind"] == "language" and c["policy_no"] == "KR-009")
+        by = lambda st, side: sorted(r[side]["loc"]["line_start"] for r in lang["rows"] if r["status"] == st)
+        self.assertEqual(by("likely_same", "master"), [18, 19, 20])  # the three purpose/scope sentences (DE L18-20)
+        self.assertEqual(by("only_translation", "translation"), [22, 24])  # recovery rule + rack inspection
+        self.assertEqual(by("only_master", "master"), [22])          # "Dieses Dokument wird ... verbindlich"
+        self.assertTrue(all(r["similarity"] >= lang["cutoff"] for r in lang["rows"] if r["status"] == "likely_same"))
 
 
 class TestCache(unittest.TestCase):

@@ -1,7 +1,7 @@
 """Storage interface.
 
 All persistent state goes through a `Store`: the parse cache (manifest + parsed documents), the
-embedding cache (hybrid search), the run
+embedding cache (semantic search), the run
 outputs (result JSON, report HTML, parsed cited documents) and the reviewer decisions. The pipeline,
 the server and the review logic never touch file paths directly.
 
@@ -37,7 +37,7 @@ class Store(ABC):
     @abstractmethod
     def save_parsed(self, source_id: str, doc: dict) -> None: ...
 
-    # ---- embedding cache (hybrid search only)
+    # ---- embedding cache (semantic search)
     @abstractmethod
     def load_embeddings(self, model: str) -> dict:
         """key -> base64 float32 vector. Key = sha256 of the unit text, so a changed text gets a new vector."""

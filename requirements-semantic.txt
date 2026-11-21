@@ -1,4 +1,0 @@
-# Only needed for the optional hybrid (keyword + semantic) search: ./setup.sh --semantic
-# (requirements.txt is always needed.) Install CPU-only PyTorch first (setup.sh does this):
-#   pip install torch --index-url https://download.pytorch.org/whl/cpu
-sentence-transformers>=3.0

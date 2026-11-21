@@ -19,13 +19,13 @@ function followHash() {
   if (!el) return;
   const panel = el.closest('.mpanel');
   if (panel) mainTab(panel.id);
-  const card = el.closest('.duty');
+  const card = el.closest('.fold');
   if (card) setCard(card, true);
   if (el === panel) window.scrollTo(0, 0); else el.scrollIntoView();
 }
 window.addEventListener('hashchange', followHash);
 
-// ---- collapse / expand a duty card
+// ---- collapse / expand a card (duty results and comparisons)
 function setCard(card, open) {
   card.classList.toggle('collapsed', !open);
   const b = card.querySelector('.toggle');
@@ -34,8 +34,8 @@ function setCard(card, open) {
   b.setAttribute('aria-label', label);
   b.setAttribute('aria-expanded', open);
 }
-document.querySelectorAll('.duty .toggle').forEach(b => b.onclick = () => {
-  const card = b.closest('.duty');
+document.querySelectorAll('.fold .toggle').forEach(b => b.onclick = () => {
+  const card = b.closest('.fold');
   setCard(card, card.classList.contains('collapsed'));
 });
 

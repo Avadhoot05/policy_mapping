@@ -1,10 +1,10 @@
 {# One duty card with its four sub-tabs. `du` is the duty from the loop in report.html. #}
-{% from "_macros.html" import badge %}
-<section class="card duty" id="duty-{{ du.duty_id }}">
+{% from "_macros.html" import badge, fold_toggle %}
+<section class="card duty fold" id="duty-{{ du.duty_id }}">
   <div class="elhead">
     <h2 style="margin:0"><a href="legal/{{ du.duty_id|urlencode }}" target="_blank" title="Open the legal duty">{{ du.duty_id }} · {{ du.title }}</a></h2>
     {{ badge(du.status_label, STATUS_CLASS[du.status]) }}
-    <button class="toggle" aria-expanded="true" aria-label="Collapse" title="Collapse">▾</button>
+    {{ fold_toggle() }}
   </div>
   <div class="dbody">
     <div class="tabs">

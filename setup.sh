@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
-# Step 1 – create the virtual environment (Linux / macOS).
+# Step 1 – create the virtual environment and install everything (Linux / macOS).
 #
-#   ./setup.sh               keyword search (default): creates .venv and installs requirements.txt (Jinja2)
-#   ./setup.sh --semantic    also installs CPU-only PyTorch + sentence-transformers and the model (~0.8 GB, once)
+#   ./setup.sh     creates .venv, installs CPU-only PyTorch + requirements.txt and downloads the model (~1 GB, once)
 #
 # Safe to run again: steps that are already done are skipped.
 set -euo pipefail
 cd "$(dirname "$0")"
 
-SEMANTIC=0
 case "${1:-}" in
   "") ;;
-  --semantic) SEMANTIC=1 ;;
-  -h|--help) sed -n '2,7p' "$0"; exit 0 ;;
+  -h|--help) sed -n '2,6p' "$0"; exit 0 ;;
   *) echo "Unknown option: $1 (see ./setup.sh --help)"; exit 2 ;;
 esac
 MODEL="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
@@ -31,26 +28,18 @@ else
 fi
 PY=".venv/bin/python"
 
-if ! "$PY" -c "import jinja2" >/dev/null 2>&1; then
-  say "Installing required packages (requirements.txt: Jinja2 for the report templates)"
+if ! "$PY" -c "import jinja2, sentence_transformers" >/dev/null 2>&1; then
+  say "Installing packages (CPU-only PyTorch, then requirements.txt)"
+  "$PY" -m pip install --upgrade pip
+  "$PY" -m pip install torch --index-url https://download.pytorch.org/whl/cpu
   "$PY" -m pip install -r requirements.txt
 else
-  say "Required packages already installed"
+  say "Packages already installed"
 fi
 
-if [ "$SEMANTIC" = "1" ]; then
-  if ! "$PY" -c "import sentence_transformers" >/dev/null 2>&1; then
-    say "Installing semantic-search packages (CPU-only PyTorch + sentence-transformers)"
-    "$PY" -m pip install --upgrade pip
-    "$PY" -m pip install torch --index-url https://download.pytorch.org/whl/cpu
-    "$PY" -m pip install -r requirements-semantic.txt
-  else
-    say "Semantic-search packages already installed"
-  fi
-  say "Downloading the embedding model if needed (~470 MB, once)"
-  "$PY" -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('$MODEL')" >/dev/null
-fi
+say "Downloading the embedding model if needed (~470 MB, once)"
+"$PY" -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('$MODEL')" >/dev/null
 
 say "Checking input files"
 "$PY" app.py --check
-say "Setup complete. Next: ./start.sh$([ "$SEMANTIC" = "1" ] && echo " --semantic")"
+say "Setup complete. Next: ./start.sh"

@@ -1,5 +1,5 @@
 id,name,file,mime,category,sourceKind,chars
-t0000001-0000-0000-0000-000000000001,TST-0001_KR-009_v1.0_de.txt,documents/TST-0001_KR-009_v1.0_de.txt,text/plain,other,manual,873
+t0000001-0000-0000-0000-000000000001,TST-0001_KR-009_v1.0_de.txt,documents/TST-0001_KR-009_v1.0_de.txt,text/plain,other,manual,1078
 t0000001-0000-0000-0000-000000000002,REG_Internal_Controls_TST-DE-01.txt,documents/REG_Internal_Controls_TST-DE-01.txt,text/plain,other,manual,482
 t0000001-0000-0000-0000-000000000003,REG_Risk_Register_TST-DE-01.txt,documents/REG_Risk_Register_TST-DE-01.txt,text/plain,other,manual,399
 t0000001-0000-0000-0000-000000000004,REG_Internal_Controls_TST-FR-01.txt,documents/REG_Internal_Controls_TST-FR-01.txt,text/plain,other,manual,454

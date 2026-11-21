@@ -2,12 +2,13 @@
 
 Two comparisons per policy family, when both documents are in the sources:
 - version: superseded -> current, same language (does the body change? does coverage change?)
-- language: master -> translation, same version (identical text only; translations are not
-  machine-matched, so they are shown side by side for the reviewer)
+- language: master <-> translation, same version. Sentences are matched across languages by meaning with the
+  multilingual model of the semantic search (no machine translation). A pair at or above the cut-off is "likely the same
+  content"; a sentence without such a partner exists only in one language version. This is a proposal for the
+  reviewer and never changes coverage (gate 4 still counts master-language text only).
 """
-from datetime import date, timedelta
-
 from .textutil import normalize
+
 
 META_FIELDS = [
     ("Document number", "header", "doc_number"),
@@ -32,7 +33,7 @@ def ref(doc):
     return {"source_id": doc["document_id"], "file": doc["file"], "title": doc.get("title", ""),
             "doc_number": doc["header"].get("doc_number", {}).get("value", ""), "version": d["version"],
             "language": d["language"], "lifecycle": d["lifecycle"], "valid_from": d["valid_from"],
-            "valid_until": d["valid_until"], "notes": d["notes"]}
+            "valid_until": d["valid_until"]}
 
 
 def _meta(left, right):
@@ -85,7 +86,8 @@ def _vkey(v):
         return (-1,)
 
 
-def compare_versions(docs):
+def compare_versions(docs, similarity, cutoff=0.80):
+    """similarity(texts_a, texts_b) -> matrix of cross-language similarities (the multilingual model)."""
     fams = {}
     for d in docs.values():
         if d.get("kind") == "policy" and d["derived"].get("policy_no"):
@@ -100,16 +102,10 @@ def compare_versions(docs):
         for lang, ds in sorted(by_lang.items()):
             for a, b in zip(ds, ds[1:]):
                 sections, changed = _body(a, b)
-                gap = _gap_note(a, b)
                 out.append({
                     "kind": "version", "policy_no": pno, "title": b.get("title", ""), "language": lang,
                     "left": ref(a), "right": ref(b), "metadata": _meta(a, b), "sections": sections,
-                    "body_changed": changed, "validity_note": gap,
-                    "coverage_change": (
-                        "Body text changed between the versions: mappings that cite the older version need re-review."
-                        if changed else
-                        "Body text is identical: no change in coverage. Mappings stay bound to the document ID and "
-                        "version they cite, so a passage from the older version is always shown as superseded."),
+                    "body_changed": changed,
                 })
         # language comparisons within one version (master vs translation)
         by_ver = {}
@@ -120,58 +116,35 @@ def compare_versions(docs):
             others = [d for d in ds if d["derived"]["language"] != d["derived"]["master_language"]]
             for m in masters:
                 for t in others:
-                    sections, changed = _body(m, t)
-                    master_lang = m["derived"]["language"]
-                    only_t = [s for sec in sections for s in sec["right"] if s["status"] == "only_here"]
-                    # provable differences: text in the translation that is written in the master language
-                    # but does not exist in the master. Translated text cannot be compared word for word.
-                    extra = [dict(s, section=sec["right_heading"]) for sec in sections for s in sec["right"]
-                             if s["status"] == "only_here" and sentence_language(s["text"]) == master_lang]
-                    translated = len(only_t) - len(extra)
-                    out.append({
-                        "kind": "language", "policy_no": pno, "title": m.get("title", ""), "version": ver,
-                        "left": ref(m), "right": ref(t), "metadata": _meta(m, t),
-                        "extra_in_translation": extra, "translated_not_compared": translated,
-                        "body_changed": bool(extra),
-                        "validity_note": (f"Different validity: master from {m['derived']['valid_from']}, "
-                                          f"translation from {t['derived']['valid_from']}."
-                                          if m["derived"]["valid_from"] != t["derived"]["valid_from"] else ""),
-                        "coverage_change": (
-                            (f"The {t['derived']['language'].upper()} version contains {len(extra)} passage(s) in "
-                             f"{master_lang.upper()} that do not exist in the {master_lang.upper()} master. "
-                             f"The master language is authoritative, so they are not counted as policy text."
-                             if extra else "No passage of the translation is missing from the master.")
-                            + (f" {translated} translated sentence(s) are in another language and are not compared "
-                               f"word for word." if translated else "")),
-                    })
+                    out.append(_language(pno, ver, m, t, similarity, cutoff))
     return out
 
 
-_STOP = {
-    "de": {"der", "die", "das", "und", "ist", "zu", "mit", "fuer", "von", "den", "des", "im", "ein", "eine", "durch",
-           "nach", "nicht", "sie", "auf", "werden", "wird", "bei", "aus"},
-    "en": {"the", "and", "of", "to", "is", "for", "with", "on", "all", "may", "this", "under", "where", "by", "be",
-           "are", "it", "an", "from", "in"},
-    "fr": {"le", "la", "les", "et", "des", "du", "pour", "est", "une", "un", "dans", "sur", "aux", "par"},
-}
-
-
-def sentence_language(text):
-    """Deterministic stop-word count; returns the language with the most stop words, or '' if none."""
-    toks = normalize(text).split()
-    toks = [t.strip(".,;:()\u201c\u201d\u201e\"'-") for t in toks]
-    scores = {lang: sum(t in words for t in toks) for lang, words in _STOP.items()}
-    best = max(scores, key=scores.get)
-    return best if scores[best] > 0 and list(scores.values()).count(scores[best]) == 1 else ""
-
-
-def _gap_note(a, b):
-    until = a["derived"].get("valid_until")
-    start = b["derived"].get("valid_from")
-    try:
-        du, ds = date.fromisoformat(until), date.fromisoformat(start)
-    except (TypeError, ValueError):
-        return ""
-    if du + timedelta(days=1) == ds:
-        return f"Validity is continuous: v{a['derived']['version']} until {until}, v{b['derived']['version']} from {start}."
-    return f"Validity gap or overlap: v{a['derived']['version']} until {until}, v{b['derived']['version']} from {start}."
+def _language(pno, ver, m, t, similarity, cutoff):
+    """Align master and translation sentence by sentence (by meaning, across languages)."""
+    entry = {"kind": "language", "policy_no": pno, "title": m.get("title", ""), "version": ver,
+             "left": ref(m), "right": ref(t), "metadata": _meta(m, t), "cutoff": cutoff}
+    ms = [u for u in m["units"] if u["kind"] == "policy_sentence"]
+    ts = [u for u in t["units"] if u["kind"] == "policy_sentence"]
+    sim = similarity([u["text"] for u in ms], [u["text"] for u in ts]) if ms and ts else []
+    sent = lambda u: {"loc": u["loc"], "text": u["text"], "section": u.get("section", "")}
+    rows, matched = [], set()
+    for j, u in enumerate(ts):                      # each translation sentence -> its closest master sentence
+        i = max(range(len(ms)), key=lambda k: sim[k][j]) if ms else None
+        score = round(float(sim[i][j]), 2) if i is not None else 0.0
+        if score >= cutoff:
+            matched.add(i)
+            rows.append({"master": sent(ms[i]), "translation": sent(u), "similarity": score, "status": "likely_same"})
+        else:
+            rows.append({"master": None, "translation": sent(u), "similarity": score, "status": "only_translation"})
+    for i, u in enumerate(ms):                      # master sentences that no translation sentence matches
+        if i not in matched:
+            best = max((sim[i][j] for j in range(len(ts))), default=0.0)
+            rows.append({"master": sent(u), "translation": None, "similarity": round(float(best), 2),
+                         "status": "only_master"})
+    order = lambda r: (r["master"] or r["translation"])["loc"]["line_start"]
+    rows.sort(key=lambda r: (order(r), r["status"] != "likely_same"))
+    n_t = sum(r["status"] == "only_translation" for r in rows)
+    n_m = sum(r["status"] == "only_master" for r in rows)
+    entry.update(rows=rows, only_in_master=n_m, only_in_translation=n_t, body_changed=bool(n_t or n_m))
+    return entry

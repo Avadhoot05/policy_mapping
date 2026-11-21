@@ -2,8 +2,6 @@
   "legal_input": "../COBACK_Marenthal_Inputs/NIS2_selected_duties.json",
   "host": "127.0.0.1",
   "port": 8000,
-  "search_mode": "keyword",
-  "_search_mode": "keyword = term search + BM25 (standard library). hybrid = keyword + semantic search (needs ./setup.sh --semantic). Overridden by app.py --search-mode.",
   "semantic": {
     "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
     "unit_kinds": [
@@ -11,6 +9,7 @@
     ],
     "top_k": 5,
     "min_similarity": 0.3,
-    "_about": "Hybrid mode only. Semantic search proposes up to top_k policy sentences per element with cosine similarity >= min_similarity; the same 7 gates decide. Calibrated on the Marenthal data."
+    "_about": "Semantic search runs next to keyword search: it proposes up to top_k policy sentences per element with cosine similarity >= min_similarity; the same 7 gates decide, and a sentence found only this way is reported only when the gates count it. Language versions are matched sentence by sentence; a pair with similarity >= language_match_cutoff is shown as likely the same content. Calibrated on the Marenthal data.",
+    "language_match_cutoff": 0.8
   }
 }

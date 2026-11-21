@@ -1,4 +1,4 @@
-"""Optional semantic search for hybrid mode.
+"""Semantic search (always on, next to keyword search) and cross-language sentence matching.
 
 A free, local multilingual embedding model proposes additional candidate passages. It only widens the
 search: every candidate still passes the same seven gates, which decide. Calibration on the Marenthal
@@ -8,7 +8,7 @@ evacuation sentences of KR-017 (0.40-0.52), which is why the gates stay in charg
 Only policy sentences are embedded (config: semantic.unit_kinds): the "no supporting passage found"
 claims are about policy text, and semantic matching over register rows and twin fields was mostly noise.
 
-Needs: ./setup.sh --semantic   (sentence-transformers + CPU PyTorch + the model, downloaded once)
+Needs: ./setup.sh   (installs sentence-transformers + CPU PyTorch and downloads the model once)
 """
 import base64
 import hashlib
@@ -17,8 +17,8 @@ from functools import lru_cache
 try:
     import numpy as np
     from sentence_transformers import SentenceTransformer
-except ImportError as exc:  # keyword mode never imports this module
-    raise RuntimeError("Hybrid search needs the semantic packages. Run ./setup.sh --semantic first.") from exc
+except ImportError as exc:
+    raise RuntimeError("The semantic search packages are missing. Run ./setup.sh first.") from exc
 
 
 @lru_cache(maxsize=2)
@@ -69,6 +69,12 @@ class SemanticIndex:
             return
         sims = self.matrix @ self._encode([queries[k] for k in keys]).T     # sentences x elements
         self.best = [keys[j] for j in sims.argmax(axis=1)]
+
+    def similarity(self, texts_a, texts_b):
+        """Cosine similarity of every text in a with every text in b (any language; used for language versions)."""
+        a = self._encode(list(texts_a))
+        b = self._encode(list(texts_b))
+        return (a @ b.T).tolist()
 
     def search(self, query, key=None):
         """[(global_unit_index, similarity)] best first, top_k with similarity >= min_similarity.

@@ -19,6 +19,7 @@ Diese Richtlinie legt für Testfirma GmbH verbindliche Regeln zum Thema „Infor
 Pflichten und Zuständigkeiten
 Datensicherungen aller Server und des ERP-Systems sind täglich durchzuführen; der
 Informationssicherheitsbeauftragte ist verantwortlich und dokumentiert die Ergebnisse.
+Verdächtige Aktivitäten in der IT, etwa Angriffe mit Schadsoftware oder unbefugte Zugriffe auf Server, sind unverzüglich der IT-Leitung zu melden; jeder Fall ist innerhalb von 24 Stunden zu dokumentieren.
 Richtlinie
 nummer: KR-009
 titel: Informationssicherheitsrichtlinie

@@ -17,28 +17,28 @@ some-folder/
 
 ```bash
 cd coback_policy_mapping
-./setup.sh               # 1. creates .venv, installs requirements.txt (Jinja2) and checks the inputs
+./setup.sh               # 1. creates .venv, installs the packages and the model (~1 GB, once), checks the inputs
 ./start.sh               # 2. starts http://127.0.0.1:8000/
-./test.sh                # 3. optional: runs the 25 tests
+./test.sh                # 3. optional: runs the 24 tests
 ```
 
-1. On the start page, press **Start analysis**. A run takes well under a second.
+1. On the start page, press **Start analysis**. A run takes about 2 seconds (the model loads once per server start).
 2. Open the report. It has three tabs: **Overview**, **Duty results** and **Version comparison**.
 3. In Duty results, each element has **Confirm / Reject / Needs clarification**. Decisions are saved per company with
    your name and the time.
 
-| Script | Options |
+| Script | What it does |
 |---|---|
-| `./setup.sh` | `--semantic`: also installs CPU-only PyTorch and sentence-transformers and downloads the model (~0.8 GB, once) |
-| `./start.sh` | `--semantic`: hybrid search (needs `./setup.sh --semantic`) · `--port 8080`: another port |
-| `./test.sh` | Runs all tests, verbose (24; the 3 hybrid tests are skipped without the semantic packages) |
+| `./setup.sh` | Creates `.venv`, installs CPU-only PyTorch and `requirements.txt` (Jinja2, sentence-transformers), downloads the embedding model |
+| `./start.sh` | Starts the UI · `--port 8080`: another port |
+| `./test.sh` | Runs all tests, verbose |
 
 The scripts are safe to run again: steps that are already done are skipped. If the inputs are elsewhere, edit
 `input_dir` in `companies/marenthal/company.json` and `legal_input` in `config/app.json`;
 `./setup.sh` and `./start.sh` report what they cannot find.
 
-Without the script, the default mode also runs directly with `python3 app.py`. Use `python3 app.py --run marenthal`
-for one analysis without the UI, and `python3 app.py --check` to check the inputs.
+Use `.venv/bin/python app.py --run marenthal` for one analysis without the UI, and `.venv/bin/python app.py --check`
+to check the inputs.
 
 ## Results for Marenthal Chemie AG (sources reviewed: 15 starter files + 3 structured company files)
 
@@ -56,9 +56,12 @@ questions (#195, #196, #197, #174, #200, …).
 **Version comparison:** KR-009 v1.1 → v2.0 (DE) has an identical body, so coverage does not change, and validity is
 continuous (until 2024-07-08 / from 2024-07-09). The superseded v1.1 still contains the policy-level field
 `aktuelle_version: 2.0`; the document's own status (*Superseded*, L14/L37) is what counts. The DE↔EN comparison of
-v2.0 is a compact *language difference* box: it lists only text in the EN file that is written in German but does not
-exist in the German master (L22–23 recovery rule, L24 rack inspection). Translated sentences are not compared word
-for word, and no translation or AI is used. KR-017 v1.1 → v2.0 is shown as well.
+v2.0 matches the sentences of both versions by meaning, with the same local multilingual model as the search (no
+machine translation). A pair with similarity ≥ 0.80 is shown as *likely the same*: the three purpose/scope sentences
+match at 0.89–0.93. Without a partner (≤ 0.61): EN L22–23 (recovery rule) and L24 (rack inspection) exist only in
+EN, and DE L22–23 ("Dieses Dokument wird … verbindlich") only in DE. This is a proposal for the reviewer and never
+changes coverage.
+KR-017 v1.1 → v2.0 is shown as well.
 
 ## Full-corpus cross-check (not part of the report's scope)
 
@@ -102,36 +105,31 @@ duty → elements (from the duty text and its Nachweisfrage, e.g. 04-P02-3 → c
   "ineffective".
 - **No scores or percentages.** BM25 only orders candidates for display.
 - **Every quote is verbatim**, with `document_id`, file and a line/character location (lines start at 1 and match
-  `cat -n`). The test suite re-checks every quote against the files (validation check CIT-1).
+  `cat -n`). The test suite re-checks every quote against the files.
 - **Blank is not "no".** Empty profile lists, blank CSV fields and open twin questions are reported as unknown.
 
-## Search modes: keyword (default) and hybrid
+## How candidates are found: keyword + semantic search
 
-Set `"search_mode"` in `config/app.json`, or use `./start.sh --semantic` (after `./setup.sh --semantic`).
+Every run uses both searches, and **the same seven gates decide** for both:
 
-| Mode | How candidates are found | Needs |
-|---|---|---|
-| `keyword` (default) | DE/EN term matching over all units, ranked with BM25 | Jinja2 only (requirements.txt) |
-| `hybrid` | Keyword as above, **plus** a free local multilingual embedding model (`paraphrase-multilingual-MiniLM-L12-v2`) that proposes the 5 most similar **policy sentences** per element (cosine similarity ≥ 0.30) | `./setup.sh --semantic` (CPU PyTorch + sentence-transformers + model, ~0.8 GB once) |
+| Search | What it finds |
+|---|---|
+| Keyword | DE/EN term matches over all units (policy sentences, register rows, company data), ranked with BM25 |
+| Semantic | The 5 policy sentences closest in meaning per element (cosine similarity ≥ 0.30), with a free local multilingual model (`paraphrase-multilingual-MiniLM-L12-v2`, no API) |
 
-In both modes **the same seven gates decide**. Semantic search only widens the net:
-- **What it can do:** a passage found only by similarity can make an element *Covered* or *Partial*.
-- **What it can't do:** create a *Topic only* status, because being close in meaning is not the same as naming the subject.
+Semantic search catches rules worded without any of our search terms. The test company has one ("Verdächtige
+Aktivitäten in der IT … sind der IT-Leitung zu melden"): only the semantic search finds it, and the gates count it as
+*Covered* for incident reporting. Its limits are handled by the rules below:
+- **Close meaning is not a match.** On the Marenthal data, real rules scored 0.37–0.48 but KR-017's EHS evacuation
+  sentences scored 0.40–0.52. So a sentence found only by meaning is reported **only when the gates count it**;
+  otherwise it is neither listed nor explained. It can also never create *Topic only*.
+- **One element per sentence:** a meaning-only sentence is offered only to the element it is closest to.
+- **Only policy sentences** are searched by meaning; over register rows and company data it was mostly noise.
 
-The search mode and similarity of each candidate are recorded in `mapping_result.json` (`search`, `found_by`, `similarity`); the report does not show them. Embeddings are cached per
-company (keyed by text hash), so later runs only embed changed text.
-
-**Why only policy sentences:** calibration on the Marenthal data showed that similarity alone cannot separate relevant
-rules (0.37–0.48) from KR-017's EHS alarm and evacuation sentences (0.40–0.52). Over register rows and twin fields it
-was mostly noise (e.g. a safety data sheet's "Stabilität und Reaktivität" for business continuity).
-
-**One element per sentence:** a sentence found only by semantic search is offered only to the element it is
-closest to. Otherwise one IT rule would be proposed to, and could be counted for, elements it is not about.
-
-**Result on the Marenthal data:** hybrid mode proposed 15 additional policy passages. The gates rejected or
-discounted all of them, and all four duty results are **identical** in both modes. The "no supporting passage found"
-claims therefore don't depend only on the keyword lists. A test (`TestSemanticHybrid`) checks this; it is skipped
-when the semantic packages are not installed.
+`mapping_result.json` records how each candidate was found (`found_by`, `similarity`). Embeddings are cached per
+company (keyed by text hash), so later runs only embed changed text. On the Marenthal data the semantic search adds
+no counted passage: the four duty results are the same as with keyword search alone, so the "no supporting passage
+found" claims do not depend only on the keyword lists.
 
 ## Multiple companies
 
@@ -254,7 +252,7 @@ mapper/parsing.py       source parsing with exact line/character locations
 mapper/company.py       company discovery, source scope, parse cache logic (via the store)
 mapper/store.py         storage interface (Store) and its file implementation (FileStore)
 mapper/search.py        term matching + BM25
-mapper/semantic.py      optional semantic search (hybrid mode)
+mapper/semantic.py      semantic search and cross-language sentence matching
 mapper/gates.py         the 7 gates
 mapper/analysis.py      pipeline: elements, dimensions, explanations, questions, next steps
 mapper/compare.py       version and language comparison

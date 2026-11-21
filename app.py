@@ -11,9 +11,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from mapper import company as company_mod  # noqa: E402
 from mapper.company import STRUCTURED, discover_companies, get_company, load_app_config  # noqa: E402
-from mapper.server import execute_run, serve  # noqa: E402
 
 
 def check_inputs():
@@ -45,10 +43,7 @@ def main():
     ap.add_argument("--port", type=int, default=cfg.get("port", 8000))
     ap.add_argument("--run", metavar="COMPANY", help="run one analysis for companies/<COMPANY> and exit")
     ap.add_argument("--check", action="store_true", help="check the input files and exit")
-    ap.add_argument("--search-mode", choices=["keyword", "hybrid"], default=cfg.get("search_mode", "keyword"),
-                    help="keyword (default, standard library) or hybrid (keyword + semantic; needs ./run.sh --semantic)")
     args = ap.parse_args()
-    company_mod.OVERRIDES["search_mode"] = args.search_mode
     if args.check:
         problems = check_inputs()
         for p in problems:
@@ -58,6 +53,7 @@ def main():
                      "companies/<slug>/company.json (input_dir) and config/app.json (legal_input).")
         print("Input check passed: " + ", ".join(c.slug for c in discover_companies()))
         return
+    from mapper.server import execute_run, serve   # imported here: loading the model library takes seconds
     if args.run:
         comp = get_company(args.run)
         if not comp:
