@@ -35,6 +35,9 @@ POST /api/c/<slug>/runs/<run>/reviews      {"duty_id", "element_id", "decision":
 
 Every run uses keyword and semantic search; there is no mode switch. setup.sh needs internet access once.
 
+Docker alternative (any OS): see "With Docker" in README.md. The image holds code, packages and the model; inputs are
+mounted read-only at `/app/COBACK_Marenthal_Inputs`, and `companies/` is mounted so runs and reviews stay on the host.
+
 ## Layout
 - `mapper/` pipeline: `parsing` → `search` (BM25) + `semantic` (embeddings) → `gates` (7 checks) → `analysis` →
   `render` (Jinja2, `templates/`, `static/`) · `server` (stdlib HTTP) · `store` (all persistence) · `review`

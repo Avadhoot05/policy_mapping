@@ -1,0 +1,24 @@
+# Keep the image to code and config: no environment, no generated data, no input data.
+.git/
+.venv/
+venv/
+**/__pycache__/
+*.py[cod]
+
+# generated per company (mounted from the host at runtime instead)
+companies/*/cache/
+companies/*/runs/
+companies/*/review/
+
+# input data is mounted read-only, never copied into the image
+COBACK_Marenthal_Inputs/
+*.zip
+*.sql
+
+# editors and local tooling
+.vscode/
+.idea/
+.claude/
+.fxprof/
+.DS_Store
+screenshot.png

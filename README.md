@@ -6,33 +6,79 @@ update. It is built for Marenthal Chemie AG and works for any company folder add
 
 ## Run it
 
-Requirements: Python 3.10+ (developed on 3.12), Linux or macOS. Place the unzipped COBACK input package next to this
-folder:
+There are two ways to run it. Both start the same app at http://127.0.0.1:8000/ and need the same input data.
+
+| | A. Scripts (recommended) | B. Docker |
+|---|---|---|
+| Systems | Linux, macOS | Linux, macOS, Windows |
+| You need | Python 3.10+ (developed on 3.12) | Docker (Docker Desktop on macOS/Windows, ≥ 4 GB memory) |
+| First setup | ~1 GB download, a few minutes | ~2–2.5 GB image, several minutes |
+
+### Input data (both ways)
+
+Place the unzipped COBACK input package **next to** this folder, unchanged:
 
 ```
 some-folder/
 ├── coback_policy_mapping/        ← this solution
 └── COBACK_Marenthal_Inputs/      ← COBACK's input package, as supplied
+    ├── NIS2_selected_duties.json     legal input (the four duties)
+    ├── document_starters.csv         the 15 sources in scope
+    └── company_data/                 documents_index.csv, documents/, company_profile.json,
+                                      legal_entities.csv, twin_questions.csv
 ```
+
+The app only reads these files and never changes them. Nothing from the input package is in this repository.
+
+> [!IMPORTANT]
+> **Inputs in another folder?**
+> - **Scripts:** edit `input_dir` in `companies/marenthal/company.json` (relative to that file's folder, or an
+>   absolute path) and `legal_input` in `config/app.json` (relative to this folder, or absolute).
+> - **Docker:** no file to edit; change the left side of the first `-v` to your folder, e.g.
+>   `-v "/path/to/COBACK_Marenthal_Inputs:/app/COBACK_Marenthal_Inputs:ro"`.
+>
+> Both check the inputs before starting and name every file they cannot find.
+
+### A. Scripts (Linux, macOS)
 
 ```bash
 cd coback_policy_mapping
 ./setup.sh               # 1. creates .venv, installs the packages and the model (~1 GB, once), checks the inputs
-./start.sh               # 2. starts http://127.0.0.1:8000/
+./start.sh               # 2. starts http://127.0.0.1:8000/  (--port 8080 for another port)
 ./test.sh                # 3. optional: runs the 25 tests
 ```
 
-1. On the start page, press **Start analysis**. A run takes about 2 seconds (the model loads once per server start).
+The scripts are safe to run again: steps that are already done are skipped.
+- **macOS:** the built-in `python3` is often 3.9; `setup.sh` then says so. Install Python 3.10+ from
+  [python.org](https://www.python.org/downloads/) or with `brew install python@3.12`, and run `./setup.sh` again.
+- **"Permission denied"** (e.g. after unzipping a download): run `bash setup.sh` and `bash start.sh` instead.
+
+### B. Docker (Linux, macOS, Windows)
+
+The input folder is mounted read-only; reports, reviewer decisions and the cache are written to `companies/` on your
+machine, exactly as with the scripts. The container needs no internet after the build (the model is in the image).
+
+```bash
+cd coback_policy_mapping
+docker build -t coback-policy-mapping .          # once
+docker run --rm -p 127.0.0.1:8000:8000 \
+  -v "$PWD/../COBACK_Marenthal_Inputs:/app/COBACK_Marenthal_Inputs:ro" \
+  -v "$PWD/companies:/app/coback_policy_mapping/companies" \
+  coback-policy-mapping
+```
+
+- **Linux:** add `--user "$(id -u):$(id -g)"` so the files written to `companies/` belong to you, not to root.
+- **Another port:** `-p 127.0.0.1:8080:8000`, then open http://127.0.0.1:8080/.
+- **Every company folder needs its inputs mounted.** If a company's input folder is missing, the container stops and
+  names it.
+
+### Using the app
+
+1. Open http://127.0.0.1:8000/ and press **Start analysis**. A run takes about 2 seconds (the model loads once per
+   server start).
 2. Open the report. It has three tabs: **Overview**, **Duty results** and **Version comparison**.
 3. In Duty results, each element has **Confirm / Reject / Needs clarification**. Decisions are saved per company with
    your name and the time.
-
-
-The scripts are safe to run again: steps that are already done are skipped.
-
-> [!IMPORTANT]
-> **Inputs in another folder?** Edit `input_dir` in `companies/marenthal/company.json` and `legal_input` in
-> `config/app.json`. `./setup.sh` and `./start.sh` report what they cannot find.
 
 ## How a duty is related to a passage
 
@@ -123,4 +169,6 @@ mapper/server.py        local web server (Python standard library)
 config/duty_elements.json  law-level configuration (elements, terms, facets, questions)
 companies/marenthal/company.json
 tests/                  unit and integration tests, synthetic test company
+setup.sh, start.sh, test.sh   install, start, test (Linux/macOS)
+Dockerfile, .dockerignore     the same app as a container (any OS)
 ```
