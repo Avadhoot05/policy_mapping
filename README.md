@@ -27,11 +27,6 @@ cd coback_policy_mapping
 3. In Duty results, each element has **Confirm / Reject / Needs clarification**. Decisions are saved per company with
    your name and the time.
 
-| Script | What it does |
-|---|---|
-| `./setup.sh` | Creates `.venv`, installs CPU-only PyTorch and `requirements.txt` (Jinja2, sentence-transformers), downloads the embedding model |
-| `./start.sh` | Starts the UI · `--port 8080`: another port |
-| `./test.sh` | Runs all tests, verbose |
 
 The scripts are safe to run again: steps that are already done are skipped.
 
@@ -57,13 +52,6 @@ duty → elements (from the duty text and its Nachweisfrage, e.g. 04-P02-3 → c
      → reviewer confirms, rejects or asks for clarification
 ```
 
-- **Three dimensions are kept separate**, as 17-AUS-17 requires: policy text, implementation records and effectiveness.
-  A register saying "erfüllt" or "wirksam" is a record, not proof. Missing proof means "not demonstrated", never
-  "ineffective".
-- **No scores or percentages.** BM25 only orders candidates for display.
-- **Every quote is verbatim**, with `document_id`, file and a line/character location (lines start at 1 and match
-  `cat -n`). The test suite re-checks every quote against the files.
-- **Blank is not "no".** Empty profile lists, blank CSV fields and open twin questions are reported as unknown.
 
 ## How candidates are found: keyword + semantic search
 
@@ -72,7 +60,7 @@ Every run uses both searches, and **the same seven gates decide** for both:
 | Search | What it finds |
 |---|---|
 | Keyword | DE/EN term matches over all units (policy sentences, register rows, company data), ranked with BM25 |
-| Semantic | The 5 policy sentences closest in meaning per element (cosine similarity ≥ 0.30), with a free local multilingual model (`paraphrase-multilingual-MiniLM-L12-v2`, no API) |
+| Semantic | The 5 policy sentences closest in meaning per element ( similarity ≥ 0.30), with a free local multilingual model (`paraphrase-multilingual-MiniLM-L12-v2`, no API) |
 
 Semantic search catches rules worded without any of our search terms. The test company has one ("Verdächtige
 Aktivitäten in der IT … sind der IT-Leitung zu melden"): only the semantic search finds it, and the gates count it as
@@ -104,8 +92,7 @@ the start page.
 
 Companies are fully isolated. Each one has its own inputs, parse cache (`cache/`), runs (`runs/<run_id>/`) and
 reviewer decisions (`review/`). Nothing company-specific is hard-coded; only the law-level configuration
-(`config/duty_elements.json`) and the legal input are shared. A test runs Marenthal and a **synthetic** test company
-(`tests/fixtures`, clearly labeled) and checks that no data crosses over.
+(`config/duty_elements.json`) and the legal input are shared.
 
 ## Outputs per run (`companies/<slug>/runs/<run_id>/`)
 
@@ -115,20 +102,6 @@ reviewer decisions (`review/`). Nothing company-specific is hard-coded; only the
 | `mapping_result.json` | The full result with a stable schema (the pages are a view of it) |
 | `parsed_cited_documents.json` | The parsed form of every cited document, for inspection |
 
-## Scope, assumptions and limits
-
-- **Sources:** the 15 files in `document_starters.csv` plus the 3 structured company files, as allowed by
-  START_HERE.txt. "Not found" always means "not found in these sources".
-- **Exercise assumption:** the four duties are assumed applicable. This is a mapping proposal, not a legal finding.
-- **Master language authoritative:** text found only in a translation is flagged as a language difference and not
-  counted. (Asked COBACK to confirm.)
-- **Registers are evidence, not policy text**, even when they name a group policy as their source.
-- **Overdue** is computed against the snapshot date 2026-11-18; the register's own as-of date is shown as well.
-- **Known limits:**
-  - Keyword search can miss synonyms. The search terms are listed in the report so the "not found" claims can be checked.
-  - Gates 6–7 (rule detection, facets) are pattern-based proposals for the reviewer, not decisions.
-- **Out of scope:** relevance assessment, a full compliance verdict, a knowledge graph, task planning and management,
-  reminders, PDF export, MCP and deployment.
 
 ## Project layout
 

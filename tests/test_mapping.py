@@ -296,6 +296,14 @@ class TestSemantic(Base):
             for el in du["elements"]:
                 for c in el["not_counted"] + el["supporting"] + el["context"] + el["excluded"]:
                     self.assertNotEqual(c.get("found_by"), "semantic", c["uid"])
+                # the uncounted ones are kept apart for the audit trail, each with the reason it was not counted
+                for c in el["similar_not_counted"]:
+                    self.assertEqual(c["found_by"], "semantic", c["uid"])
+                    self.assertTrue(c["why_not_counted"], c["uid"])
+                    self.assertNotIn(c["uid"], {p["uid"] for p in el["passages"]})
+                sims = [c["similarity"] for c in el["similar_not_counted"]]
+                self.assertEqual(sims, sorted(sims, reverse=True))
+        self.assertTrue(any(el["similar_not_counted"] for du in self.result["duties"] for el in du["elements"]))
 
     def test_language_versions_matched_by_meaning(self):
         lang = next(c for c in self.result["comparisons"] if c["kind"] == "language" and c["policy_no"] == "KR-009")

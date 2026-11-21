@@ -1,5 +1,6 @@
 {# Sources checked sub-tab: sources with hits in a table; the rest in one folded line, so a "not found"
-   stays visibly about all sources reviewed. #}
+   stays visibly about all sources reviewed. Sentences that are only close in meaning are listed apart, folded. #}
+{% from "_macros.html" import source_link %}
 {% for el in du.elements %}
 {% set hit = el.sources_checked|selectattr("hits")|list %}
 {% set nohit = el.sources_checked|rejectattr("hits")|list %}
@@ -19,6 +20,19 @@
     </tr>
     {% endfor %}
   </table>
+  {% endif %}
+
+  {% if el.similar_not_counted %}
+  <details>
+    <summary class="muted"><small>Similar in meaning, not counted ({{ el.similar_not_counted|length }})</small></summary>
+    {% for c in el.similar_not_counted %}
+    <div class="qcard">
+      <div class="qhead"><b>{{ c.doc.title }}</b> · {{ c.file|basename }} · {{ source_link(slug, c, c.location) }}</div>
+      <div class="sent">{{ c.quote }}</div>
+      <div class="qhead">Not counted: {{ c.why_not_counted|join("; ") or "the checks do not count it" }}</div>
+    </div>
+    {% endfor %}
+  </details>
   {% endif %}
 
   {% if nohit and not hit %}

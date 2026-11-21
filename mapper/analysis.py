@@ -192,9 +192,14 @@ def assess_element(ctx, index, units, docs, element, snapshot, sem):
         return (c["relation"] in ("covers", "partial") and c["doc"]["lifecycle"] == "current"
                 and lang in ("master", "also_in_master") and "entity_not_stated" not in c["qualifiers"])
 
-    # a sentence found only by meaning is reported only when the gates count it: close meaning alone is no
-    # reason to list or explain a passage (it would read as a match that the text does not support)
-    cands = [c for c in cands if c.get("found_by") != "semantic" or counts(c)]
+    # a sentence found only by meaning counts only when the gates count it: close meaning alone is no reason to
+    # list it as a passage (it would read as a match that the text does not support). The others are kept apart for
+    # the audit trail ("Similar in meaning, not counted" in the Sources checked tab); they never affect the status.
+    similar = [c for c in cands if c.get("found_by") == "semantic" and not counts(c)]
+    for c in similar:
+        c["why_not_counted"] = _why_not_counted(c)
+    similar.sort(key=lambda c: -c["similarity"])
+    cands = [c for c in cands if c not in similar]
     excluded = [c for c in cands if c["relation"] == "excluded"]
     policy = [c for c in cands if c["relation"] in ("covers", "partial", "topic_only", "scope_mismatch")
               and c["doc"]["kind"] == "policy"]
@@ -227,16 +232,19 @@ def assess_element(ctx, index, units, docs, element, snapshot, sem):
         "policy_status": status, "policy_status_label": STATUS_LABEL[status], "flags": flags,
         "passages": counted, "not_counted": not_counted, "supporting": supporting,
         "supporting_scope_mismatch": supp_mismatch, "context": context, "excluded": excluded,
-        "implementation": impl, "effectiveness": eff,
+        "similar_not_counted": similar, "implementation": impl, "effectiveness": eff,
     }
 
 
 def _why_not_counted(c):
     reasons = []
+    if c["relation"] == "excluded":
+        reasons.append("concerns another legal entity")
     if c["relation"] == "scope_mismatch":
         reasons.append("topic of the document does not fit the duty")
     if c["relation"] == "topic_only":
-        reasons.append("names the subject but states no rule")
+        # a sentence found only by meaning does not name the subject (keyword search would have found it)
+        reasons.append("states no rule" if c.get("found_by") == "semantic" else "names the subject but states no rule")
     if "superseded" in c["qualifiers"]:
         reasons.append("document version is superseded")
     if "translation_only" in c["qualifiers"]:
@@ -532,7 +540,7 @@ def sources_checked(docs, el):
 def save_run(company, result, docs, report_html):
     """Persist one run through the company's store."""
     cited = {c["source_id"] for du in result["duties"] for e in du.get("elements", [])
-             for b in ("passages", "not_counted", "supporting") for c in e[b]}
+             for b in ("passages", "not_counted", "supporting", "similar_not_counted") for c in e[b]}
     company.store.save_run(result["run_id"], {
         "mapping_result.json": json.dumps(result, ensure_ascii=False, indent=1),
         "report.html": report_html,
