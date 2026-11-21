@@ -15,10 +15,22 @@ Python 3.10+, Linux or macOS. The COBACK input package must sit next to this fol
 ```bash
 ./setup.sh                    # creates .venv, installs requirements.txt (jinja2), checks inputs
 ./start.sh                    # web UI at http://127.0.0.1:8000/  (--port N to change)
-./test.sh                     # unit + integration tests, all must pass
+./test.sh                     # unit + integration tests, all must pass (4 semantic tests skip without --semantic)
 .venv/bin/python app.py --run marenthal   # one analysis without the UI; prints the report path
 .venv/bin/python app.py --check           # input check only
 ```
+`./start.sh` runs a server that does not exit. Start it in the background; it `exec`s Python, so the PID you get is
+the server (stop it with `kill <PID>`). It is ready when `GET /` returns 200, usually within a second.
+
+HTTP API (`<slug>` = company folder, e.g. `marenthal`; `<run>` = run id returned by POST runs):
+```
+POST /api/c/<slug>/runs                    run an analysis → {"run_id", "report_url", "seconds"}
+GET  /c/<slug>/runs/<run>/report.html      the report (also mapping_result.json)
+GET  /api/c/<slug>/runs/<run>/reviews      reviewer decisions for that run
+POST /api/c/<slug>/runs/<run>/reviews      {"duty_id", "element_id", "decision": confirmed|rejected|needs_clarification,
+                                           "reviewer", "comment"}
+```
+
 Optional semantic search: `./setup.sh --semantic` (≈1 GB download), then `./start.sh --semantic`.
 
 ## Layout
