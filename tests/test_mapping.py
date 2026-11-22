@@ -211,6 +211,39 @@ class TestGatesAndResults(Base):
         ver = next(c for c in self.result["comparisons"] if c["kind"] == "version" and c["policy_no"] == "KR-009")
         self.assertFalse(ver["body_changed"])                         # v1.1 -> v2.0: same body text
 
+    def test_report_tabs_are_well_formed(self):
+        """Every tag in the report closes in order, so no card leaks out of its tab into the others."""
+        from html.parser import HTMLParser
+        from mapper.render import render_report
+        void = {"br", "img", "meta", "link", "input", "hr", "col", "wbr", "source"}
+
+        class Check(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.stack, self.errors, self.cards_outside = [], [], 0
+
+            def handle_starttag(self, tag, attrs):
+                if tag in void:
+                    return
+                cls = dict(attrs).get("class") or ""
+                if tag == "section" and not any("mpanel" in c.split() for _, c in self.stack):
+                    self.cards_outside += 1
+                self.stack.append((tag, cls))
+
+            def handle_endtag(self, tag):
+                if tag in void:
+                    return
+                if not self.stack or self.stack[-1][0] != tag:
+                    self.errors.append(tag)
+                elif self.stack:
+                    self.stack.pop()
+
+        p = Check()
+        p.feed(render_report(self.result))
+        self.assertEqual(p.errors, [])
+        self.assertEqual(p.stack, [])
+        self.assertEqual(p.cards_outside, 0)
+
 
 class TestMultiCompany(unittest.TestCase):
     def setUp(self):

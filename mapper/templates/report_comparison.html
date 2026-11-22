@@ -113,9 +113,6 @@
   <div><span>Document pairs with multiple translations</span><b>{{ language_pairs|length }}</b></div>
   <div><span>Mismatched pairs</span><b>{{ result.comparisons|selectattr("body_changed")|list|length }}</b></div>
 </div>
-  <div><span>Document pairs with content mismatch</span><b>{{ with_diff|length }}</b>
-    <small>of {{ result.comparisons|length }} pair{{ "s" if result.comparisons|length != 1 }} compared</small></div>
-</div>
 
 {% if not result.comparisons %}
 <p class="muted">No policy family with two versions in the sources.</p>

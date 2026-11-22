@@ -1,0 +1,2410 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Policy mapping · NIS2 / BSIG §30 – Marenthal Chemie AG – 20261122T090310534799Z</title>
+  <style>
+/* Styles for every page (report, legal duty, start page, source viewer).
+   Inlined into each page by render.py, so a saved report.html stays one self-contained file. */
+
+:root {
+  --bg: #f6f5f2;
+  --card: #fff;
+  --ink: #1d1d1b;
+  --muted: #6b6a66;
+  --line: #e2e0da;
+  --accent: #2f4f6f;
+  --ok: #2e6b3f;
+  --ok-bg: #e5f1e8;
+  --warn: #8a5a00;
+  --warn-bg: #fbf0d9;
+  --bad: #9b2c2c;
+  --bad-bg: #f8e3e1;
+  --muted-bg: #eeede9;
+  --info: #2f4f8f;
+  --info-bg: #e4ebf7;
+  --mis: #6a3d8a;
+  --mis-bg: #efe6f5;
+}
+
+/* ---- page */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+main { max-width: 1180px; margin: 0 auto; padding: 24px; }
+h1 { font-size: 24px; margin: 0 0 4px; }
+h2 { font-size: 19px; margin: 32px 0 12px; }
+h3 { font-size: 16px; margin: 0; }
+h4 { font-size: 14px; margin: 16px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+a { color: var(--accent); }
+.muted, small { color: var(--muted); }
+footer { margin: 40px 0 20px; font-size: 13px; color: var(--muted); }
+
+/* ---- header and buttons */
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+button, .btn {
+  font: inherit;
+  border: 1px solid var(--line);
+  background: var(--card);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--ink);
+  text-decoration: none;
+  display: inline-block;
+}
+button.primary, .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+button:disabled { opacity: .5; cursor: default; }
+.meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px 24px; margin: 16px 0; font-size: 14px; }
+.meta div span { display: block; color: var(--muted); font-size: 12px; }
+.stats { margin: 12px 0; grid-template-columns: repeat(6, 1fr); }   /* all six counts in one row */
+.stats b { font-size: 20px; }
+
+/* ---- cards, tables, key-value lists */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; margin: 12px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+th { font-size: 12px; color: var(--muted); font-weight: 600; }
+tr.changed td { background: var(--warn-bg); }
+.kv { display: grid; grid-template-columns: 200px 1fr; gap: 4px 12px; font-size: 14px; }
+.kv > div:nth-child(odd) { color: var(--muted); }
+pre.de { white-space: pre-wrap; font-size: 13px; background: #fbfaf7; padding: 8px; border-radius: 4px; }
+details summary { cursor: pointer; color: var(--accent); font-size: 13px; }
+
+/* ---- badges (status) and chips (labels) */
+.badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 12px; font-weight: 600; }
+.badge.ok    { background: var(--ok-bg);    color: var(--ok); }
+.badge.warn  { background: var(--warn-bg);  color: var(--warn); }
+.badge.bad   { background: var(--bad-bg);   color: var(--bad); }
+.badge.muted { background: var(--muted-bg); color: var(--muted); }
+.badge.info  { background: var(--info-bg);  color: var(--info); }
+.badge.mis   { background: var(--mis-bg);   color: var(--mis); }
+.chip { display: inline-block; border: 1px solid var(--line); border-radius: 4px; padding: 0 6px; font-size: 12px; margin: 0 4px 4px 0; background: #faf9f7; }
+.chip.info { border-color: #b9c7e6; background: var(--info-bg); }
+.chip.mis  { border-color: #d4c0e2; background: var(--mis-bg); }
+.chip.sup  { border-color: #ccc;    background: var(--muted-bg); }
+.proposal { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); border: 1px dashed var(--muted); border-radius: 4px; padding: 0 5px; }
+.stale { color: var(--bad); font-weight: 600; }
+
+/* ---- quoted passages */
+.quote { white-space: pre-wrap; background: #fbfaf7; border-left: 3px solid var(--accent); margin: 6px 0; padding: 8px 10px; font-size: 14px; font-family: ui-serif, Georgia, serif; }
+.quote.nc { border-left-color: #b9b6ae; }
+.qcard { padding: 10px 0; }
+.qcard + .qcard { border-top: 1px solid var(--line); }
+.qhead { font-size: 13px; color: var(--muted); }
+
+/* ---- collapsible cards (duty results, comparisons) and elements */
+.fold.collapsed .dbody { display: none; }
+.toggle { margin-left: auto; border: 1px solid var(--line); background: none; border-radius: 6px; width: 30px; height: 30px; font-size: 16px; line-height: 1; cursor: pointer; transition: transform .15s; }
+.fold.collapsed .toggle { transform: rotate(-90deg); }
+.el { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+.el:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
+.elhead { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.next { background: var(--warn-bg); border-radius: 6px; padding: 8px 12px; font-size: 14px; margin-top: 8px; }
+.card, .el { scroll-margin-top: 64px; }
+
+/* ---- sub-tabs inside a duty card */
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin: 12px 0 0; flex-wrap: wrap; }
+.tabs button { border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: none; padding: 6px 10px; color: var(--muted); }
+.tabs button.on { border-bottom-color: var(--accent); color: var(--ink); font-weight: 600; }
+.panel { display: none; padding-top: 12px; }
+.panel.on { display: block; }
+
+/* ---- main tabs of the report (sticky) */
+.mtabs { display: flex; gap: 4px; border-bottom: 2px solid var(--line); margin: 20px 0 4px; position: sticky; top: 0; background: var(--bg); z-index: 5; }
+.mtabs button { border: 0; border-bottom: 3px solid transparent; border-radius: 0; background: none; padding: 10px 16px; font-size: 15px; color: var(--muted); margin-bottom: -2px; }
+.mtabs button.on { border-bottom-color: var(--accent); color: var(--ink); font-weight: 600; }
+.mpanel { display: none; }
+.mpanel.on { display: block; }
+
+/* ---- reviewer decision box */
+.review { background: #fafafa; border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; margin-top: 10px; font-size: 13px; }
+.review input, .review textarea { font: inherit; border: 1px solid var(--line); border-radius: 4px; padding: 4px 6px; width: 100%; }
+.review .row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.review .cur { margin-bottom: 6px; }
+
+/* ---- version comparison */
+.side { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.sent { white-space: pre-wrap; padding: 4px 6px; border-radius: 4px; margin: 3px 0; font-size: 13px; font-family: ui-serif, Georgia, serif; }
+.sent.only_here { background: var(--warn-bg); outline: 1px solid #e7cf9b; }
+.sent.same { background: #f4f3ef; }
+
+/* ---- source viewer */
+.src-line td.n { text-align: right; width: 48px; color: var(--muted); }
+.src-line td.t { white-space: pre-wrap; font-family: ui-monospace, monospace; font-size: 13px; }
+.hl { background: #fbf0d9; }
+
+  </style>
+</head>
+<body>
+<main>
+<div class="top">
+  <div>
+    <h1>Policy mapping · NIS2 / BSIG §30</h1>
+    <div class="muted">Run 20261122T090310534799Z</div>
+  </div>
+  <div class="actions"><a class="btn" href="/">Start page</a></div>
+</div>
+
+<div class="meta">
+  <div><span>Assessed entity</span>Marenthal Chemie AG (CMS-DE-01)<br><small>1764010d-db68-42e2-8aa2-db89242548ad</small></div>
+  <div><span>Data snapshot</span>2026-11-18</div>
+  <div><span>Legal input</span>NIS2_selected_duties.json · NIS2_Gesamtanalyse.xlsx<br><small>analysis dated 2026-10-12</small></div>
+  <div><span>Generated</span>2026-11-22T09:03:10Z</div>
+</div>
+
+<div class="mtabs">
+  <button class="on" data-main="overview">Overview</button>
+  <button data-main="duties">Duty results</button>
+  <button data-main="comparison">Version comparison</button>
+</div>
+
+<div class="mpanel on" id="overview">
+  <div class="card meta stats">
+    <div><span>Duties</span><b>4</b></div>
+    <div><span>Duty elements</span><b>12</b></div>
+    <div><span>Policy documents searched</span><b>5</b></div>
+    <div><span>Reviewed</span><b data-count="reviewed">–</b></div>
+    <div><span>Needs clarification</span><b data-count="needs_clarification">–</b></div>
+    <div><span>Pending review</span><b data-count="pending">–</b></div>
+  </div>
+  <div class="card"><table>
+  <tr>
+    <th>Duty</th><th>Element</th><th>Policy text</th><th>Implementation records</th><th>Review</th>
+  </tr>
+  <tr>
+    <td rowspan="2"><a href="#duty-04-P02-1"><b>04-P02-1</b></a><br>Risikoanalyse und IT-Sicherheitskonzept</td>
+    <td><a href="#el-04-P02-1-risk_analysis">Information-security risk analysis</a></td>
+    <td><span class="badge bad">No supporting passage found</span></td>
+    <td>
+      <span class="badge warn">Mixed: 4 done, 3 open</span>
+<span class="chip ">7 overdue</span>    </td>
+    <td class="ovrev" data-key="04-P02-1/risk_analysis"><small class="muted">not reviewed</small></td>
+  </tr>
+  <tr>
+    <td><a href="#el-04-P02-1-security_concept">IT security concept / ISMS</a></td>
+    <td><span class="badge muted">Topic only – no rule stated</span></td>
+    <td>
+      <span class="badge warn">Mixed: 2 done, 3 open</span>
+<span class="chip ">3 overdue</span>    </td>
+    <td class="ovrev" data-key="04-P02-1/security_concept"><small class="muted">not reviewed</small></td>
+  </tr>
+  <tr>
+    <td rowspan="3"><a href="#duty-04-P02-2"><b>04-P02-2</b></a><br>Vorfallbewältigung</td>
+    <td><a href="#el-04-P02-2-detection_reporting">Detection and internal reporting of security incidents</a></td>
+    <td><span class="badge bad">No supporting passage found</span></td>
+    <td>
+      <span class="badge muted">Unknown</span>
+    </td>
+    <td class="ovrev" data-key="04-P02-2/detection_reporting"><small class="muted">not reviewed</small></td>
+  </tr>
+  <tr>
+    <td><a href="#el-04-P02-2-escalation_containment">Escalation and containment</a></td>
+    <td><span class="badge bad">No supporting passage found</span></td>
+    <td>
+      <span class="badge muted">Unknown</span>
+    </td>
+    <td class="ovrev" data-key="04-P02-2/escalation_containment"><small class="muted">not reviewed</small></td>
+  </tr>
+  <tr>
+    <td><a href="#el-04-P02-2-incident_test">Practical test of the incident procedures</a></td>
+    <td><span class="badge bad">No supporting passage found</span></td>
+    <td>
+      <span class="badge ok">Records exist (4)</span>
+<span class="chip ">2 overdue</span>    </td>
+    <td class="ovrev" data-key="04-P02-2/incident_test"><small class="muted">not reviewed</small></td>
+  </tr>
+  <tr>
+    <td rowspan="4"><a href="#duty-04-P02-3"><b>04-P02-3</b></a><br>Betriebsaufrechterhaltung, Backups, Wiederherstellung, Krisenmanagement</td>
+    <td><a href="#el-04-P02-3-continuity">Business continuity (keeping operations running)</a></td>
+    <td><span class="badge bad">No supporting passage found</span></td>
+    <td>
+      <span class="badge ok">Records exist (1)</span>
+<span class="chip ">1 overdue</span>    </td>
+    <td class="ovrev" data-key="04-P02-3/continuity"><small class="muted">not reviewed</small></td>
+  </tr>
+  <tr>
+    <td><a href="#el-04-P02-3-backup">Backups</a></td>
+    <td><span class="badge bad">No supporting passage found</span></td>
+    <td>
+      <span class="badge ok">Records exist (1)</span>
+<span class="chip ">1 overdue</span>    </td>
+    <td class="ovrev" data-key="04-P02-3/backup"><small class="muted">not reviewed</small></td>
+  </tr>
+  <tr>
+    <td><a href="#el-04-P02-3-recovery">Restore and recovery</a></td>
+    <td><span class="badge bad">No supporting passage found</span></td>
+    <td>
+      <span class="badge ok">Records exist (4)</span>
+<span class="chip ">2 overdue</span>    </td>
+    <td class="ovrev" data-key="04-P02-3/recovery"><small class="muted">not reviewed</small></td>
+  </tr>
+  <tr>
+    <td><a href="#el-04-P02-3-crisis_management">IT crisis management</a></td>
+    <td><span class="badge bad">No supporting passage found</span></td>
+    <td>
+      <span class="badge muted">Unknown</span>
+    </td>
+    <td class="ovrev" data-key="04-P02-3/crisis_management"><small class="muted">not reviewed</small></td>
+  </tr>
+  <tr>
+    <td rowspan="3"><a href="#duty-04-P02-6"><b>04-P02-6</b></a><br>Wirksamkeitsbewertung</td>
+    <td><a href="#el-04-P02-6-effectiveness_method">Assessment method and plan</a></td>
+    <td><span class="badge bad">No supporting passage found</span></td>
+    <td>
+      <span class="badge muted">Unknown</span>
+    </td>
+    <td class="ovrev" data-key="04-P02-6/effectiveness_method"><small class="muted">not reviewed</small></td>
+  </tr>
+  <tr>
+    <td><a href="#el-04-P02-6-effectiveness_results">Assessment results</a></td>
+    <td><span class="badge bad">No supporting passage found</span></td>
+    <td>
+      <span class="badge ok">Records exist (4)</span>
+<span class="chip ">4 overdue</span>    </td>
+    <td class="ovrev" data-key="04-P02-6/effectiveness_results"><small class="muted">not reviewed</small></td>
+  </tr>
+  <tr>
+    <td><a href="#el-04-P02-6-follow_up">Follow-up and corrective action</a></td>
+    <td><span class="badge bad">No supporting passage found</span></td>
+    <td>
+      <span class="badge warn">Open only (1)</span>
+<span class="chip ">1 overdue</span>    </td>
+    <td class="ovrev" data-key="04-P02-6/follow_up"><small class="muted">not reviewed</small></td>
+  </tr>
+</table></div>
+</div>
+
+<div class="mpanel" id="duties">
+<section class="card duty fold" id="duty-04-P02-1">
+  <div class="elhead">
+    <h2 style="margin:0"><a href="legal/04-P02-1" target="_blank" title="Open the legal duty">04-P02-1 · Risikoanalyse und IT-Sicherheitskonzept</a></h2>
+    <span class="badge muted">Topic only – no rule stated</span>
+    <button class="toggle" aria-expanded="true" aria-label="Collapse" title="Collapse">▾</button>
+  </div>
+  <div class="dbody">
+    <div class="tabs">
+      <button class="on" data-tab="04-P02-1-map">Mapping</button>
+      <button data-tab="04-P02-1-ev">Evidence</button>
+      <button data-tab="04-P02-1-q">Missing information</button>
+      <button data-tab="04-P02-1-src">Sources checked</button>
+    </div>
+    <div class="panel on" id="04-P02-1-map">
+
+<div class="el" id="el-04-P02-1-risk_analysis">
+  <div class="elhead">
+    <h3>Information-security risk analysis</h3>
+    <span class="badge bad">No supporting passage found</span>
+    <span class="proposal" data-key="04-P02-1/risk_analysis" title="Generated by the tool; not yet reviewed">System proposal</span>
+    
+  </div>
+  <p>No current, master-language policy passage in the sources reviewed states a rule for information-security risk analysis. 7 supporting record entries found (registers / evidence). They describe implementation, not policy text, and do not prove effectiveness on their own.</p>
+
+
+
+<div class="next"><b>Next step:</b> Add to KR-009 v2.0 (DE master, DMS-00000420), section “Pflichten und Zuständigkeiten”: a section on the information-security risk analysis: scope (e.g. ERP, production control, office IT), method, responsible role, annual review and formal approval.</div>
+  <div class="review" data-key="04-P02-1/risk_analysis" data-duty="04-P02-1" data-element="risk_analysis">
+    <div class="cur"><b>Reviewer decision:</b> <span class="curtxt muted">not reviewed yet</span></div>
+    <textarea rows="2" placeholder="Comment / rationale (optional)"></textarea>
+    <div class="row">
+      <button data-d="confirmed">Confirm</button>
+      <button data-d="rejected">Reject</button>
+      <button data-d="needs_clarification">Needs clarification</button>
+    </div>
+    <details class="hist"><summary>History</summary><div class="histbody muted">No decisions yet.</div></details>
+  </div>
+</div>
+<div class="el" id="el-04-P02-1-security_concept">
+  <div class="elhead">
+    <h3>IT security concept / ISMS</h3>
+    <span class="badge muted">Topic only – no rule stated</span>
+    <span class="proposal" data-key="04-P02-1/security_concept" title="Generated by the tool; not yet reviewed">System proposal</span>
+    
+  </div>
+  <p>KR-009 v2.0 (DE master, L18–19) only names the subject and states no rule for IT security concept / ISMS. 4 policy passages matched; none counted, 4 not counted. 10 supporting record entries found (registers / evidence). They describe implementation, not policy text, and do not prove effectiveness on their own.</p>
+
+
+  <details>
+    <summary>Checked but not counted (4)</summary>
+<div class="qcard">
+  <div class="qhead">
+    <b>Information Security Policy</b> · documents/DMS-00000443_KR-009_v2.0_en.txt · <b>L3</b> · <a href="/c/marenthal/source/7b10774b-53cf-47cf-9d3e-1307061f33c0?ls=3&amp;le=3" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip ">Current</span><span class="chip info">Only in translation</span>  </div>
+<div class="qhead">Not counted: names the subject but states no rule; text appears only in a translation, not in the master-language version</div>  <div class="qhead">document_id 7b10774b-53cf-47cf-9d3e-1307061f33c0</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Information Security Policy</b> · documents/DMS-00000443_KR-009_v2.0_en.txt · <b>L18</b> · <a href="/c/marenthal/source/7b10774b-53cf-47cf-9d3e-1307061f33c0?ls=18&amp;le=18" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip ">Current</span><span class="chip info">Only in translation</span>  </div>
+<div class="qhead">Not counted: names the subject but states no rule; text appears only in a translation, not in the master-language version</div>  <div class="qhead">document_id 7b10774b-53cf-47cf-9d3e-1307061f33c0</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Informationssicherheitsrichtlinie</b> · documents/DMS-00000420_KR-009_v2.0_de.txt · <b>L18–19</b> · <a href="/c/marenthal/source/90daa5ae-2259-4edb-a856-5c3dc4c0e050?ls=18&amp;le=19" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip ">Current</span>  </div>
+<div class="qhead">Not counted: names the subject but states no rule</div>  <div class="qhead">document_id 90daa5ae-2259-4edb-a856-5c3dc4c0e050</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Informationssicherheitsrichtlinie</b> · documents/DMS-00000205_KR-009_v1.1_de.txt · <b>L18–19</b> · <a href="/c/marenthal/source/1ecfcb5c-707a-43b9-a526-f448fbfa00e7?ls=18&amp;le=19" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip sup">Superseded</span>  </div>
+<div class="qhead">Not counted: names the subject but states no rule; document version is superseded</div>  <div class="qhead">document_id 1ecfcb5c-707a-43b9-a526-f448fbfa00e7</div>
+</div>
+  </details>
+
+<div class="next"><b>Next step:</b> Add to KR-009 v2.0 (DE master, DMS-00000420), section “Pflichten und Zuständigkeiten”: a section that defines the IT security concept: systems covered, protection measures, responsibilities, approval and review cycle.</div>
+  <div class="review" data-key="04-P02-1/security_concept" data-duty="04-P02-1" data-element="security_concept">
+    <div class="cur"><b>Reviewer decision:</b> <span class="curtxt muted">not reviewed yet</span></div>
+    <textarea rows="2" placeholder="Comment / rationale (optional)"></textarea>
+    <div class="row">
+      <button data-d="confirmed">Confirm</button>
+      <button data-d="rejected">Reject</button>
+      <button data-d="needs_clarification">Needs clarification</button>
+    </div>
+    <details class="hist"><summary>History</summary><div class="histbody muted">No decisions yet.</div></details>
+  </div>
+</div>
+</div>
+    <div class="panel" id="04-P02-1-ev"><div class="el">
+  <div class="elhead"><h3>Information-security risk analysis</h3></div>
+  <div class="kv">
+    <div>Implementation</div><div><span class="badge warn">Mixed: 4 record(s) done/active, 3 open; 7 overdue as of the source&#39;s date</span></div>
+    <div>Effectiveness</div><div><span class="badge muted">Not demonstrated – execution summaries only, no test protocol (4 control(s) with execution summaries; 1 run(s) partly effective)</span></div>
+  </div>
+
+  <table>
+    <tr><th>Source</th><th>Record</th><th>Next due</th></tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=39&amp;le=39" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L39</small></td>
+      <td>
+        <b>Phishing-Simulation und Sensibilisierung</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: präventiv · Interval: halbjährlich · Risk covered: Verschlüsselungsangriff auf ERP und Produktionssteuerung · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 2 runs: wirksam 2 · Last run: 2025-12-04</small>
+      </td>
+      <td>
+        Next due 2026-05-21 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(172 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=34&amp;le=34" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L34</small></td>
+      <td>
+        <b>Notfallhandbuch und Übung Wiederanlauf</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: präventiv · Interval: jährlich · Risk covered: Ausfall von ERP oder Prozessleitsystem · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 1 runs: teilweise wirksam 1 · Last run: 2025-10-13</small>
+      </td>
+      <td>
+        Next due 2026-10-12 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(28 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=35&amp;le=35" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L35</small></td>
+      <td>
+        <b>Offline-Datensicherung und Wiederherstellungstest</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: präventiv · Interval: quartalsweise · Risk covered: Verschlüsselungsangriff auf ERP und Produktionssteuerung · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 5 runs: wirksam 4, offen 1 · Last run: 2025-10-17</small>
+      </td>
+      <td>
+        Next due 2026-01-21 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(292 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=38&amp;le=38" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L38</small></td>
+      <td>
+        <b>Patch- und Schwachstellenmanagement für Server</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: IT-Kontrolle · Interval: monatlich · Risk covered: Verschlüsselungsangriff auf ERP und Produktionssteuerung · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 14 runs: wirksam 12, offen 2 · Last run: 2025-12-12</small>
+      </td>
+      <td>
+        Next due 2026-01-15 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(298 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/6411bacb-3da8-40b6-9f1e-8c88d070571f?ls=82&amp;le=82" target="_blank" title="Open the source with this location highlighted">Register of legal and internal obligations - Marenthal Chemie AG</a><br><small>L82</small></td>
+      <td>
+        <b>Informationssicherheitsrisikoanalyse jährlich durchführen</b> <span class="badge warn">offen</span><br>
+        <small>Description: Risiken für ERP, Produktionssteuerung und Büro-IT bewerten; Maßnahmenplan fortschreiben. · Legal area: Informationssicherheit · Source: BSI-Gesetz; ISO/IEC 27001 · Source type: Gesetz · Country: DE · Applicability: anwendbar · Due type: wiederkehrend · Interval (months): 12 · Last review: 2025-01-06</small>
+      </td>
+      <td>
+        Next due 2026-01-01 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(312 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/3631238e-9c52-4491-a8bf-208bc3bc29e3?ls=12&amp;le=12" target="_blank" title="Open the source with this location highlighted">Risk register - Marenthal Chemie AG</a><br><small>L12</small></td>
+      <td>
+        <b>Ausfall von ERP oder Prozessleitsystem</b> <span class="badge warn">in Behandlung</span><br>
+        <small>Category: Informationssicherheit · Description: Längerer Systemausfall mit Produktions- und Lieferunterbrechung. · Likelihood (net): 1 · Impact (net): 3 · Score (net): 3 · Last review: 2025-03-25</small>
+      </td>
+      <td>
+        Next review 2026-03-20 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(234 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/3631238e-9c52-4491-a8bf-208bc3bc29e3?ls=36&amp;le=36" target="_blank" title="Open the source with this location highlighted">Risk register - Marenthal Chemie AG</a><br><small>L36</small></td>
+      <td>
+        <b>Verschlüsselungsangriff auf ERP und Produktionssteuerung</b> <span class="badge warn">in Behandlung</span><br>
+        <small>Category: Informationssicherheit · Description: Ausfall der Auftragsabwicklung und Steuerungssysteme durch Schadsoftware. · Likelihood (net): 3 · Impact (net): 5 · Score (net): 15 · Last review: 2025-10-06</small>
+      </td>
+      <td>
+        Next review 2026-04-07 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(216 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+  </table>
+
+  <details>
+    <summary>Records matched by terms but with another topic (5, not used)</summary>
+    <ul>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L63: | Zweitquellen-Qualifizierung für kritische Rohstoffe | präventiv | jährlich | Ausfall eines Einzelquellenlieferanten für Schlüsselrohstoffe <small>(Topic does not fit the duty: via risk &#39;Ausfall eines Einzelquellenlieferanten für Schlüsselrohstoffe&#39; (risk register L11): Lieferkette)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L45: | Risikobasierte Lieferantenaudits | detektiv | jährlich | Intransparente Lieferketten bei Pigmenten und Zusatzstoffen | Lieferkettenrisikoa <small>(Topic does not fit the duty: via risk &#39;Intransparente Lieferketten bei Pigmenten und Zusatzstoffen&#39; (risk register L27): Lieferkette)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L49: | Selbstauskunft und Kodex der Schlüssellieferanten | präventiv | jährlich | Intransparente Lieferketten bei Pigmenten und Zusatzstoffen | L <small>(Topic does not fit the duty: via risk &#39;Intransparente Lieferketten bei Pigmenten und Zusatzstoffen&#39; (risk register L27): Lieferkette)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L89: | Korruptionsrisikoanalyse jährlich durchführen | Risiken in Vertrieb, Einkauf und Behördenkontakten bewerten, Gegenmaßnahmen dokumentieren. <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Korruptionsprävention)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L94: | Lieferkettenrisikoanalyse jährlich durchführen | Menschenrechtliche und umweltbezogene Risiken bei unmittelbaren Zulieferern bewerten. | L <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Lieferkettensorgfaltspflichten)</small></li>
+    </ul>
+  </details>
+</div>
+<div class="el">
+  <div class="elhead"><h3>IT security concept / ISMS</h3></div>
+  <div class="kv">
+    <div>Implementation</div><div><span class="badge warn">Mixed: 2 record(s) done/active, 3 open; 3 overdue as of the source&#39;s date</span></div>
+    <div>Effectiveness</div><div><span class="badge muted">Not demonstrated – no test or execution evidence in the sources</span></div>
+  </div>
+
+  <table>
+    <tr><th>Source</th><th>Record</th><th>Next due</th></tr>
+    <tr>
+      <td><a href="/c/marenthal/source/50e24e45-a285-4245-a650-2bfd0289550d?ls=23&amp;le=23" target="_blank" title="Open the source with this location highlighted">Nachweis: Notfall- und Wiederanlaufübung der IT durchführen</a><br><small>L23</small></td>
+      <td>
+<span class="badge ok">erfüllt</span>        <span class="quote" style="display:block">quelle: Konzernrichtlinie Informationssicherheit</span>
+      </td>
+      <td>
+–      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/company_profile.json?path=.certifications%5B13%5D" target="_blank" title="Open the source with this location highlighted">company_profile.json</a><br><small>.certifications[13]</small></td>
+      <td>
+        <span class="quote" style="display:block">Zertifikat Informationssicherheit ISO/IEC 27001:2022 · Geltungsbereich: Geltungsbereich: Rechenzentrum und Entwicklungssysteme Frankfurt. · Stelle: TÜV Rheinland · Nummer: IS-FRA-48211 [Q001 · belegt · hoch · Stichtag 2026-11-09]</span>
+<span class="chip info">Entity not stated</span>      </td>
+      <td>
+–      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/113d04c3-a99d-431a-a860-7b33f69e7e53?ls=17&amp;le=17" target="_blank" title="Open the source with this location highlighted">Register of compliance roles and responsibilities - Marenthal Chemie AG</a><br><small>L17</small></td>
+      <td>
+        <b>Informationssicherheitsbeauftragter</b><br>
+        <small>Area: Informationssicherheit · Valid from: 2021-05-25 · Deputy appointed: yes</small>
+      </td>
+      <td>
+–      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/6411bacb-3da8-40b6-9f1e-8c88d070571f?ls=82&amp;le=82" target="_blank" title="Open the source with this location highlighted">Register of legal and internal obligations - Marenthal Chemie AG</a><br><small>L82</small></td>
+      <td>
+        <b>Informationssicherheitsrisikoanalyse jährlich durchführen</b> <span class="badge warn">offen</span><br>
+        <small>Description: Risiken für ERP, Produktionssteuerung und Büro-IT bewerten; Maßnahmenplan fortschreiben. · Legal area: Informationssicherheit · Source: BSI-Gesetz; ISO/IEC 27001 · Source type: Gesetz · Country: DE · Applicability: anwendbar · Due type: wiederkehrend · Interval (months): 12 · Last review: 2025-01-06</small>
+      </td>
+      <td>
+        Next due 2026-01-01 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(312 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/6411bacb-3da8-40b6-9f1e-8c88d070571f?ls=99&amp;le=99" target="_blank" title="Open the source with this location highlighted">Register of legal and internal obligations - Marenthal Chemie AG</a><br><small>L99</small></td>
+      <td>
+        <b>Notfall- und Wiederanlaufübung der IT durchführen</b> <span class="badge ok">erfüllt</span><br>
+        <small>Description: Wiederherstellung kritischer Systeme (ERP, Prozessleitsystem) üben und Ergebnisse dokumentieren. · Legal area: Informationssicherheit · Source: Konzernrichtlinie Informationssicherheit · Source type: Konzernrichtlinie · Country: DE · Applicability: anwendbar · Due type: wiederkehrend · Interval (months): 12 · Last review: 2025-12-23</small>
+      </td>
+      <td>
+        Next due 2026-12-18      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/3631238e-9c52-4491-a8bf-208bc3bc29e3?ls=12&amp;le=12" target="_blank" title="Open the source with this location highlighted">Risk register - Marenthal Chemie AG</a><br><small>L12</small></td>
+      <td>
+        <b>Ausfall von ERP oder Prozessleitsystem</b> <span class="badge warn">in Behandlung</span><br>
+        <small>Category: Informationssicherheit · Description: Längerer Systemausfall mit Produktions- und Lieferunterbrechung. · Likelihood (net): 1 · Impact (net): 3 · Score (net): 3 · Last review: 2025-03-25</small>
+      </td>
+      <td>
+        Next review 2026-03-20 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(234 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/3631238e-9c52-4491-a8bf-208bc3bc29e3?ls=36&amp;le=36" target="_blank" title="Open the source with this location highlighted">Risk register - Marenthal Chemie AG</a><br><small>L36</small></td>
+      <td>
+        <b>Verschlüsselungsangriff auf ERP und Produktionssteuerung</b> <span class="badge warn">in Behandlung</span><br>
+        <small>Category: Informationssicherheit · Description: Ausfall der Auftragsabwicklung und Steuerungssysteme durch Schadsoftware. · Likelihood (net): 3 · Impact (net): 5 · Score (net): 15 · Last review: 2025-10-06</small>
+      </td>
+      <td>
+        Next review 2026-04-07 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(216 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/a2de55c4-b732-4488-ad33-6f085ed94476?ls=182&amp;le=182" target="_blank" title="Open the source with this location highlighted">Faktenkatalog</a><br><small>L182</small></td>
+      <td>
+        <span class="quote" style="display:block">- **Antwort:** AEO-Bewilligung (AEOC) (ST-DE-FRA); Teilnahmebestätigung Responsible Care (ST-DE-MRL); Zertifikat Arbeitsschutzmanagement ISO 45001:2018 (ST-DE-MRL); Zertifikat Arbeitsschutzmanagement ISO 45001:2018 (ST-FR-SFO); Zertifikat Arbeitsschutzmanagement ISO 45001:2018 (ST-US-BAY); Zertifikat Informationssicherheit ISO/IEC 27001:2022 (ST-DE-FRA); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-CN-CZX); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-DE-BTF); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-DE-MRL); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-FR-SFO); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-US-BAY); Zertifikat Umweltmanagement ISO 14001:2015 (ST-CN-CZX); Zertifikat Umweltmanagement ISO 14001:2015 (ST-DE-BTF); Zertifikat Umweltmanagement ISO 14001:2015 (ST-DE-MRL); Zertifikat Umweltmanagement ISO 14001:2015 (ST-FR-SFO); Zertifikat Umweltmanagement ISO 14001:2015 (ST-US-BAY).</span>
+<span class="chip info">Entity not stated</span>      </td>
+      <td>
+–      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/a2de55c4-b732-4488-ad33-6f085ed94476?ls=183&amp;le=183" target="_blank" title="Open the source with this location highlighted">Faktenkatalog</a><br><small>L183</small></td>
+      <td>
+        <span class="quote" style="display:block">- **Ausfuehrlich:** AEO-Bewilligung (AEOC) (ST-DE-FRA); Teilnahmebestätigung Responsible Care (ST-DE-MRL); Zertifikat Arbeitsschutzmanagement ISO 45001:2018 (ST-DE-MRL); Zertifikat Arbeitsschutzmanagement ISO 45001:2018 (ST-FR-SFO); Zertifikat Arbeitsschutzmanagement ISO 45001:2018 (ST-US-BAY); Zertifikat Informationssicherheit ISO/IEC 27001:2022 (ST-DE-FRA); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-CN-CZX); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-DE-BTF); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-DE-MRL); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-FR-SFO); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-US-BAY); Zertifikat Umweltmanagement ISO 14001:2015 (ST-CN-CZX); Zertifikat Umweltmanagement ISO 14001:2015 (ST-DE-BTF); Zertifikat Umweltmanagement ISO 14001:2015 (ST-DE-MRL); Zertifikat Umweltmanagement ISO 14001:2015 (ST-FR-SFO); Zertifikat Umweltmanagement ISO 14001:2015 (ST-US-BAY).</span>
+<span class="chip info">Entity not stated</span>      </td>
+      <td>
+–      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/company_profile.json?path=.certifications%5B16%5D" target="_blank" title="Open the source with this location highlighted">company_profile.json</a><br><small>.certifications[16]</small></td>
+      <td>
+        <span class="quote" style="display:block">Welche Managementsystem-Zertifikate hat die Marenthal-Gruppe? AEO-Bewilligung (AEOC) (ST-DE-FRA); Teilnahmebestätigung Responsible Care (ST-DE-MRL); Zertifikat Arbeitsschutzmanagement ISO 45001:2018 (ST-DE-MRL); Zertifikat Arbeitsschutzmanagement ISO 45001:2018 (ST-FR-SFO); Zertifikat Arbeitsschutzmanagement ISO 45001:2018 (ST-US-BAY); Zertifikat Informationssicherheit ISO/IEC 27001:2022 (ST-DE-FRA); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-CN-CZX); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-DE-BTF); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-DE-MRL); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-FR-SFO); Zertifikat Qualitätsmanagement ISO 9001:2015 (ST-US-BAY); Zertifikat Umweltmanagement ISO 14001:2015 (ST-CN-CZX); Zertifikat Umweltmanagement ISO 14001:2015 (ST-DE-BTF); Zertifikat Umweltmanagement ISO 14001:2015 (ST-DE-MRL); Zertifikat Umweltmanagement ISO 14001:2015 (ST-FR-SFO); Zertifikat Umweltmanagement ISO 14001:2015 (ST-US-BAY). [Q001 · belegt · hoch · Stichtag 2026-11-09]</span>
+<span class="chip info">Entity not stated</span>      </td>
+      <td>
+–      </td>
+    </tr>
+  </table>
+
+</div>
+<p class="muted"><small>Records describe implementation, not policy text. Per 17-AUS-17, register summaries such as “erfüllt” or
+“wirksam” are source metadata and do not prove effectiveness of the duty; missing proof means “not demonstrated”, only a
+proven failure means “ineffective”.</small></p></div>
+    <div class="panel" id="04-P02-1-q"><div class="el">
+  <p class="muted" title="Verbatim from the legal input (04-P02-1)"><small>
+    <b>Expected evidence:</b> Dokumentversion, Freigabe, Risikoliste, Prüfdatum; Unbekannt möglich.<br>
+    <b>Evidence question:</b> Welche freigegebene Risikoanalyse und welches IT-Sicherheitskonzept liegen vor, wann wurden sie überprüft?
+  </small></p>
+</div>
+<div class="el">
+  <h3>Information-security risk analysis</h3>
+  <p>
+    No policy rule found (No supporting passage found).
+  </p>
+  <h4>Related open questions in the company's digital twin</h4>
+  <ul>
+    <li><b>#195</b> Is there an information security management system, and is it certified (ISO 27001, BSI)? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+  </ul>
+</div>
+<div class="el">
+  <h3>IT security concept / ISMS</h3>
+  <p>
+    No policy rule found (Topic only – no rule stated).
+  </p>
+  <h4>Related open questions in the company's digital twin</h4>
+  <ul>
+    <li><b>#195</b> Is there an information security management system, and is it certified (ISO 27001, BSI)? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#262</b> Which management-system certificates does the company hold (ISO 9001, 14001, 45001, 50001, 27001), and for which scope? <small>(governance, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#308</b> Which specific security protocols are implemented for the Rechenzentrum in Frankfurt as part of the ISO 27001 certification? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#350</b> Which specific backup frequency is applied to the development systems in Frankfurt under ISO 27001? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+  </ul>
+</div>
+</div>
+    <div class="panel" id="04-P02-1-src"><details>
+  <summary>Information-security risk analysis – search terms: *risikoanalyse*, risikobewertung*, informationssicherheitsrisik*, risk analysis, risk assessment
+    <span class="muted"><small>(3 of 18 sources with hits)</small></span></summary>
+
+  <table>
+    <tr><th>Source</th><th>Kind</th><th>Hits</th><th>Outcome</th></tr>
+    <tr>
+      <td>Register of internal controls and their execution - Marenthal Chemie AG<br><small>documents/REG_Internal_Controls_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>7</td>
+      <td>Scope mismatch, Supporting record</td>
+    </tr>
+    <tr>
+      <td>Register of legal and internal obligations - Marenthal Chemie AG<br><small>documents/REG_Legal_Obligations_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>3</td>
+      <td>Scope mismatch, Supporting record</td>
+    </tr>
+    <tr>
+      <td>Risk register - Marenthal Chemie AG<br><small>documents/REG_Risk_Register_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>2</td>
+      <td>Supporting record</td>
+    </tr>
+  </table>
+
+
+  <details>
+    <summary class="muted"><small>15 other sources without hits</small></summary>
+    <p class="muted"><small>company_profile.json; DMS-00000205_KR-009_v1.1_de.txt; DMS-00000260_KR-017_v1.1_de.txt; DMS-00000300_SDB-10564-DE_de_v8.3.txt; DMS-00000420_KR-009_v2.0_de.txt; DMS-00000443_KR-009_v2.0_en.txt; DMS-00000671_KR-017_v2.0_de.txt; DMS-00001406_V000074_Nachweis.txt; REG_Compliance_Roles_CMS-DE-01.txt; REG_Incidents_CMS-DE-01.txt; Zwilling — Faktenkatalog.txt; Zwilling — Gesellschaften.txt; Zwilling — Produkte.txt; legal_entities.csv; twin_questions.csv</small></p>
+  </details>
+</details>
+<details>
+  <summary>IT security concept / ISMS – search terms: sicherheitskonzept*, it-sicherheitskonzept*, isms, informationssicherheitsmanagement*, security concept, 27001, informationssicherheit, information security
+    <span class="muted"><small>(9 of 18 sources with hits)</small></span></summary>
+
+  <table>
+    <tr><th>Source</th><th>Kind</th><th>Hits</th><th>Outcome</th></tr>
+    <tr>
+      <td>company_profile.json<br><small>company_profile.json</small></td>
+      <td>profile</td>
+      <td>2</td>
+      <td>Supporting record</td>
+    </tr>
+    <tr>
+      <td>Information Security Policy<br><small>documents/DMS-00000443_KR-009_v2.0_en.txt</small></td>
+      <td>policy</td>
+      <td>2</td>
+      <td>Topic only</td>
+    </tr>
+    <tr>
+      <td>Register of legal and internal obligations - Marenthal Chemie AG<br><small>documents/REG_Legal_Obligations_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>2</td>
+      <td>Supporting record</td>
+    </tr>
+    <tr>
+      <td>Risk register - Marenthal Chemie AG<br><small>documents/REG_Risk_Register_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>2</td>
+      <td>Supporting record</td>
+    </tr>
+    <tr>
+      <td>Faktenkatalog<br><small>documents/Zwilling — Faktenkatalog.txt</small></td>
+      <td>twin</td>
+      <td>2</td>
+      <td>Supporting record</td>
+    </tr>
+    <tr>
+      <td>Informationssicherheitsrichtlinie<br><small>documents/DMS-00000205_KR-009_v1.1_de.txt</small></td>
+      <td>policy</td>
+      <td>1</td>
+      <td>Topic only</td>
+    </tr>
+    <tr>
+      <td>Informationssicherheitsrichtlinie<br><small>documents/DMS-00000420_KR-009_v2.0_de.txt</small></td>
+      <td>policy</td>
+      <td>1</td>
+      <td>Topic only</td>
+    </tr>
+    <tr>
+      <td>Nachweis: Notfall- und Wiederanlaufübung der IT durchführen<br><small>documents/DMS-00001406_V000074_Nachweis.txt</small></td>
+      <td>evidence_record</td>
+      <td>1</td>
+      <td>Supporting record</td>
+    </tr>
+    <tr>
+      <td>Register of compliance roles and responsibilities - Marenthal Chemie AG<br><small>documents/REG_Compliance_Roles_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>1</td>
+      <td>Supporting record</td>
+    </tr>
+  </table>
+
+
+  <details>
+    <summary class="muted"><small>9 other sources without hits</small></summary>
+    <p class="muted"><small>DMS-00000260_KR-017_v1.1_de.txt; DMS-00000300_SDB-10564-DE_de_v8.3.txt; DMS-00000671_KR-017_v2.0_de.txt; REG_Incidents_CMS-DE-01.txt; REG_Internal_Controls_CMS-DE-01.txt; Zwilling — Gesellschaften.txt; Zwilling — Produkte.txt; legal_entities.csv; twin_questions.csv</small></p>
+  </details>
+</details>
+</div>
+  </div>
+</section><section class="card duty fold" id="duty-04-P02-2">
+  <div class="elhead">
+    <h2 style="margin:0"><a href="legal/04-P02-2" target="_blank" title="Open the legal duty">04-P02-2 · Vorfallbewältigung</a></h2>
+    <span class="badge bad">No supporting passage found</span>
+    <button class="toggle" aria-expanded="true" aria-label="Collapse" title="Collapse">▾</button>
+  </div>
+  <div class="dbody">
+    <div class="tabs">
+      <button class="on" data-tab="04-P02-2-map">Mapping</button>
+      <button data-tab="04-P02-2-ev">Evidence</button>
+      <button data-tab="04-P02-2-q">Missing information</button>
+      <button data-tab="04-P02-2-src">Sources checked</button>
+    </div>
+    <div class="panel on" id="04-P02-2-map">
+
+<div class="el" id="el-04-P02-2-detection_reporting">
+  <div class="elhead">
+    <h3>Detection and internal reporting of security incidents</h3>
+    <span class="badge bad">No supporting passage found</span>
+    <span class="proposal" data-key="04-P02-2/detection_reporting" title="Generated by the tool; not yet reviewed">System proposal</span>
+    
+  </div>
+  <p>No current, master-language policy passage in the sources reviewed states a rule for detection and internal reporting of security incidents.</p>
+
+
+
+<div class="next"><b>Next step:</b> Add to KR-009 v2.0 (DE master, DMS-00000420), section “Pflichten und Zuständigkeiten”: a section on detecting and reporting IT security incidents: what counts as an incident, reporting channel, responsible role and deadlines.</div>
+  <div class="review" data-key="04-P02-2/detection_reporting" data-duty="04-P02-2" data-element="detection_reporting">
+    <div class="cur"><b>Reviewer decision:</b> <span class="curtxt muted">not reviewed yet</span></div>
+    <textarea rows="2" placeholder="Comment / rationale (optional)"></textarea>
+    <div class="row">
+      <button data-d="confirmed">Confirm</button>
+      <button data-d="rejected">Reject</button>
+      <button data-d="needs_clarification">Needs clarification</button>
+    </div>
+    <details class="hist"><summary>History</summary><div class="histbody muted">No decisions yet.</div></details>
+  </div>
+</div>
+<div class="el" id="el-04-P02-2-escalation_containment">
+  <div class="elhead">
+    <h3>Escalation and containment</h3>
+    <span class="badge bad">No supporting passage found</span>
+    <span class="proposal" data-key="04-P02-2/escalation_containment" title="Generated by the tool; not yet reviewed">System proposal</span>
+    <span class="chip mis">Wrong-topic match</span>
+  </div>
+  <p>No current, master-language policy passage in the sources reviewed states a rule for escalation and containment. 6 policy passages matched; none counted, 6 not counted (6 on an unrelated topic). KR-017 “Notfall- und Krisenmanagement” (L22–23, L24–25, L26–27; same text in superseded v1.1) matched the search terms, but its topic is EHS, not information security; not counted.</p>
+
+
+  <details>
+    <summary>Checked but not counted (6)</summary>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000671_KR-017_v2.0_de.txt · <b>L22–23</b> · <a href="/c/marenthal/source/248b4908-0e6d-47b9-aafa-fe12edba0cc8?ls=22&amp;le=23" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip ">Current</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty</div>  <div class="qhead">document_id 248b4908-0e6d-47b9-aafa-fe12edba0cc8</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000260_KR-017_v1.1_de.txt · <b>L22–23</b> · <a href="/c/marenthal/source/e60c72da-968b-44e9-b4d8-926fce7197cb?ls=22&amp;le=23" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip sup">Superseded</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty; document version is superseded</div>  <div class="qhead">document_id e60c72da-968b-44e9-b4d8-926fce7197cb</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000671_KR-017_v2.0_de.txt · <b>L24–25</b> · <a href="/c/marenthal/source/248b4908-0e6d-47b9-aafa-fe12edba0cc8?ls=24&amp;le=25" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip ">Current</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty</div>  <div class="qhead">document_id 248b4908-0e6d-47b9-aafa-fe12edba0cc8</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000260_KR-017_v1.1_de.txt · <b>L24–25</b> · <a href="/c/marenthal/source/e60c72da-968b-44e9-b4d8-926fce7197cb?ls=24&amp;le=25" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip sup">Superseded</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty; document version is superseded</div>  <div class="qhead">document_id e60c72da-968b-44e9-b4d8-926fce7197cb</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000671_KR-017_v2.0_de.txt · <b>L26–27</b> · <a href="/c/marenthal/source/248b4908-0e6d-47b9-aafa-fe12edba0cc8?ls=26&amp;le=27" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip ">Current</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty</div>  <div class="qhead">document_id 248b4908-0e6d-47b9-aafa-fe12edba0cc8</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000260_KR-017_v1.1_de.txt · <b>L26–27</b> · <a href="/c/marenthal/source/e60c72da-968b-44e9-b4d8-926fce7197cb?ls=26&amp;le=27" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip sup">Superseded</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty; document version is superseded</div>  <div class="qhead">document_id e60c72da-968b-44e9-b4d8-926fce7197cb</div>
+</div>
+  </details>
+
+<div class="next"><b>Next step:</b> Add to KR-009 v2.0 (DE master, DMS-00000420), section “Pflichten und Zuständigkeiten”: a section on escalation levels and containment steps for IT security incidents, with decision rights.</div>
+  <div class="review" data-key="04-P02-2/escalation_containment" data-duty="04-P02-2" data-element="escalation_containment">
+    <div class="cur"><b>Reviewer decision:</b> <span class="curtxt muted">not reviewed yet</span></div>
+    <textarea rows="2" placeholder="Comment / rationale (optional)"></textarea>
+    <div class="row">
+      <button data-d="confirmed">Confirm</button>
+      <button data-d="rejected">Reject</button>
+      <button data-d="needs_clarification">Needs clarification</button>
+    </div>
+    <details class="hist"><summary>History</summary><div class="histbody muted">No decisions yet.</div></details>
+  </div>
+</div>
+<div class="el" id="el-04-P02-2-incident_test">
+  <div class="elhead">
+    <h3>Practical test of the incident procedures</h3>
+    <span class="badge bad">No supporting passage found</span>
+    <span class="proposal" data-key="04-P02-2/incident_test" title="Generated by the tool; not yet reviewed">System proposal</span>
+    <span class="chip mis">Wrong-topic match</span><span class="chip info">Only in translation</span>
+  </div>
+  <p>No current, master-language policy passage in the sources reviewed states a rule for practical test of the incident procedures. 9 policy passages matched; none counted, 9 not counted (8 on an unrelated topic). The EN version KR-009 v2.0 (DMS-00000443, L22–23) contains a matching rule whose text does not appear in the DE master. The master language is authoritative, so it is not counted; it is flagged as a language difference. KR-017 “Notfall- und Krisenmanagement” (L30, L33, L28–29, L31–32; same text in superseded v1.1) matched the search terms, but its topic is EHS, not information security; not counted. 5 supporting record entries found (registers / evidence). They describe implementation, not policy text, and do not prove effectiveness on their own.</p>
+
+
+  <details>
+    <summary>Checked but not counted (9)</summary>
+<div class="qcard">
+  <div class="qhead">
+    <b>Information Security Policy</b> · documents/DMS-00000443_KR-009_v2.0_en.txt · <b>L22–23</b> · <a href="/c/marenthal/source/7b10774b-53cf-47cf-9d3e-1307061f33c0?ls=22&amp;le=23" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip ">Current</span><span class="chip info">Only in translation</span>  </div>
+  <div class="qhead">Facets present: Action required, Documentation / evidence · missing: Frequency / interval</div>
+<div class="qhead">Not counted: text appears only in a translation, not in the master-language version</div>  <div class="qhead">document_id 7b10774b-53cf-47cf-9d3e-1307061f33c0</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000671_KR-017_v2.0_de.txt · <b>L30</b> · <a href="/c/marenthal/source/248b4908-0e6d-47b9-aafa-fe12edba0cc8?ls=30&amp;le=30" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip ">Current</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty</div>  <div class="qhead">document_id 248b4908-0e6d-47b9-aafa-fe12edba0cc8</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000671_KR-017_v2.0_de.txt · <b>L33</b> · <a href="/c/marenthal/source/248b4908-0e6d-47b9-aafa-fe12edba0cc8?ls=33&amp;le=33" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip ">Current</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty</div>  <div class="qhead">document_id 248b4908-0e6d-47b9-aafa-fe12edba0cc8</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000260_KR-017_v1.1_de.txt · <b>L30</b> · <a href="/c/marenthal/source/e60c72da-968b-44e9-b4d8-926fce7197cb?ls=30&amp;le=30" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip sup">Superseded</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty; document version is superseded</div>  <div class="qhead">document_id e60c72da-968b-44e9-b4d8-926fce7197cb</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000260_KR-017_v1.1_de.txt · <b>L33</b> · <a href="/c/marenthal/source/e60c72da-968b-44e9-b4d8-926fce7197cb?ls=33&amp;le=33" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip sup">Superseded</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty; document version is superseded</div>  <div class="qhead">document_id e60c72da-968b-44e9-b4d8-926fce7197cb</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000671_KR-017_v2.0_de.txt · <b>L28–29</b> · <a href="/c/marenthal/source/248b4908-0e6d-47b9-aafa-fe12edba0cc8?ls=28&amp;le=29" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip ">Current</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty</div>  <div class="qhead">document_id 248b4908-0e6d-47b9-aafa-fe12edba0cc8</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000260_KR-017_v1.1_de.txt · <b>L28–29</b> · <a href="/c/marenthal/source/e60c72da-968b-44e9-b4d8-926fce7197cb?ls=28&amp;le=29" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip sup">Superseded</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty; document version is superseded</div>  <div class="qhead">document_id e60c72da-968b-44e9-b4d8-926fce7197cb</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000671_KR-017_v2.0_de.txt · <b>L31–32</b> · <a href="/c/marenthal/source/248b4908-0e6d-47b9-aafa-fe12edba0cc8?ls=31&amp;le=32" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip ">Current</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty</div>  <div class="qhead">document_id 248b4908-0e6d-47b9-aafa-fe12edba0cc8</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000260_KR-017_v1.1_de.txt · <b>L31–32</b> · <a href="/c/marenthal/source/e60c72da-968b-44e9-b4d8-926fce7197cb?ls=31&amp;le=32" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip sup">Superseded</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty; document version is superseded</div>  <div class="qhead">document_id e60c72da-968b-44e9-b4d8-926fce7197cb</div>
+</div>
+  </details>
+
+<div class="next"><b>Next step:</b> Add to KR-009 v2.0 (DE master, DMS-00000420), section “Pflichten und Zuständigkeiten”: a rule requiring regular practical tests of the incident procedures with a documented test protocol.</div>
+  <div class="review" data-key="04-P02-2/incident_test" data-duty="04-P02-2" data-element="incident_test">
+    <div class="cur"><b>Reviewer decision:</b> <span class="curtxt muted">not reviewed yet</span></div>
+    <textarea rows="2" placeholder="Comment / rationale (optional)"></textarea>
+    <div class="row">
+      <button data-d="confirmed">Confirm</button>
+      <button data-d="rejected">Reject</button>
+      <button data-d="needs_clarification">Needs clarification</button>
+    </div>
+    <details class="hist"><summary>History</summary><div class="histbody muted">No decisions yet.</div></details>
+  </div>
+</div>
+</div>
+    <div class="panel" id="04-P02-2-ev"><div class="el">
+  <div class="elhead"><h3>Detection and internal reporting of security incidents</h3></div>
+  <div class="kv">
+    <div>Implementation</div><div><span class="badge muted">Unknown – no implementation record found</span></div>
+    <div>Effectiveness</div><div><span class="badge muted">Not demonstrated – no test or execution evidence in the sources</span></div>
+  </div>
+
+  <p class="muted">No supporting record found in the sources reviewed.</p>
+
+  <details>
+    <summary>Records matched by terms but with another topic (1, not used)</summary>
+    <ul>
+      <li>documents/REG_Incidents_CMS-DE-01.txt L11: | 2025-10-18 | Umweltvorfall | gering | Werk Bitterfeld | Am Standort Bitterfeld-Wolfen wurde ein Umweltvorfall geringen Schweregrades festg <small>(Topic does not fit the duty: column &#39;Type&#39; = Umweltvorfall)</small></li>
+    </ul>
+  </details>
+</div>
+<div class="el">
+  <div class="elhead"><h3>Escalation and containment</h3></div>
+  <div class="kv">
+    <div>Implementation</div><div><span class="badge muted">Unknown – no implementation record found</span></div>
+    <div>Effectiveness</div><div><span class="badge muted">Not demonstrated – no test or execution evidence in the sources</span></div>
+  </div>
+
+  <p class="muted">No supporting record found in the sources reviewed.</p>
+
+  <details>
+    <summary>Records matched by terms but with another topic (4, not used)</summary>
+    <ul>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L17: | Alarmierung der Behörden und Notfallkontakte rund um die Uhr prüfen | Erreichbarkeit und Alarmketten halbjährlich testen. | Störfallrecht  <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Störfallrecht und Anlagensicherheit)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L44: | Datenschutzverletzungen innerhalb von 72 Stunden melden | Meldeprozess mit Eskalation an den Datenschutzbeauftragten vorhalten und üben. | <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Datenschutz)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L109: | Schichtleiter zum Notfallmanagement schulen – Marl | Schichtleiter in Alarmierung und ersten Maßnahmen unterweisen. | Störfallrecht und An <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Störfallrecht und Anlagensicherheit)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L108: | Schichtleiter zum Notfallmanagement schulen – Bitterfeld-Wolfen | Schichtleiter in Alarmierung und ersten Maßnahmen unterweisen. | Störfal <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Störfallrecht und Anlagensicherheit)</small></li>
+    </ul>
+  </details>
+</div>
+<div class="el">
+  <div class="elhead"><h3>Practical test of the incident procedures</h3></div>
+  <div class="kv">
+    <div>Implementation</div><div><span class="badge ok">Record of implementation exists (4 done/active); 2 overdue as of the source&#39;s date</span></div>
+    <div>Effectiveness</div><div><span class="badge muted">Not demonstrated – execution summaries only, no test protocol (2 control(s) with execution summaries; 1 run(s) partly effective)</span></div>
+  </div>
+
+  <table>
+    <tr><th>Source</th><th>Record</th><th>Next due</th></tr>
+    <tr>
+      <td><a href="/c/marenthal/source/50e24e45-a285-4245-a650-2bfd0289550d?ls=20&amp;le=20" target="_blank" title="Open the source with this location highlighted">Nachweis: Notfall- und Wiederanlaufübung der IT durchführen</a><br><small>L20</small></td>
+      <td>
+<span class="badge ok">erfüllt</span>        <span class="quote" style="display:block">titel: Notfall- und Wiederanlaufübung der IT durchführen</span>
+      </td>
+      <td>
+–      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/50e24e45-a285-4245-a650-2bfd0289550d?ls=3&amp;le=4" target="_blank" title="Open the source with this location highlighted">Nachweis: Notfall- und Wiederanlaufübung der IT durchführen</a><br><small>L3–4</small></td>
+      <td>
+<span class="badge ok">erfüllt</span>        <span class="quote" style="display:block">Nachweis: Notfall- und Wiederanlaufübung der IT
+durchführen</span>
+      </td>
+      <td>
+–      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=34&amp;le=34" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L34</small></td>
+      <td>
+        <b>Notfallhandbuch und Übung Wiederanlauf</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: präventiv · Interval: jährlich · Risk covered: Ausfall von ERP oder Prozessleitsystem · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 1 runs: teilweise wirksam 1 · Last run: 2025-10-13</small>
+      </td>
+      <td>
+        Next due 2026-10-12 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(28 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/6411bacb-3da8-40b6-9f1e-8c88d070571f?ls=99&amp;le=99" target="_blank" title="Open the source with this location highlighted">Register of legal and internal obligations - Marenthal Chemie AG</a><br><small>L99</small></td>
+      <td>
+        <b>Notfall- und Wiederanlaufübung der IT durchführen</b> <span class="badge ok">erfüllt</span><br>
+        <small>Description: Wiederherstellung kritischer Systeme (ERP, Prozessleitsystem) üben und Ergebnisse dokumentieren. · Legal area: Informationssicherheit · Source: Konzernrichtlinie Informationssicherheit · Source type: Konzernrichtlinie · Country: DE · Applicability: anwendbar · Due type: wiederkehrend · Interval (months): 12 · Last review: 2025-12-23</small>
+      </td>
+      <td>
+        Next due 2026-12-18      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=35&amp;le=35" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L35</small></td>
+      <td>
+        <b>Offline-Datensicherung und Wiederherstellungstest</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: präventiv · Interval: quartalsweise · Risk covered: Verschlüsselungsangriff auf ERP und Produktionssteuerung · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 5 runs: wirksam 4, offen 1 · Last run: 2025-10-17</small>
+      </td>
+      <td>
+        Next due 2026-01-21 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(292 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+  </table>
+
+  <details>
+    <summary>Records matched by terms but with another topic (6, not used)</summary>
+    <ul>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L58: | Evakuierungsübung durchführen – Duisburg | Jährliche Übung mit Dokumentation der Räumungszeit. | Brand- und Explosionsschutz | Konzernrich <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Brand- und Explosionsschutz)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L60: | Evakuierungsübung durchführen – Marl | Jährliche Übung mit Dokumentation der Räumungszeit. | Brand- und Explosionsschutz | Konzernrichtlin <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Brand- und Explosionsschutz)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L57: | Evakuierungsübung durchführen – Bitterfeld-Wolfen | Jährliche Übung mit Dokumentation der Räumungszeit. | Brand- und Explosionsschutz | Ko <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Brand- und Explosionsschutz)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L36: | Brandschutzbegehung und Evakuierungsübung durchführen – Marl | Brandschutzmängel erfassen, Übung mit Feuerwehr abstimmen. | Brand- und Exp <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Brand- und Explosionsschutz)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L59: | Evakuierungsübung durchführen – Frankfurt am Main | Jährliche Übung mit Dokumentation der Räumungszeit. | Brand- und Explosionsschutz | Ko <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Brand- und Explosionsschutz)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L35: | Brandschutzbegehung und Evakuierungsübung durchführen – Bitterfeld-Wolfen | Brandschutzmängel erfassen, Übung mit Feuerwehr abstimmen. | B <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Brand- und Explosionsschutz)</small></li>
+    </ul>
+  </details>
+</div>
+<p class="muted"><small>Records describe implementation, not policy text. Per 17-AUS-17, register summaries such as “erfüllt” or
+“wirksam” are source metadata and do not prove effectiveness of the duty; missing proof means “not demonstrated”, only a
+proven failure means “ineffective”.</small></p></div>
+    <div class="panel" id="04-P02-2-q"><div class="el">
+  <p class="muted" title="Verbatim from the legal input (04-P02-2)"><small>
+    <b>Expected evidence:</b> Ablaufplan, Einsatz-/Testprotokoll, Verantwortliche; Unbekannt möglich.<br>
+    <b>Evidence question:</b> Welche Erkennungs-, Eskalations-, Eindämmungs- und Wiederherstellungsabläufe wurden zuletzt praktisch getestet?
+  </small></p>
+</div>
+<div class="el">
+  <h3>Detection and internal reporting of security incidents</h3>
+  <p>
+    No policy rule found (No supporting passage found).
+  </p>
+  <h4>Related open questions in the company's digital twin</h4>
+  <ul>
+    <li><b>#196</b> Who must be notified within what deadline when the company suffers a security incident? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#197</b> Has the company suffered a material security incident or ransomware attack in the last three years? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#280</b> Does the company have a product security incident response team (PSIRT)? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+  </ul>
+</div>
+<div class="el">
+  <h3>Escalation and containment</h3>
+  <p>
+    No policy rule found (No supporting passage found).
+  </p>
+  <h4>Related open questions in the company's digital twin</h4>
+  <ul>
+    <li><b>#196</b> Who must be notified within what deadline when the company suffers a security incident? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#197</b> Has the company suffered a material security incident or ransomware attack in the last three years? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#280</b> Does the company have a product security incident response team (PSIRT)? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+  </ul>
+</div>
+<div class="el">
+  <h3>Practical test of the incident procedures</h3>
+  <p>
+    No policy rule found (No supporting passage found).
+  </p>
+  <h4>Related open questions in the company's digital twin</h4>
+  <ul>
+    <li><b>#196</b> Who must be notified within what deadline when the company suffers a security incident? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#197</b> Has the company suffered a material security incident or ransomware attack in the last three years? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#280</b> Does the company have a product security incident response team (PSIRT)? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+  </ul>
+</div>
+</div>
+    <div class="panel" id="04-P02-2-src"><details>
+  <summary>Detection and internal reporting of security incidents – search terms: sicherheitsvorfall*, *sicherheitsvorfall*, it-vorfall*, security incident*, vorfallbewaeltigung*, erkennung*, detect*, meldeweg*, meldepflicht*
+    <span class="muted"><small>(1 of 18 sources with hits)</small></span></summary>
+
+  <table>
+    <tr><th>Source</th><th>Kind</th><th>Hits</th><th>Outcome</th></tr>
+    <tr>
+      <td>Register of incidents - Marenthal Chemie AG<br><small>documents/REG_Incidents_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>1</td>
+      <td>Scope mismatch</td>
+    </tr>
+  </table>
+
+  <details>
+    <summary class="muted"><small>Similar in meaning, not counted (5)</small></summary>
+    <div class="qcard">
+      <div class="qhead"><b>Notfall- und Krisenmanagement</b> · DMS-00000671_KR-017_v2.0_de.txt · <a href="/c/marenthal/source/248b4908-0e6d-47b9-aafa-fe12edba0cc8?ls=22&amp;le=23" target="_blank" title="Open the source with this location highlighted">L22–23</a></div>
+      <div class="sent">Alarmierung der Behörden und Notfallkontakte rund um die Uhr prüfen – Erreichbarkeit und
+Alarmketten halbjährlich testen.</div>
+      <div class="qhead">Not counted: topic of the document does not fit the duty</div>
+    </div>
+    <div class="qcard">
+      <div class="qhead"><b>Notfall- und Krisenmanagement</b> · DMS-00000260_KR-017_v1.1_de.txt · <a href="/c/marenthal/source/e60c72da-968b-44e9-b4d8-926fce7197cb?ls=22&amp;le=23" target="_blank" title="Open the source with this location highlighted">L22–23</a></div>
+      <div class="sent">Alarmierung der Behörden und Notfallkontakte rund um die Uhr prüfen – Erreichbarkeit und
+Alarmketten halbjährlich testen.</div>
+      <div class="qhead">Not counted: topic of the document does not fit the duty; document version is superseded</div>
+    </div>
+    <div class="qcard">
+      <div class="qhead"><b>Notfall- und Krisenmanagement</b> · DMS-00000671_KR-017_v2.0_de.txt · <a href="/c/marenthal/source/248b4908-0e6d-47b9-aafa-fe12edba0cc8?ls=24&amp;le=25" target="_blank" title="Open the source with this location highlighted">L24–25</a></div>
+      <div class="sent">Schichtleiter zum Notfallmanagement schulen – Marl – Schichtleiter in Alarmierung und ersten
+Maßnahmen unterweisen.</div>
+      <div class="qhead">Not counted: topic of the document does not fit the duty</div>
+    </div>
+    <div class="qcard">
+      <div class="qhead"><b>Notfall- und Krisenmanagement</b> · DMS-00000260_KR-017_v1.1_de.txt · <a href="/c/marenthal/source/e60c72da-968b-44e9-b4d8-926fce7197cb?ls=24&amp;le=25" target="_blank" title="Open the source with this location highlighted">L24–25</a></div>
+      <div class="sent">Schichtleiter zum Notfallmanagement schulen – Marl – Schichtleiter in Alarmierung und ersten
+Maßnahmen unterweisen.</div>
+      <div class="qhead">Not counted: topic of the document does not fit the duty; document version is superseded</div>
+    </div>
+    <div class="qcard">
+      <div class="qhead"><b>Notfall- und Krisenmanagement</b> · DMS-00000671_KR-017_v2.0_de.txt · <a href="/c/marenthal/source/248b4908-0e6d-47b9-aafa-fe12edba0cc8?ls=26&amp;le=27" target="_blank" title="Open the source with this location highlighted">L26–27</a></div>
+      <div class="sent">Schichtleiter zum Notfallmanagement schulen – Bitterfeld-Wolfen – Schichtleiter in Alarmierung und
+ersten Maßnahmen unterweisen.</div>
+      <div class="qhead">Not counted: topic of the document does not fit the duty</div>
+    </div>
+  </details>
+
+  <details>
+    <summary class="muted"><small>17 other sources without hits</small></summary>
+    <p class="muted"><small>company_profile.json; DMS-00000205_KR-009_v1.1_de.txt; DMS-00000260_KR-017_v1.1_de.txt; DMS-00000300_SDB-10564-DE_de_v8.3.txt; DMS-00000420_KR-009_v2.0_de.txt; DMS-00000443_KR-009_v2.0_en.txt; DMS-00000671_KR-017_v2.0_de.txt; DMS-00001406_V000074_Nachweis.txt; REG_Compliance_Roles_CMS-DE-01.txt; REG_Internal_Controls_CMS-DE-01.txt; REG_Legal_Obligations_CMS-DE-01.txt; REG_Risk_Register_CMS-DE-01.txt; Zwilling — Faktenkatalog.txt; Zwilling — Gesellschaften.txt; Zwilling — Produkte.txt; legal_entities.csv; twin_questions.csv</small></p>
+  </details>
+</details>
+<details>
+  <summary>Escalation and containment – search terms: eskalation*, *eindaemm*, containment, alarmier*, alarmkette*, notfallkontakt*, isolier*
+    <span class="muted"><small>(3 of 18 sources with hits)</small></span></summary>
+
+  <table>
+    <tr><th>Source</th><th>Kind</th><th>Hits</th><th>Outcome</th></tr>
+    <tr>
+      <td>Register of legal and internal obligations - Marenthal Chemie AG<br><small>documents/REG_Legal_Obligations_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>4</td>
+      <td>Scope mismatch</td>
+    </tr>
+    <tr>
+      <td>Notfall- und Krisenmanagement<br><small>documents/DMS-00000260_KR-017_v1.1_de.txt</small></td>
+      <td>policy</td>
+      <td>3</td>
+      <td>Scope mismatch</td>
+    </tr>
+    <tr>
+      <td>Notfall- und Krisenmanagement<br><small>documents/DMS-00000671_KR-017_v2.0_de.txt</small></td>
+      <td>policy</td>
+      <td>3</td>
+      <td>Scope mismatch</td>
+    </tr>
+  </table>
+
+
+  <details>
+    <summary class="muted"><small>15 other sources without hits</small></summary>
+    <p class="muted"><small>company_profile.json; DMS-00000205_KR-009_v1.1_de.txt; DMS-00000300_SDB-10564-DE_de_v8.3.txt; DMS-00000420_KR-009_v2.0_de.txt; DMS-00000443_KR-009_v2.0_en.txt; DMS-00001406_V000074_Nachweis.txt; REG_Compliance_Roles_CMS-DE-01.txt; REG_Incidents_CMS-DE-01.txt; REG_Internal_Controls_CMS-DE-01.txt; REG_Risk_Register_CMS-DE-01.txt; Zwilling — Faktenkatalog.txt; Zwilling — Gesellschaften.txt; Zwilling — Produkte.txt; legal_entities.csv; twin_questions.csv</small></p>
+  </details>
+</details>
+<details>
+  <summary>Practical test of the incident procedures – search terms: *uebung*, exercise*, testprotokoll*, wiederherstellungstest*, incident response, notfallhandbuch*, wiederanlauf*
+    <span class="muted"><small>(6 of 18 sources with hits)</small></span></summary>
+
+  <table>
+    <tr><th>Source</th><th>Kind</th><th>Hits</th><th>Outcome</th></tr>
+    <tr>
+      <td>Register of legal and internal obligations - Marenthal Chemie AG<br><small>documents/REG_Legal_Obligations_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>7</td>
+      <td>Scope mismatch, Supporting record</td>
+    </tr>
+    <tr>
+      <td>Notfall- und Krisenmanagement<br><small>documents/DMS-00000260_KR-017_v1.1_de.txt</small></td>
+      <td>policy</td>
+      <td>4</td>
+      <td>Scope mismatch</td>
+    </tr>
+    <tr>
+      <td>Notfall- und Krisenmanagement<br><small>documents/DMS-00000671_KR-017_v2.0_de.txt</small></td>
+      <td>policy</td>
+      <td>4</td>
+      <td>Scope mismatch</td>
+    </tr>
+    <tr>
+      <td>Nachweis: Notfall- und Wiederanlaufübung der IT durchführen<br><small>documents/DMS-00001406_V000074_Nachweis.txt</small></td>
+      <td>evidence_record</td>
+      <td>2</td>
+      <td>Supporting record</td>
+    </tr>
+    <tr>
+      <td>Register of internal controls and their execution - Marenthal Chemie AG<br><small>documents/REG_Internal_Controls_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>2</td>
+      <td>Supporting record</td>
+    </tr>
+    <tr>
+      <td>Information Security Policy<br><small>documents/DMS-00000443_KR-009_v2.0_en.txt</small></td>
+      <td>policy</td>
+      <td>1</td>
+      <td>Partial</td>
+    </tr>
+  </table>
+
+
+  <details>
+    <summary class="muted"><small>12 other sources without hits</small></summary>
+    <p class="muted"><small>company_profile.json; DMS-00000205_KR-009_v1.1_de.txt; DMS-00000300_SDB-10564-DE_de_v8.3.txt; DMS-00000420_KR-009_v2.0_de.txt; REG_Compliance_Roles_CMS-DE-01.txt; REG_Incidents_CMS-DE-01.txt; REG_Risk_Register_CMS-DE-01.txt; Zwilling — Faktenkatalog.txt; Zwilling — Gesellschaften.txt; Zwilling — Produkte.txt; legal_entities.csv; twin_questions.csv</small></p>
+  </details>
+</details>
+</div>
+  </div>
+</section><section class="card duty fold" id="duty-04-P02-3">
+  <div class="elhead">
+    <h2 style="margin:0"><a href="legal/04-P02-3" target="_blank" title="Open the legal duty">04-P02-3 · Betriebsaufrechterhaltung, Backups, Wiederherstellung, Krisenmanagement</a></h2>
+    <span class="badge bad">No supporting passage found</span>
+    <button class="toggle" aria-expanded="true" aria-label="Collapse" title="Collapse">▾</button>
+  </div>
+  <div class="dbody">
+    <div class="tabs">
+      <button class="on" data-tab="04-P02-3-map">Mapping</button>
+      <button data-tab="04-P02-3-ev">Evidence</button>
+      <button data-tab="04-P02-3-q">Missing information</button>
+      <button data-tab="04-P02-3-src">Sources checked</button>
+    </div>
+    <div class="panel on" id="04-P02-3-map">
+
+<div class="el" id="el-04-P02-3-continuity">
+  <div class="elhead">
+    <h3>Business continuity (keeping operations running)</h3>
+    <span class="badge bad">No supporting passage found</span>
+    <span class="proposal" data-key="04-P02-3/continuity" title="Generated by the tool; not yet reviewed">System proposal</span>
+    
+  </div>
+  <p>No current, master-language policy passage in the sources reviewed states a rule for business continuity (keeping operations running). 1 supporting record entry found (registers / evidence). They describe implementation, not policy text, and do not prove effectiveness on their own.</p>
+
+
+
+<div class="next"><b>Next step:</b> Add to KR-009 v2.0 (DE master, DMS-00000420), section “Pflichten und Zuständigkeiten”: a section on business continuity for critical IT services: priorities, emergency manual, responsible role and target times.</div>
+  <div class="review" data-key="04-P02-3/continuity" data-duty="04-P02-3" data-element="continuity">
+    <div class="cur"><b>Reviewer decision:</b> <span class="curtxt muted">not reviewed yet</span></div>
+    <textarea rows="2" placeholder="Comment / rationale (optional)"></textarea>
+    <div class="row">
+      <button data-d="confirmed">Confirm</button>
+      <button data-d="rejected">Reject</button>
+      <button data-d="needs_clarification">Needs clarification</button>
+    </div>
+    <details class="hist"><summary>History</summary><div class="histbody muted">No decisions yet.</div></details>
+  </div>
+</div>
+<div class="el" id="el-04-P02-3-backup">
+  <div class="elhead">
+    <h3>Backups</h3>
+    <span class="badge bad">No supporting passage found</span>
+    <span class="proposal" data-key="04-P02-3/backup" title="Generated by the tool; not yet reviewed">System proposal</span>
+    
+  </div>
+  <p>No current, master-language policy passage in the sources reviewed states a rule for backups. 1 supporting record entry found (registers / evidence). They describe implementation, not policy text, and do not prove effectiveness on their own.</p>
+
+
+
+<div class="next"><b>Next step:</b> Add to KR-009 v2.0 (DE master, DMS-00000420), section “Pflichten und Zuständigkeiten”: a section on backups: systems and data in scope, frequency, offline/isolated copy, responsible role.</div>
+  <div class="review" data-key="04-P02-3/backup" data-duty="04-P02-3" data-element="backup">
+    <div class="cur"><b>Reviewer decision:</b> <span class="curtxt muted">not reviewed yet</span></div>
+    <textarea rows="2" placeholder="Comment / rationale (optional)"></textarea>
+    <div class="row">
+      <button data-d="confirmed">Confirm</button>
+      <button data-d="rejected">Reject</button>
+      <button data-d="needs_clarification">Needs clarification</button>
+    </div>
+    <details class="hist"><summary>History</summary><div class="histbody muted">No decisions yet.</div></details>
+  </div>
+</div>
+<div class="el" id="el-04-P02-3-recovery">
+  <div class="elhead">
+    <h3>Restore and recovery</h3>
+    <span class="badge bad">No supporting passage found</span>
+    <span class="proposal" data-key="04-P02-3/recovery" title="Generated by the tool; not yet reviewed">System proposal</span>
+    <span class="chip info">Only in translation</span>
+  </div>
+  <p>No current, master-language policy passage in the sources reviewed states a rule for restore and recovery. 1 policy passage matched; none counted, 1 not counted. The EN version KR-009 v2.0 (DMS-00000443, L22–23) contains a matching rule whose text does not appear in the DE master. The master language is authoritative, so it is not counted; it is flagged as a language difference. 6 supporting record entries found (registers / evidence). They describe implementation, not policy text, and do not prove effectiveness on their own.</p>
+
+
+  <details>
+    <summary>Checked but not counted (1)</summary>
+<div class="qcard">
+  <div class="qhead">
+    <b>Information Security Policy</b> · documents/DMS-00000443_KR-009_v2.0_en.txt · <b>L22–23</b> · <a href="/c/marenthal/source/7b10774b-53cf-47cf-9d3e-1307061f33c0?ls=22&amp;le=23" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip ">Current</span><span class="chip info">Only in translation</span>  </div>
+  <div class="qhead">Facets present: What (systems / scope), Action required, Documentation / evidence · missing: Responsible role, Frequency / interval, Target or measure (e.g. recovery time)</div>
+<div class="qhead">Not counted: text appears only in a translation, not in the master-language version</div>  <div class="qhead">document_id 7b10774b-53cf-47cf-9d3e-1307061f33c0</div>
+</div>
+  </details>
+
+<div class="next"><b>Next step:</b> Add to KR-009 v2.0 (DE master, DMS-00000420), section “Pflichten und Zuständigkeiten”: a section on restore and recovery: critical systems, restore tests with interval, recovery-time target, documented results and responsible role.</div>
+  <div class="review" data-key="04-P02-3/recovery" data-duty="04-P02-3" data-element="recovery">
+    <div class="cur"><b>Reviewer decision:</b> <span class="curtxt muted">not reviewed yet</span></div>
+    <textarea rows="2" placeholder="Comment / rationale (optional)"></textarea>
+    <div class="row">
+      <button data-d="confirmed">Confirm</button>
+      <button data-d="rejected">Reject</button>
+      <button data-d="needs_clarification">Needs clarification</button>
+    </div>
+    <details class="hist"><summary>History</summary><div class="histbody muted">No decisions yet.</div></details>
+  </div>
+</div>
+<div class="el" id="el-04-P02-3-crisis_management">
+  <div class="elhead">
+    <h3>IT crisis management</h3>
+    <span class="badge bad">No supporting passage found</span>
+    <span class="proposal" data-key="04-P02-3/crisis_management" title="Generated by the tool; not yet reviewed">System proposal</span>
+    <span class="chip mis">Wrong-topic match</span>
+  </div>
+  <p>No current, master-language policy passage in the sources reviewed states a rule for IT crisis management. 2 policy passages matched; none counted, 2 not counted (2 on an unrelated topic). KR-017 “Notfall- und Krisenmanagement” (L3; same text in superseded v1.1) matched the search terms, but its topic is EHS, not information security; not counted.</p>
+
+
+  <details>
+    <summary>Checked but not counted (2)</summary>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000671_KR-017_v2.0_de.txt · <b>L3</b> · <a href="/c/marenthal/source/248b4908-0e6d-47b9-aafa-fe12edba0cc8?ls=3&amp;le=3" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip ">Current</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty</div>  <div class="qhead">document_id 248b4908-0e6d-47b9-aafa-fe12edba0cc8</div>
+</div>
+<div class="qcard">
+  <div class="qhead">
+    <b>Notfall- und Krisenmanagement</b> · documents/DMS-00000260_KR-017_v1.1_de.txt · <b>L3</b> · <a href="/c/marenthal/source/e60c72da-968b-44e9-b4d8-926fce7197cb?ls=3&amp;le=3" target="_blank" title="Open the source with this location highlighted">View source</a>
+  </div>
+  <div>
+<span class="chip sup">Superseded</span>  </div>
+<div class="qhead">Not counted: topic of the document does not fit the duty; document version is superseded</div>  <div class="qhead">document_id e60c72da-968b-44e9-b4d8-926fce7197cb</div>
+</div>
+  </details>
+
+<div class="next"><b>Next step:</b> Add to KR-009 v2.0 (DE master, DMS-00000420), section “Pflichten und Zuständigkeiten”: a section on IT crisis management: crisis team, activation criteria, decision rights and communication for cyber incidents and IT outages.</div>
+  <div class="review" data-key="04-P02-3/crisis_management" data-duty="04-P02-3" data-element="crisis_management">
+    <div class="cur"><b>Reviewer decision:</b> <span class="curtxt muted">not reviewed yet</span></div>
+    <textarea rows="2" placeholder="Comment / rationale (optional)"></textarea>
+    <div class="row">
+      <button data-d="confirmed">Confirm</button>
+      <button data-d="rejected">Reject</button>
+      <button data-d="needs_clarification">Needs clarification</button>
+    </div>
+    <details class="hist"><summary>History</summary><div class="histbody muted">No decisions yet.</div></details>
+  </div>
+</div>
+</div>
+    <div class="panel" id="04-P02-3-ev"><div class="el">
+  <div class="elhead"><h3>Business continuity (keeping operations running)</h3></div>
+  <div class="kv">
+    <div>Implementation</div><div><span class="badge ok">Record of implementation exists (1 done/active); 1 overdue as of the source&#39;s date</span></div>
+    <div>Effectiveness</div><div><span class="badge muted">Not demonstrated – execution summaries only, no test protocol (1 control(s) with execution summaries; 1 run(s) partly effective)</span></div>
+  </div>
+
+  <table>
+    <tr><th>Source</th><th>Record</th><th>Next due</th></tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=34&amp;le=34" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L34</small></td>
+      <td>
+        <b>Notfallhandbuch und Übung Wiederanlauf</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: präventiv · Interval: jährlich · Risk covered: Ausfall von ERP oder Prozessleitsystem · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 1 runs: teilweise wirksam 1 · Last run: 2025-10-13</small>
+      </td>
+      <td>
+        Next due 2026-10-12 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(28 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+  </table>
+
+</div>
+<div class="el">
+  <div class="elhead"><h3>Backups</h3></div>
+  <div class="kv">
+    <div>Implementation</div><div><span class="badge ok">Record of implementation exists (1 done/active); 1 overdue as of the source&#39;s date</span></div>
+    <div>Effectiveness</div><div><span class="badge muted">Not demonstrated – execution summaries only, no test protocol (1 control(s) with execution summaries)</span></div>
+  </div>
+
+  <table>
+    <tr><th>Source</th><th>Record</th><th>Next due</th></tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=35&amp;le=35" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L35</small></td>
+      <td>
+        <b>Offline-Datensicherung und Wiederherstellungstest</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: präventiv · Interval: quartalsweise · Risk covered: Verschlüsselungsangriff auf ERP und Produktionssteuerung · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 5 runs: wirksam 4, offen 1 · Last run: 2025-10-17</small>
+      </td>
+      <td>
+        Next due 2026-01-21 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(292 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+  </table>
+
+</div>
+<div class="el">
+  <div class="elhead"><h3>Restore and recovery</h3></div>
+  <div class="kv">
+    <div>Implementation</div><div><span class="badge ok">Record of implementation exists (4 done/active); 2 overdue as of the source&#39;s date</span></div>
+    <div>Effectiveness</div><div><span class="badge muted">Not demonstrated – execution summaries only, no test protocol (2 control(s) with execution summaries; 1 run(s) partly effective)</span></div>
+  </div>
+
+  <table>
+    <tr><th>Source</th><th>Record</th><th>Next due</th></tr>
+    <tr>
+      <td><a href="/c/marenthal/source/50e24e45-a285-4245-a650-2bfd0289550d?ls=20&amp;le=20" target="_blank" title="Open the source with this location highlighted">Nachweis: Notfall- und Wiederanlaufübung der IT durchführen</a><br><small>L20</small></td>
+      <td>
+<span class="badge ok">erfüllt</span>        <span class="quote" style="display:block">titel: Notfall- und Wiederanlaufübung der IT durchführen</span>
+      </td>
+      <td>
+–      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/50e24e45-a285-4245-a650-2bfd0289550d?ls=3&amp;le=4" target="_blank" title="Open the source with this location highlighted">Nachweis: Notfall- und Wiederanlaufübung der IT durchführen</a><br><small>L3–4</small></td>
+      <td>
+<span class="badge ok">erfüllt</span>        <span class="quote" style="display:block">Nachweis: Notfall- und Wiederanlaufübung der IT
+durchführen</span>
+      </td>
+      <td>
+–      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/6411bacb-3da8-40b6-9f1e-8c88d070571f?ls=99&amp;le=99" target="_blank" title="Open the source with this location highlighted">Register of legal and internal obligations - Marenthal Chemie AG</a><br><small>L99</small></td>
+      <td>
+        <b>Notfall- und Wiederanlaufübung der IT durchführen</b> <span class="badge ok">erfüllt</span><br>
+        <small>Description: Wiederherstellung kritischer Systeme (ERP, Prozessleitsystem) üben und Ergebnisse dokumentieren. · Legal area: Informationssicherheit · Source: Konzernrichtlinie Informationssicherheit · Source type: Konzernrichtlinie · Country: DE · Applicability: anwendbar · Due type: wiederkehrend · Interval (months): 12 · Last review: 2025-12-23</small>
+      </td>
+      <td>
+        Next due 2026-12-18      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/50e24e45-a285-4245-a650-2bfd0289550d?ls=21&amp;le=22" target="_blank" title="Open the source with this location highlighted">Nachweis: Notfall- und Wiederanlaufübung der IT durchführen</a><br><small>L21–22</small></td>
+      <td>
+<span class="badge ok">erfüllt</span>        <span class="quote" style="display:block">beschreibung: Wiederherstellung kritischer Systeme (ERP, Prozessleitsystem) üben und Ergebnisse
+dokumentieren.</span>
+      </td>
+      <td>
+–      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=35&amp;le=35" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L35</small></td>
+      <td>
+        <b>Offline-Datensicherung und Wiederherstellungstest</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: präventiv · Interval: quartalsweise · Risk covered: Verschlüsselungsangriff auf ERP und Produktionssteuerung · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 5 runs: wirksam 4, offen 1 · Last run: 2025-10-17</small>
+      </td>
+      <td>
+        Next due 2026-01-21 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(292 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=34&amp;le=34" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L34</small></td>
+      <td>
+        <b>Notfallhandbuch und Übung Wiederanlauf</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: präventiv · Interval: jährlich · Risk covered: Ausfall von ERP oder Prozessleitsystem · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 1 runs: teilweise wirksam 1 · Last run: 2025-10-13</small>
+      </td>
+      <td>
+        Next due 2026-10-12 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(28 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+  </table>
+
+</div>
+<div class="el">
+  <div class="elhead"><h3>IT crisis management</h3></div>
+  <div class="kv">
+    <div>Implementation</div><div><span class="badge muted">Unknown – no implementation record found</span></div>
+    <div>Effectiveness</div><div><span class="badge muted">Not demonstrated – no test or execution evidence in the sources</span></div>
+  </div>
+
+  <p class="muted">No supporting record found in the sources reviewed.</p>
+
+  <details>
+    <summary>Records matched by terms but with another topic (7, not used)</summary>
+    <ul>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L58: | Evakuierungsübung durchführen – Duisburg | Jährliche Übung mit Dokumentation der Räumungszeit. | Brand- und Explosionsschutz | Konzernrich <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Brand- und Explosionsschutz)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L60: | Evakuierungsübung durchführen – Marl | Jährliche Übung mit Dokumentation der Räumungszeit. | Brand- und Explosionsschutz | Konzernrichtlin <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Brand- und Explosionsschutz)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L57: | Evakuierungsübung durchführen – Bitterfeld-Wolfen | Jährliche Übung mit Dokumentation der Räumungszeit. | Brand- und Explosionsschutz | Ko <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Brand- und Explosionsschutz)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L109: | Schichtleiter zum Notfallmanagement schulen – Marl | Schichtleiter in Alarmierung und ersten Maßnahmen unterweisen. | Störfallrecht und An <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Störfallrecht und Anlagensicherheit)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L17: | Alarmierung der Behörden und Notfallkontakte rund um die Uhr prüfen | Erreichbarkeit und Alarmketten halbjährlich testen. | Störfallrecht  <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Störfallrecht und Anlagensicherheit)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L108: | Schichtleiter zum Notfallmanagement schulen – Bitterfeld-Wolfen | Schichtleiter in Alarmierung und ersten Maßnahmen unterweisen. | Störfal <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Störfallrecht und Anlagensicherheit)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L59: | Evakuierungsübung durchführen – Frankfurt am Main | Jährliche Übung mit Dokumentation der Räumungszeit. | Brand- und Explosionsschutz | Ko <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Brand- und Explosionsschutz)</small></li>
+    </ul>
+  </details>
+</div>
+<p class="muted"><small>Records describe implementation, not policy text. Per 17-AUS-17, register summaries such as “erfüllt” or
+“wirksam” are source metadata and do not prove effectiveness of the duty; missing proof means “not demonstrated”, only a
+proven failure means “ineffective”.</small></p></div>
+    <div class="panel" id="04-P02-3-q"><div class="el">
+  <p class="muted" title="Verbatim from the legal input (04-P02-3)"><small>
+    <b>Expected evidence:</b> Backupplan, Restoreprotokoll, Krisenplan, Messwerte; Unbekannt möglich.<br>
+    <b>Evidence question:</b> Wann wurden Sicherungskopien zuletzt tatsächlich zurückgespielt und welche Wiederherstellungszeit wurde gemessen?
+  </small></p>
+</div>
+<div class="el">
+  <h3>Business continuity (keeping operations running)</h3>
+  <p>
+    No policy rule found (No supporting passage found).
+  </p>
+  <h4>Related open questions in the company's digital twin</h4>
+  <ul>
+    <li><b>#174</b> Is there a documented business continuity or crisis plan, and when was it last tested? <small>(governance, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#200</b> Are backups maintained and restore procedures tested? If so, when was the last successful test? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#350</b> Which specific backup frequency is applied to the development systems in Frankfurt under ISO 27001? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+  </ul>
+</div>
+<div class="el">
+  <h3>Backups</h3>
+  <p>
+    No policy rule found (No supporting passage found).
+  </p>
+  <h4>Related open questions in the company's digital twin</h4>
+  <ul>
+    <li><b>#200</b> Are backups maintained and restore procedures tested? If so, when was the last successful test? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#350</b> Which specific backup frequency is applied to the development systems in Frankfurt under ISO 27001? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+  </ul>
+</div>
+<div class="el">
+  <h3>Restore and recovery</h3>
+  <p>
+    No policy rule found (No supporting passage found).
+  </p>
+  <h4>Related open questions in the company's digital twin</h4>
+  <ul>
+    <li><b>#200</b> Are backups maintained and restore procedures tested? If so, when was the last successful test? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#350</b> Which specific backup frequency is applied to the development systems in Frankfurt under ISO 27001? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+  </ul>
+</div>
+<div class="el">
+  <h3>IT crisis management</h3>
+  <p>
+    No policy rule found (No supporting passage found).
+  </p>
+  <h4>Related open questions in the company's digital twin</h4>
+  <ul>
+    <li><b>#174</b> Is there a documented business continuity or crisis plan, and when was it last tested? <small>(governance, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#197</b> Has the company suffered a material security incident or ransomware attack in the last three years? <small>(it_security, status: open, answer: none – unknown, not “no”)</small></li>
+  </ul>
+</div>
+</div>
+    <div class="panel" id="04-P02-3-src"><details>
+  <summary>Business continuity (keeping operations running) – search terms: betriebsaufrechterhalt*, business continuity, bcm, kontinuitaet*, notfallhandbuch*, notfallplan*, wiederanlaufplan*
+    <span class="muted"><small>(1 of 18 sources with hits)</small></span></summary>
+
+  <table>
+    <tr><th>Source</th><th>Kind</th><th>Hits</th><th>Outcome</th></tr>
+    <tr>
+      <td>Register of internal controls and their execution - Marenthal Chemie AG<br><small>documents/REG_Internal_Controls_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>1</td>
+      <td>Supporting record</td>
+    </tr>
+  </table>
+
+  <details>
+    <summary class="muted"><small>Similar in meaning, not counted (4)</small></summary>
+    <div class="qcard">
+      <div class="qhead"><b>Informationssicherheitsrichtlinie</b> · DMS-00000420_KR-009_v2.0_de.txt · <a href="/c/marenthal/source/90daa5ae-2259-4edb-a856-5c3dc4c0e050?ls=19&amp;le=20" target="_blank" title="Open the source with this location highlighted">L19–20</a></div>
+      <div class="sent">Sie gilt für alle Beschäftigten, Führungskräfte und, soweit vertraglich vereinbart, für
+Geschäftspartner.</div>
+      <div class="qhead">Not counted: states no rule</div>
+    </div>
+    <div class="qcard">
+      <div class="qhead"><b>Informationssicherheitsrichtlinie</b> · DMS-00000205_KR-009_v1.1_de.txt · <a href="/c/marenthal/source/1ecfcb5c-707a-43b9-a526-f448fbfa00e7?ls=19&amp;le=20" target="_blank" title="Open the source with this location highlighted">L19–20</a></div>
+      <div class="sent">Sie gilt für alle Beschäftigten, Führungskräfte und, soweit vertraglich vereinbart, für
+Geschäftspartner.</div>
+      <div class="qhead">Not counted: states no rule; document version is superseded</div>
+    </div>
+    <div class="qcard">
+      <div class="qhead"><b>Notfall- und Krisenmanagement</b> · DMS-00000671_KR-017_v2.0_de.txt · <a href="/c/marenthal/source/248b4908-0e6d-47b9-aafa-fe12edba0cc8?ls=18&amp;le=19" target="_blank" title="Open the source with this location highlighted">L18–19</a></div>
+      <div class="sent">Sie gilt für
+alle Beschäftigten, Führungskräfte und, soweit vertraglich vereinbart, für Geschäftspartner.</div>
+      <div class="qhead">Not counted: topic of the document does not fit the duty</div>
+    </div>
+    <div class="qcard">
+      <div class="qhead"><b>Notfall- und Krisenmanagement</b> · DMS-00000260_KR-017_v1.1_de.txt · <a href="/c/marenthal/source/e60c72da-968b-44e9-b4d8-926fce7197cb?ls=18&amp;le=19" target="_blank" title="Open the source with this location highlighted">L18–19</a></div>
+      <div class="sent">Sie gilt für
+alle Beschäftigten, Führungskräfte und, soweit vertraglich vereinbart, für Geschäftspartner.</div>
+      <div class="qhead">Not counted: topic of the document does not fit the duty; document version is superseded</div>
+    </div>
+  </details>
+
+  <details>
+    <summary class="muted"><small>17 other sources without hits</small></summary>
+    <p class="muted"><small>company_profile.json; DMS-00000205_KR-009_v1.1_de.txt; DMS-00000260_KR-017_v1.1_de.txt; DMS-00000300_SDB-10564-DE_de_v8.3.txt; DMS-00000420_KR-009_v2.0_de.txt; DMS-00000443_KR-009_v2.0_en.txt; DMS-00000671_KR-017_v2.0_de.txt; DMS-00001406_V000074_Nachweis.txt; REG_Compliance_Roles_CMS-DE-01.txt; REG_Incidents_CMS-DE-01.txt; REG_Legal_Obligations_CMS-DE-01.txt; REG_Risk_Register_CMS-DE-01.txt; Zwilling — Faktenkatalog.txt; Zwilling — Gesellschaften.txt; Zwilling — Produkte.txt; legal_entities.csv; twin_questions.csv</small></p>
+  </details>
+</details>
+<details>
+  <summary>Backups – search terms: backup*, *datensicherung*, sicherungskopie*, datensicher*
+    <span class="muted"><small>(1 of 18 sources with hits)</small></span></summary>
+
+  <table>
+    <tr><th>Source</th><th>Kind</th><th>Hits</th><th>Outcome</th></tr>
+    <tr>
+      <td>Register of internal controls and their execution - Marenthal Chemie AG<br><small>documents/REG_Internal_Controls_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>1</td>
+      <td>Supporting record</td>
+    </tr>
+  </table>
+
+
+  <details>
+    <summary class="muted"><small>17 other sources without hits</small></summary>
+    <p class="muted"><small>company_profile.json; DMS-00000205_KR-009_v1.1_de.txt; DMS-00000260_KR-017_v1.1_de.txt; DMS-00000300_SDB-10564-DE_de_v8.3.txt; DMS-00000420_KR-009_v2.0_de.txt; DMS-00000443_KR-009_v2.0_en.txt; DMS-00000671_KR-017_v2.0_de.txt; DMS-00001406_V000074_Nachweis.txt; REG_Compliance_Roles_CMS-DE-01.txt; REG_Incidents_CMS-DE-01.txt; REG_Legal_Obligations_CMS-DE-01.txt; REG_Risk_Register_CMS-DE-01.txt; Zwilling — Faktenkatalog.txt; Zwilling — Gesellschaften.txt; Zwilling — Produkte.txt; legal_entities.csv; twin_questions.csv</small></p>
+  </details>
+</details>
+<details>
+  <summary>Restore and recovery – search terms: wiederherstell*, *wiederherstellung*, wiederanlauf*, *wiederanlauf*, restore*, recover*
+    <span class="muted"><small>(4 of 18 sources with hits)</small></span></summary>
+
+  <table>
+    <tr><th>Source</th><th>Kind</th><th>Hits</th><th>Outcome</th></tr>
+    <tr>
+      <td>Nachweis: Notfall- und Wiederanlaufübung der IT durchführen<br><small>documents/DMS-00001406_V000074_Nachweis.txt</small></td>
+      <td>evidence_record</td>
+      <td>3</td>
+      <td>Supporting record</td>
+    </tr>
+    <tr>
+      <td>Register of internal controls and their execution - Marenthal Chemie AG<br><small>documents/REG_Internal_Controls_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>2</td>
+      <td>Supporting record</td>
+    </tr>
+    <tr>
+      <td>Information Security Policy<br><small>documents/DMS-00000443_KR-009_v2.0_en.txt</small></td>
+      <td>policy</td>
+      <td>1</td>
+      <td>Partial</td>
+    </tr>
+    <tr>
+      <td>Register of legal and internal obligations - Marenthal Chemie AG<br><small>documents/REG_Legal_Obligations_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>1</td>
+      <td>Supporting record</td>
+    </tr>
+  </table>
+
+
+  <details>
+    <summary class="muted"><small>14 other sources without hits</small></summary>
+    <p class="muted"><small>company_profile.json; DMS-00000205_KR-009_v1.1_de.txt; DMS-00000260_KR-017_v1.1_de.txt; DMS-00000300_SDB-10564-DE_de_v8.3.txt; DMS-00000420_KR-009_v2.0_de.txt; DMS-00000671_KR-017_v2.0_de.txt; REG_Compliance_Roles_CMS-DE-01.txt; REG_Incidents_CMS-DE-01.txt; REG_Risk_Register_CMS-DE-01.txt; Zwilling — Faktenkatalog.txt; Zwilling — Gesellschaften.txt; Zwilling — Produkte.txt; legal_entities.csv; twin_questions.csv</small></p>
+  </details>
+</details>
+<details>
+  <summary>IT crisis management – search terms: krise*, krisenmanagement*, *krisen*, crisis*
+    <span class="muted"><small>(3 of 18 sources with hits)</small></span></summary>
+
+  <table>
+    <tr><th>Source</th><th>Kind</th><th>Hits</th><th>Outcome</th></tr>
+    <tr>
+      <td>Register of legal and internal obligations - Marenthal Chemie AG<br><small>documents/REG_Legal_Obligations_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>7</td>
+      <td>Scope mismatch</td>
+    </tr>
+    <tr>
+      <td>Notfall- und Krisenmanagement<br><small>documents/DMS-00000260_KR-017_v1.1_de.txt</small></td>
+      <td>policy</td>
+      <td>1</td>
+      <td>Scope mismatch</td>
+    </tr>
+    <tr>
+      <td>Notfall- und Krisenmanagement<br><small>documents/DMS-00000671_KR-017_v2.0_de.txt</small></td>
+      <td>policy</td>
+      <td>1</td>
+      <td>Scope mismatch</td>
+    </tr>
+  </table>
+
+  <details>
+    <summary class="muted"><small>Similar in meaning, not counted (1)</small></summary>
+    <div class="qcard">
+      <div class="qhead"><b>Information Security Policy</b> · DMS-00000443_KR-009_v2.0_en.txt · <a href="/c/marenthal/source/7b10774b-53cf-47cf-9d3e-1307061f33c0?ls=22&amp;le=23" target="_blank" title="Open the source with this location highlighted">L22–23</a></div>
+      <div class="sent">Notfall- und Wiederanlaufübung der IT durchführen – Wiederherstellung kritischer Systeme (ERP,
+Prozessleitsystem) üben und Ergebnisse dokumentieren.</div>
+      <div class="qhead">Not counted: text appears only in a translation, not in the master-language version</div>
+    </div>
+  </details>
+
+  <details>
+    <summary class="muted"><small>15 other sources without hits</small></summary>
+    <p class="muted"><small>company_profile.json; DMS-00000205_KR-009_v1.1_de.txt; DMS-00000300_SDB-10564-DE_de_v8.3.txt; DMS-00000420_KR-009_v2.0_de.txt; DMS-00000443_KR-009_v2.0_en.txt; DMS-00001406_V000074_Nachweis.txt; REG_Compliance_Roles_CMS-DE-01.txt; REG_Incidents_CMS-DE-01.txt; REG_Internal_Controls_CMS-DE-01.txt; REG_Risk_Register_CMS-DE-01.txt; Zwilling — Faktenkatalog.txt; Zwilling — Gesellschaften.txt; Zwilling — Produkte.txt; legal_entities.csv; twin_questions.csv</small></p>
+  </details>
+</details>
+</div>
+  </div>
+</section><section class="card duty fold" id="duty-04-P02-6">
+  <div class="elhead">
+    <h2 style="margin:0"><a href="legal/04-P02-6" target="_blank" title="Open the legal duty">04-P02-6 · Wirksamkeitsbewertung</a></h2>
+    <span class="badge bad">No supporting passage found</span>
+    <button class="toggle" aria-expanded="true" aria-label="Collapse" title="Collapse">▾</button>
+  </div>
+  <div class="dbody">
+    <div class="tabs">
+      <button class="on" data-tab="04-P02-6-map">Mapping</button>
+      <button data-tab="04-P02-6-ev">Evidence</button>
+      <button data-tab="04-P02-6-q">Missing information</button>
+      <button data-tab="04-P02-6-src">Sources checked</button>
+    </div>
+    <div class="panel on" id="04-P02-6-map">
+
+<div class="el" id="el-04-P02-6-effectiveness_method">
+  <div class="elhead">
+    <h3>Assessment method and plan</h3>
+    <span class="badge bad">No supporting passage found</span>
+    <span class="proposal" data-key="04-P02-6/effectiveness_method" title="Generated by the tool; not yet reviewed">System proposal</span>
+    
+  </div>
+  <p>No current, master-language policy passage in the sources reviewed states a rule for assessment method and plan.</p>
+
+
+
+<div class="next"><b>Next step:</b> Add to KR-009 v2.0 (DE master, DMS-00000420), section “Pflichten und Zuständigkeiten”: a section on effectiveness assessment: which measures, method (test, audit, metric), frequency and responsible role.</div>
+  <div class="review" data-key="04-P02-6/effectiveness_method" data-duty="04-P02-6" data-element="effectiveness_method">
+    <div class="cur"><b>Reviewer decision:</b> <span class="curtxt muted">not reviewed yet</span></div>
+    <textarea rows="2" placeholder="Comment / rationale (optional)"></textarea>
+    <div class="row">
+      <button data-d="confirmed">Confirm</button>
+      <button data-d="rejected">Reject</button>
+      <button data-d="needs_clarification">Needs clarification</button>
+    </div>
+    <details class="hist"><summary>History</summary><div class="histbody muted">No decisions yet.</div></details>
+  </div>
+</div>
+<div class="el" id="el-04-P02-6-effectiveness_results">
+  <div class="elhead">
+    <h3>Assessment results</h3>
+    <span class="badge bad">No supporting passage found</span>
+    <span class="proposal" data-key="04-P02-6/effectiveness_results" title="Generated by the tool; not yet reviewed">System proposal</span>
+    
+  </div>
+  <p>No current, master-language policy passage in the sources reviewed states a rule for assessment results. 4 supporting record entries found (registers / evidence). They describe implementation, not policy text, and do not prove effectiveness on their own.</p>
+
+
+
+<div class="next"><b>Next step:</b> Add to KR-009 v2.0 (DE master, DMS-00000420), section “Pflichten und Zuständigkeiten”: a rule that effectiveness results are recorded per measure with date, method and outcome.</div>
+  <div class="review" data-key="04-P02-6/effectiveness_results" data-duty="04-P02-6" data-element="effectiveness_results">
+    <div class="cur"><b>Reviewer decision:</b> <span class="curtxt muted">not reviewed yet</span></div>
+    <textarea rows="2" placeholder="Comment / rationale (optional)"></textarea>
+    <div class="row">
+      <button data-d="confirmed">Confirm</button>
+      <button data-d="rejected">Reject</button>
+      <button data-d="needs_clarification">Needs clarification</button>
+    </div>
+    <details class="hist"><summary>History</summary><div class="histbody muted">No decisions yet.</div></details>
+  </div>
+</div>
+<div class="el" id="el-04-P02-6-follow_up">
+  <div class="elhead">
+    <h3>Follow-up and corrective action</h3>
+    <span class="badge bad">No supporting passage found</span>
+    <span class="proposal" data-key="04-P02-6/follow_up" title="Generated by the tool; not yet reviewed">System proposal</span>
+    
+  </div>
+  <p>No current, master-language policy passage in the sources reviewed states a rule for follow-up and corrective action. 1 supporting record entry found (registers / evidence). They describe implementation, not policy text, and do not prove effectiveness on their own.</p>
+
+
+
+<div class="next"><b>Next step:</b> Add to KR-009 v2.0 (DE master, DMS-00000420), section “Pflichten und Zuständigkeiten”: a rule that failed or partly effective measures lead to documented corrective action with an owner and deadline.</div>
+  <div class="review" data-key="04-P02-6/follow_up" data-duty="04-P02-6" data-element="follow_up">
+    <div class="cur"><b>Reviewer decision:</b> <span class="curtxt muted">not reviewed yet</span></div>
+    <textarea rows="2" placeholder="Comment / rationale (optional)"></textarea>
+    <div class="row">
+      <button data-d="confirmed">Confirm</button>
+      <button data-d="rejected">Reject</button>
+      <button data-d="needs_clarification">Needs clarification</button>
+    </div>
+    <details class="hist"><summary>History</summary><div class="histbody muted">No decisions yet.</div></details>
+  </div>
+</div>
+</div>
+    <div class="panel" id="04-P02-6-ev"><div class="el">
+  <div class="elhead"><h3>Assessment method and plan</h3></div>
+  <div class="kv">
+    <div>Implementation</div><div><span class="badge muted">Unknown – no implementation record found</span></div>
+    <div>Effectiveness</div><div><span class="badge muted">Not demonstrated – no test or execution evidence in the sources</span></div>
+  </div>
+
+  <p class="muted">No supporting record found in the sources reviewed.</p>
+
+  <details>
+    <summary>Records matched by terms but with another topic (10, not used)</summary>
+    <ul>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L42: | Compliance-Managementsystem auf Wirksamkeit prüfen (Angemessenheit) | Wirksamkeitsprüfung des Compliance-Managementsystems in Anlehnung an <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Korruptionsprävention)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L113: | Umweltmanagementsystem überwachen (ISO 14001) | Interne Audits, Managementbewertung und Überwachungsaudit der Zertifizierungsstelle durchf <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Energie und Emissionen)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L46: | Dichtheitsprüfung von Rohrleitungen und Behältern – Marl | Prüfplan umsetzen, Befunde nachverfolgen. | Betriebssicherheit von Anlagen und  <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Betriebssicherheit von Anlagen und Druckgeräten)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L96: | Lüftungs- und Absauganlagen prüfen – Marl | Wirksamkeit der Absaugung an Abfüll- und Dosierstellen nachweisen. | Gefahrstoffe am Arbeitspl <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Gefahrstoffe am Arbeitsplatz)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L95: | Lüftungs- und Absauganlagen prüfen – Bitterfeld-Wolfen | Wirksamkeit der Absaugung an Abfüll- und Dosierstellen nachweisen. | Gefahrstoffe <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Gefahrstoffe am Arbeitsplatz)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L119: | Wiederkehrende Emissionsmessungen durch eine zugelassene Stelle veranlassen – Marl | Messplan abstimmen, Messbericht prüfen, Grenzwertverg <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Immissionsschutz und Anlagengenehmigung)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L45: | Dichtheitsprüfung von Rohrleitungen und Behältern – Bitterfeld-Wolfen | Prüfplan umsetzen, Befunde nachverfolgen. | Betriebssicherheit von <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Betriebssicherheit von Anlagen und Druckgeräten)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L118: | Wiederkehrende Emissionsmessungen durch eine zugelassene Stelle veranlassen – Bitterfeld-Wolfen | Messplan abstimmen, Messbericht prüfen,  <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Immissionsschutz und Anlagengenehmigung)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L67: | Funktionsprüfung sicherheitsrelevanter Mess-, Steuer- und Regeleinrichtungen – Marl | SIL-Prüfungen nach Prüfplan durchführen. | Betriebss <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Betriebssicherheit von Anlagen und Druckgeräten)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L66: | Funktionsprüfung sicherheitsrelevanter Mess-, Steuer- und Regeleinrichtungen – Bitterfeld-Wolfen | SIL-Prüfungen nach Prüfplan durchführen <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Betriebssicherheit von Anlagen und Druckgeräten)</small></li>
+    </ul>
+  </details>
+</div>
+<div class="el">
+  <div class="elhead"><h3>Assessment results</h3></div>
+  <div class="kv">
+    <div>Implementation</div><div><span class="badge ok">Record of implementation exists (4 done/active); 4 overdue as of the source&#39;s date</span></div>
+    <div>Effectiveness</div><div><span class="badge muted">Not demonstrated – execution summaries only, no test protocol (4 control(s) with execution summaries; 1 run(s) partly effective)</span></div>
+  </div>
+
+  <table>
+    <tr><th>Source</th><th>Record</th><th>Next due</th></tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=34&amp;le=34" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L34</small></td>
+      <td>
+        <b>Notfallhandbuch und Übung Wiederanlauf</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: präventiv · Interval: jährlich · Risk covered: Ausfall von ERP oder Prozessleitsystem · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 1 runs: teilweise wirksam 1 · Last run: 2025-10-13</small>
+      </td>
+      <td>
+        Next due 2026-10-12 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(28 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=39&amp;le=39" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L39</small></td>
+      <td>
+        <b>Phishing-Simulation und Sensibilisierung</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: präventiv · Interval: halbjährlich · Risk covered: Verschlüsselungsangriff auf ERP und Produktionssteuerung · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 2 runs: wirksam 2 · Last run: 2025-12-04</small>
+      </td>
+      <td>
+        Next due 2026-05-21 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(172 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=35&amp;le=35" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L35</small></td>
+      <td>
+        <b>Offline-Datensicherung und Wiederherstellungstest</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: präventiv · Interval: quartalsweise · Risk covered: Verschlüsselungsangriff auf ERP und Produktionssteuerung · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 5 runs: wirksam 4, offen 1 · Last run: 2025-10-17</small>
+      </td>
+      <td>
+        Next due 2026-01-21 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(292 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+    <tr>
+      <td><a href="/c/marenthal/source/46c6b6ea-4164-4ded-8ed2-306bdc73cc74?ls=38&amp;le=38" target="_blank" title="Open the source with this location highlighted">Register of internal controls and their execution - Marenthal Chemie AG</a><br><small>L38</small></td>
+      <td>
+        <b>Patch- und Schwachstellenmanagement für Server</b> <span class="badge ok">aktiv</span><br>
+        <small>Type: IT-Kontrolle · Interval: monatlich · Risk covered: Verschlüsselungsangriff auf ERP und Produktionssteuerung · Legal duty covered: Informationssicherheitsrisikoanalyse jährlich durchführen · Executions: 14 runs: wirksam 12, offen 2 · Last run: 2025-12-12</small>
+      </td>
+      <td>
+        Next due 2026-01-15 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(298 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+  </table>
+
+  <details>
+    <summary>Records matched by terms but with another topic (50, not used)</summary>
+    <ul>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L18: | Barcode-Abgleich Charge und Etikett an der Abfüllung | IT-Kontrolle | monatlich | Chargenverwechslung bei Abfüllung und Etikettierung – Ma <small>(Topic does not fit the duty: via risk &#39;Chargenverwechslung bei Abfüllung und Etikettierung – Marl&#39; (risk register L19): Qualität)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L46: | Rundgänge zur Leckage- und Korrosionskontrolle | detektiv | monatlich | Unkontrollierte Freisetzung gefährlicher Stoffe (Störfall) – Bitte <small>(Topic does not fit the duty: via risk &#39;Unkontrollierte Freisetzung gefährlicher Stoffe (Störfall) – Bitterfeld-Wolfen&#39; (risk register L33): Umwelt)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L51: | Stichprobenprüfung Zolltarifnummern gegen Tarif | detektiv | halbjährlich | Fehlerhafte Zolltarifnummern und Ursprungsangaben | Zolltarifn <small>(Topic does not fit the duty: via risk &#39;Fehlerhafte Zolltarifnummern und Ursprungsangaben&#39; (risk register L25): Sanktionen und Exportkontrolle)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L29: | Genehmigungsworkflow für Geschenke und Einladungen | präventiv | anlassbezogen | Unzulässige Zuwendungen an Einkaufsverantwortliche von Ku <small>(Topic does not fit the duty: via risk &#39;Unzulässige Zuwendungen an Einkaufsverantwortliche von Kunden und Distributoren&#39; (risk register L35): Korruption)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L62: | Zusammenlagerungsprüfung | präventiv | quartalsweise | Brand im Gefahrstofflager – Duisburg | Sprinkler- und Löschanlagen warten – Duisbur <small>(Topic does not fit the duty: via risk &#39;Brand im Gefahrstofflager – Duisburg&#39; (risk register L17): Umwelt)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L15: | Auswertung von Beinaheunfällen | detektiv | monatlich | Arbeitsunfall durch Gefahrstoffexposition – Marl | Lüftungs- und Absauganlagen prü <small>(Topic does not fit the duty: via risk &#39;Arbeitsunfall durch Gefahrstoffexposition – Marl&#39; (risk register L10): Arbeitsschutz)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L44: | Reinigungsfreigabe mit Spülwasseranalyse | präventiv | anlassbezogen | Verunreinigung durch Rückstände nach Produktwechsel – Marl | Lüftun <small>(Topic does not fit the duty: via risk &#39;Verunreinigung durch Rückstände nach Produktwechsel – Marl&#39; (risk register L40): Qualität)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L56: | Verladekontrolle mit Checkliste | präventiv | monatlich | Transportunfall mit Gefahrgut – Duisburg | Gefahrgutbeförderung: Verladekontroll <small>(Topic does not fit the duty: via risk &#39;Transportunfall mit Gefahrgut – Duisburg&#39; (risk register L31): Produktsicherheit)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L11: | Akkreditierte Laborprobe aus dem Ablauf | detektiv | quartalsweise | Überschreitung der Abwassergrenzwerte – Bitterfeld-Wolfen | Abwassere <small>(Topic does not fit the duty: via risk &#39;Überschreitung der Abwassergrenzwerte – Bitterfeld-Wolfen&#39; (risk register L42): Umwelt)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L61: | Zahlungsabgleich auf abweichende Zahler | IT-Kontrolle | monatlich | Zahlungen Dritter und ungewöhnliche Zahlungswege | Geschäftspartner v <small>(Topic does not fit the duty: via risk &#39;Zahlungen Dritter und ungewöhnliche Zahlungswege&#39; (risk register L41): Geldwäsche)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L24: | Erdungs- und Zündquellenkontrolle vor Umfüllung | präventiv | monatlich | Explosionsfähige Atmosphäre bei Lösemittelhandhabung – Bitterfel <small>(Topic does not fit the duty: via risk &#39;Explosionsfähige Atmosphäre bei Lösemittelhandhabung – Bitterfeld-Wolfen&#39; (risk register L21): Arbeitsschutz)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L33: | Monatliche Auswertung der Zeiterfassung auf Verstöße | IT-Kontrolle | monatlich | Verstöße gegen Arbeitszeitvorschriften in Produktion und <small>(Topic does not fit the duty: via risk &#39;Verstöße gegen Arbeitszeitvorschriften in Produktion und Logistik&#39; (risk register L38): Arbeitsschutz)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L20: | Brandschutzbegehung mit Feuerwehr | detektiv | jährlich | Brand im Gefahrstofflager – Duisburg | Sprinkler- und Löschanlagen warten – Duis <small>(Topic does not fit the duty: via risk &#39;Brand im Gefahrstofflager – Duisburg&#39; (risk register L17): Umwelt)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L27: | Füllstands- und Überfüllsicherungen testen | IT-Kontrolle | quartalsweise | Unkontrollierte Freisetzung gefährlicher Stoffe (Störfall) – B <small>(Topic does not fit the duty: via risk &#39;Unkontrollierte Freisetzung gefährlicher Stoffe (Störfall) – Bitterfeld-Wolfen&#39; (risk register L33): Umwelt)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L48: | Sanktionslistenabgleich aller Partner bei Listenaktualisierung | IT-Kontrolle | monatlich | Belieferung sanktionierter Parteien über Distr <small>(Topic does not fit the duty: via risk &#39;Belieferung sanktionierter Parteien über Distributoren&#39; (risk register L13): Sanktionen und Exportkontrolle)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L36: | Online-Messung pH und Leitfähigkeit mit Alarm | IT-Kontrolle | monatlich | Überschreitung der Abwassergrenzwerte – Bitterfeld-Wolfen | Abw <small>(Topic does not fit the duty: via risk &#39;Überschreitung der Abwassergrenzwerte – Bitterfeld-Wolfen&#39; (risk register L42): Umwelt)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L16: | Automatische Exportkontrollprüfung im Auftrag vor Lieferfreigabe | IT-Kontrolle | monatlich | Lieferung genehmigungspflichtiger Dual-Use-G <small>(Topic does not fit the duty: via risk &#39;Lieferung genehmigungspflichtiger Dual-Use-Güter ohne Genehmigung&#39; (risk register L28): Sanktionen und Exportkontrolle)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L37: | Online-Messung pH und Leitfähigkeit mit Alarm | IT-Kontrolle | monatlich | Überschreitung der Abwassergrenzwerte – Marl | Abwassereinleitu <small>(Topic does not fit the duty: via risk &#39;Überschreitung der Abwassergrenzwerte – Marl&#39; (risk register L43): Umwelt)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L49: | Selbstauskunft und Kodex der Schlüssellieferanten | präventiv | jährlich | Intransparente Lieferketten bei Pigmenten und Zusatzstoffen | L <small>(Topic does not fit the duty: via risk &#39;Intransparente Lieferketten bei Pigmenten und Zusatzstoffen&#39; (risk register L27): Lieferkette)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L47: | Rundgänge zur Leckage- und Korrosionskontrolle | detektiv | monatlich | Unkontrollierte Freisetzung gefährlicher Stoffe (Störfall) – Marl  <small>(Topic does not fit the duty: via risk &#39;Unkontrollierte Freisetzung gefährlicher Stoffe (Störfall) – Marl&#39; (risk register L34): Umwelt)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L58: | Vier-Augen-Prinzip bei Zahlungen an Behörden und Dienstleister | präventiv | quartalsweise | Bestechung bei Behördenkontakten (Genehmigung <small>(Topic does not fit the duty: via risk &#39;Bestechung bei Behördenkontakten (Genehmigungen, Zoll, Inspektionen)&#39; (risk register L14): Korruption)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L17: | Barcode-Abgleich Charge und Etikett an der Abfüllung | IT-Kontrolle | monatlich | Chargenverwechslung bei Abfüllung und Etikettierung – Bi <small>(Topic does not fit the duty: via risk &#39;Chargenverwechslung bei Abfüllung und Etikettierung – Bitterfeld-Wolfen&#39; (risk register L18): Qualität)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L21: | Dichtheitsprüfung der Umfüllflächen und Auffangwannen | präventiv | jährlich | Boden- und Grundwasserverunreinigung – Bitterfeld-Wolfen |  <small>(Topic does not fit the duty: via risk &#39;Boden- und Grundwasserverunreinigung – Bitterfeld-Wolfen&#39; (risk register L15): Umwelt)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L63: | Zweitquellen-Qualifizierung für kritische Rohstoffe | präventiv | jährlich | Ausfall eines Einzelquellenlieferanten für Schlüsselrohstoffe <small>(Topic does not fit the duty: via risk &#39;Ausfall eines Einzelquellenlieferanten für Schlüsselrohstoffe&#39; (risk register L11): Lieferkette)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L45: | Risikobasierte Lieferantenaudits | detektiv | jährlich | Intransparente Lieferketten bei Pigmenten und Zusatzstoffen | Lieferkettenrisikoa <small>(Topic does not fit the duty: via risk &#39;Intransparente Lieferketten bei Pigmenten und Zusatzstoffen&#39; (risk register L27): Lieferkette)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L19: | Beschwerdestelle und Fristenkontrolle | präventiv | quartalsweise | Diskriminierung und Belästigung am Arbeitsplatz | Beschwerdestelle für <small>(Topic does not fit the duty: via risk &#39;Diskriminierung und Belästigung am Arbeitsplatz&#39; (risk register L20): Arbeitsschutz)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L42: | Prüfung Ex-Schutz-Ausrüstung | detektiv | jährlich | Explosionsfähige Atmosphäre bei Lösemittelhandhabung – Marl | Explosionsschutzdokumen <small>(Topic does not fit the duty: via risk &#39;Explosionsfähige Atmosphäre bei Lösemittelhandhabung – Marl&#39; (risk register L22): Arbeitsschutz)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L57: | Vertrags- und Transferregister mit Jahresprüfung | präventiv | jährlich | Rechtswidrige Datenübermittlung zwischen EU, USA und China | Ver <small>(Topic does not fit the duty: via risk &#39;Rechtswidrige Datenübermittlung zwischen EU, USA und China&#39; (risk register L30): Datenschutz)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L55: | Unterweisung und PSA-Prüfung | präventiv | halbjährlich | Arbeitsunfall durch Gefahrstoffexposition – Marl | Lüftungs- und Absauganlagen p <small>(Topic does not fit the duty: via risk &#39;Arbeitsunfall durch Gefahrstoffexposition – Marl&#39; (risk register L10): Arbeitsschutz)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L23: | Endverbleibserklärung und Weiterverkaufsverbot in Vertriebsverträgen | präventiv | jährlich | Belieferung sanktionierter Parteien über Dis <small>(Topic does not fit the duty: via risk &#39;Belieferung sanktionierter Parteien über Distributoren&#39; (risk register L13): Sanktionen und Exportkontrolle)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L30: | Halbjährliche Berechtigungsüberprüfung kritischer Systeme | detektiv | halbjährlich | Unbefugter Zugriff auf Personaldaten und vertraulich <small>(Topic does not fit the duty: via risk &#39;Unbefugter Zugriff auf Personaldaten und vertrauliche Unterlagen&#39; (risk register L32): Datenschutz)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L41: | Prüfung Ex-Schutz-Ausrüstung | detektiv | jährlich | Explosionsfähige Atmosphäre bei Lösemittelhandhabung – Bitterfeld-Wolfen | Explosions <small>(Topic does not fit the duty: via risk &#39;Explosionsfähige Atmosphäre bei Lösemittelhandhabung – Bitterfeld-Wolfen&#39; (risk register L21): Arbeitsschutz)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L50: | Spediteursauswahl und Fahrerqualifikation (ADR-Bescheinigung) | präventiv | jährlich | Transportunfall mit Gefahrgut – Duisburg | Gefahrgu <small>(Topic does not fit the duty: via risk &#39;Transportunfall mit Gefahrgut – Duisburg&#39; (risk register L31): Produktsicherheit)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L13: | Auswertung des Zuwendungsregisters auf Auffälligkeiten | detektiv | quartalsweise | Unzulässige Zuwendungen an Einkaufsverantwortliche von <small>(Topic does not fit the duty: via risk &#39;Unzulässige Zuwendungen an Einkaufsverantwortliche von Kunden und Distributoren&#39; (risk register L35): Korruption)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L25: | Erdungs- und Zündquellenkontrolle vor Umfüllung | präventiv | monatlich | Explosionsfähige Atmosphäre bei Lösemittelhandhabung – Marl | Ex <small>(Topic does not fit the duty: via risk &#39;Explosionsfähige Atmosphäre bei Lösemittelhandhabung – Marl&#39; (risk register L22): Arbeitsschutz)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L31: | Jährliche Erklärung und Abgleich mit Lieferantenstamm | detektiv | jährlich | Nicht gemeldete Nebentätigkeiten und Beteiligungen von Führu <small>(Topic does not fit the duty: via risk &#39;Nicht gemeldete Nebentätigkeiten und Beteiligungen von Führungskräften&#39; (risk register L29): Interessenkonflikte)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L54: | Unterweisung und PSA-Prüfung | präventiv | halbjährlich | Arbeitsunfall durch Gefahrstoffexposition – Bitterfeld-Wolfen | Lüftungs- und Ab <small>(Topic does not fit the duty: via risk &#39;Arbeitsunfall durch Gefahrstoffexposition – Bitterfeld-Wolfen&#39; (risk register L9): Arbeitsschutz)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L12: | Akkreditierte Laborprobe aus dem Ablauf | detektiv | quartalsweise | Überschreitung der Abwassergrenzwerte – Marl | Abwassereinleitung: Se <small>(Topic does not fit the duty: via risk &#39;Überschreitung der Abwassergrenzwerte – Marl&#39; (risk register L43): Umwelt)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L26: | Freigabe neuer Rohstoffe durch Regulatory | präventiv | anlassbezogen | Verstoss gegen Stoffbeschränkungen (SVHC, Beschränkungen, Zulassun <small>(Topic does not fit the duty: via risk &#39;Verstoss gegen Stoffbeschränkungen (SVHC, Beschränkungen, Zulassung)&#39; (risk register L37): Produktsicherheit)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L43: | Reinigungsfreigabe mit Spülwasseranalyse | präventiv | anlassbezogen | Verunreinigung durch Rückstände nach Produktwechsel – Bitterfeld-Wo <small>(Topic does not fit the duty: via risk &#39;Verunreinigung durch Rückstände nach Produktwechsel – Bitterfeld-Wolfen&#39; (risk register L39): Qualität)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L59: | Vier-Augen-Prüfung der Einstufung bei Rezepturaenderung | präventiv | anlassbezogen | Falsche Einstufung von Gemischen | CLP-Einstufung un <small>(Topic does not fit the duty: via risk &#39;Falsche Einstufung von Gemischen&#39; (risk register L23): Produktsicherheit)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L22: | Dichtheitsprüfung der Umfüllflächen und Auffangwannen | präventiv | jährlich | Boden- und Grundwasserverunreinigung – Marl | Auffänge, Lös <small>(Topic does not fit the duty: via risk &#39;Boden- und Grundwasserverunreinigung – Marl&#39; (risk register L16): Umwelt)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L52: | Stichprobenprüfung von Spesen und Beratungsverträgen mit Behördenbezug | detektiv | halbjährlich | Bestechung bei Behördenkontakten (Geneh <small>(Topic does not fit the duty: via risk &#39;Bestechung bei Behördenkontakten (Genehmigungen, Zoll, Inspektionen)&#39; (risk register L14): Korruption)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L10: | Abgleich SDB-Stand mit Stoffstamm und Einstufung | detektiv | halbjährlich | Fehlende oder fehlerhafte Sicherheitsdatenblätter bei Marktzu <small>(Topic does not fit the duty: via risk &#39;Fehlende oder fehlerhafte Sicherheitsdatenblätter bei Marktzugang&#39; (risk register L24): Produktsicherheit)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L28: | Füllstands- und Überfüllsicherungen testen | IT-Kontrolle | quartalsweise | Unkontrollierte Freisetzung gefährlicher Stoffe (Störfall) – M <small>(Topic does not fit the duty: via risk &#39;Unkontrollierte Freisetzung gefährlicher Stoffe (Störfall) – Marl&#39; (risk register L34): Umwelt)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L40: | Protokollierung und Auswertung von Zugriffen auf Hinweisgeberfälle | IT-Kontrolle | quartalsweise | Unbefugter Zugriff auf Personaldaten u <small>(Topic does not fit the duty: via risk &#39;Unbefugter Zugriff auf Personaldaten und vertrauliche Unterlagen&#39; (risk register L32): Datenschutz)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L53: | Teilnahme an Verbandssitzungen nur mit Agenda und Compliance-Freigabe | präventiv | anlassbezogen | Informationsaustausch mit Wettbewerber <small>(Topic does not fit the duty: via risk &#39;Informationsaustausch mit Wettbewerbern in Verbänden&#39; (risk register L26): Kartellrecht)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L14: | Auswertung von Beinaheunfällen | detektiv | monatlich | Arbeitsunfall durch Gefahrstoffexposition – Bitterfeld-Wolfen | Lüftungs- und Absa <small>(Topic does not fit the duty: via risk &#39;Arbeitsunfall durch Gefahrstoffexposition – Bitterfeld-Wolfen&#39; (risk register L9): Arbeitsschutz)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L32: | Jährliche Überprüfung der Güterklassifizierung je Produkt | detektiv | jährlich | Lieferung genehmigungspflichtiger Dual-Use-Güter ohne Ge <small>(Topic does not fit the duty: via risk &#39;Lieferung genehmigungspflichtiger Dual-Use-Güter ohne Genehmigung&#39; (risk register L28): Sanktionen und Exportkontrolle)</small></li>
+      <li>documents/REG_Internal_Controls_CMS-DE-01.txt L9: | Abgleich Rezepturen mit SVHC-Kandidatenliste und Anhang XVII | detektiv | halbjährlich | Verstoss gegen Stoffbeschränkungen (SVHC, Beschrä <small>(Topic does not fit the duty: via risk &#39;Verstoss gegen Stoffbeschränkungen (SVHC, Beschränkungen, Zulassung)&#39; (risk register L37): Produktsicherheit)</small></li>
+    </ul>
+  </details>
+</div>
+<div class="el">
+  <div class="elhead"><h3>Follow-up and corrective action</h3></div>
+  <div class="kv">
+    <div>Implementation</div><div><span class="badge warn">Only open / planned records (1); 1 overdue as of the source&#39;s date</span></div>
+    <div>Effectiveness</div><div><span class="badge muted">Not demonstrated – no test or execution evidence in the sources</span></div>
+  </div>
+
+  <table>
+    <tr><th>Source</th><th>Record</th><th>Next due</th></tr>
+    <tr>
+      <td><a href="/c/marenthal/source/6411bacb-3da8-40b6-9f1e-8c88d070571f?ls=82&amp;le=82" target="_blank" title="Open the source with this location highlighted">Register of legal and internal obligations - Marenthal Chemie AG</a><br><small>L82</small></td>
+      <td>
+        <b>Informationssicherheitsrisikoanalyse jährlich durchführen</b> <span class="badge warn">offen</span><br>
+        <small>Description: Risiken für ERP, Produktionssteuerung und Büro-IT bewerten; Maßnahmenplan fortschreiben. · Legal area: Informationssicherheit · Source: BSI-Gesetz; ISO/IEC 27001 · Source type: Gesetz · Country: DE · Applicability: anwendbar · Due type: wiederkehrend · Interval (months): 12 · Last review: 2025-01-06</small>
+      </td>
+      <td>
+        Next due 2026-01-01 <span class="stale" title="Compared with the source's own date (a register's &quot;As of&quot;), or the data snapshot date if it has none">(312 days overdue as of 2026-11-09)</span>      </td>
+    </tr>
+  </table>
+
+  <details>
+    <summary>Records matched by terms but with another topic (2, not used)</summary>
+    <ul>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L62: | Explosionsschutzdokument aktualisieren – Marl | Ex-Zonen und Zündquellenbewertung bei Umbauten und Rezepturaenderungen fortschreiben. | Br <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Brand- und Explosionsschutz)</small></li>
+      <li>documents/REG_Legal_Obligations_CMS-DE-01.txt L61: | Explosionsschutzdokument aktualisieren – Bitterfeld-Wolfen | Ex-Zonen und Zündquellenbewertung bei Umbauten und Rezepturaenderungen fortsc <small>(Topic does not fit the duty: column &#39;Legal area&#39; = Brand- und Explosionsschutz)</small></li>
+    </ul>
+  </details>
+</div>
+<p class="muted"><small>Records describe implementation, not policy text. Per 17-AUS-17, register summaries such as “erfüllt” or
+“wirksam” are source metadata and do not prove effectiveness of the duty; missing proof means “not demonstrated”, only a
+proven failure means “ineffective”.</small></p></div>
+    <div class="panel" id="04-P02-6-q"><div class="el">
+  <p class="muted" title="Verbatim from the legal input (04-P02-6)"><small>
+    <b>Expected evidence:</b> Mess-/Prüfplan, Ergebnisse, Nachbesserungen; Unbekannt möglich.<br>
+    <b>Evidence question:</b> Welche Sicherheitsmaßnahmen wurden wann, mit welcher Methode und welchem Ergebnis auf Wirksamkeit geprüft?
+  </small></p>
+</div>
+<div class="el">
+  <h3>Assessment method and plan</h3>
+  <p>
+    No policy rule found (No supporting passage found).
+  </p>
+  <h4>Related open questions in the company's digital twin</h4>
+  <ul>
+    <li><b>#172</b> Is there an internal audit function, and what did it examine in the last two years? <small>(governance, status: open, answer: none – unknown, not “no”)</small></li>
+    <li><b>#326</b> Which specific internal audit checklist is used to maintain the ISO 9001:2015 certification at the Baytown Plant? <small>(governance, status: open, answer: none – unknown, not “no”)</small></li>
+  </ul>
+</div>
+<div class="el">
+  <h3>Assessment results</h3>
+  <p>
+    No policy rule found (No supporting passage found).
+  </p>
+</div>
+<div class="el">
+  <h3>Follow-up and corrective action</h3>
+  <p>
+    No policy rule found (No supporting passage found).
+  </p>
+</div>
+</div>
+    <div class="panel" id="04-P02-6-src"><details>
+  <summary>Assessment method and plan – search terms: wirksamkeit*, *wirksamkeitspruef*, *wirksamkeitsbewert*, pruefplan*, messplan*, kennzahl*, effectiveness, audit*, kontrolltest*
+    <span class="muted"><small>(1 of 18 sources with hits)</small></span></summary>
+
+  <table>
+    <tr><th>Source</th><th>Kind</th><th>Hits</th><th>Outcome</th></tr>
+    <tr>
+      <td>Register of legal and internal obligations - Marenthal Chemie AG<br><small>documents/REG_Legal_Obligations_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>10</td>
+      <td>Scope mismatch</td>
+    </tr>
+  </table>
+
+  <details>
+    <summary class="muted"><small>Similar in meaning, not counted (5)</small></summary>
+    <div class="qcard">
+      <div class="qhead"><b>Notfall- und Krisenmanagement</b> · DMS-00000671_KR-017_v2.0_de.txt · <a href="/c/marenthal/source/248b4908-0e6d-47b9-aafa-fe12edba0cc8?ls=18&amp;le=18" target="_blank" title="Open the source with this location highlighted">L18</a></div>
+      <div class="sent">Diese Richtlinie legt für Marenthal Chemie AG verbindliche Regeln zum Thema „EHS“ fest.</div>
+      <div class="qhead">Not counted: topic of the document does not fit the duty</div>
+    </div>
+    <div class="qcard">
+      <div class="qhead"><b>Notfall- und Krisenmanagement</b> · DMS-00000260_KR-017_v1.1_de.txt · <a href="/c/marenthal/source/e60c72da-968b-44e9-b4d8-926fce7197cb?ls=18&amp;le=18" target="_blank" title="Open the source with this location highlighted">L18</a></div>
+      <div class="sent">Diese Richtlinie legt für Marenthal Chemie AG verbindliche Regeln zum Thema „EHS“ fest.</div>
+      <div class="qhead">Not counted: topic of the document does not fit the duty; document version is superseded</div>
+    </div>
+    <div class="qcard">
+      <div class="qhead"><b>Informationssicherheitsrichtlinie</b> · DMS-00000420_KR-009_v2.0_de.txt · <a href="/c/marenthal/source/90daa5ae-2259-4edb-a856-5c3dc4c0e050?ls=22&amp;le=23" target="_blank" title="Open the source with this location highlighted">L22–23</a></div>
+      <div class="sent">Dieses Dokument wird im Dokumentenmanagement der Marenthal-Gruppe geführt und ist in der
+jeweils gültigen Fassung verbindlich.</div>
+      <div class="qhead">Not counted: states no rule</div>
+    </div>
+    <div class="qcard">
+      <div class="qhead"><b>Informationssicherheitsrichtlinie</b> · DMS-00000205_KR-009_v1.1_de.txt · <a href="/c/marenthal/source/1ecfcb5c-707a-43b9-a526-f448fbfa00e7?ls=22&amp;le=23" target="_blank" title="Open the source with this location highlighted">L22–23</a></div>
+      <div class="sent">Dieses Dokument wird im Dokumentenmanagement der Marenthal-Gruppe geführt und ist in der
+jeweils gültigen Fassung verbindlich.</div>
+      <div class="qhead">Not counted: states no rule; document version is superseded</div>
+    </div>
+    <div class="qcard">
+      <div class="qhead"><b>Information Security Policy</b> · DMS-00000443_KR-009_v2.0_en.txt · <a href="/c/marenthal/source/7b10774b-53cf-47cf-9d3e-1307061f33c0?ls=24&amp;le=24" target="_blank" title="Open the source with this location highlighted">L24</a></div>
+      <div class="sent">Regalanlagen inspizieren – Duisburg – Regalinspektion nach DIN EN 15635 durch eine befähigte Person.</div>
+      <div class="qhead">Not counted: text appears only in a translation, not in the master-language version</div>
+    </div>
+  </details>
+
+  <details>
+    <summary class="muted"><small>17 other sources without hits</small></summary>
+    <p class="muted"><small>company_profile.json; DMS-00000205_KR-009_v1.1_de.txt; DMS-00000260_KR-017_v1.1_de.txt; DMS-00000300_SDB-10564-DE_de_v8.3.txt; DMS-00000420_KR-009_v2.0_de.txt; DMS-00000443_KR-009_v2.0_en.txt; DMS-00000671_KR-017_v2.0_de.txt; DMS-00001406_V000074_Nachweis.txt; REG_Compliance_Roles_CMS-DE-01.txt; REG_Incidents_CMS-DE-01.txt; REG_Internal_Controls_CMS-DE-01.txt; REG_Risk_Register_CMS-DE-01.txt; Zwilling — Faktenkatalog.txt; Zwilling — Gesellschaften.txt; Zwilling — Produkte.txt; legal_entities.csv; twin_questions.csv</small></p>
+  </details>
+</details>
+<details>
+  <summary>Assessment results – search terms: wirksam, unwirksam, teilweise, pruefprotokoll*, testergebnis*
+    <span class="muted"><small>(1 of 18 sources with hits)</small></span></summary>
+
+  <table>
+    <tr><th>Source</th><th>Kind</th><th>Hits</th><th>Outcome</th></tr>
+    <tr>
+      <td>Register of internal controls and their execution - Marenthal Chemie AG<br><small>documents/REG_Internal_Controls_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>54</td>
+      <td>Scope mismatch, Supporting record</td>
+    </tr>
+  </table>
+
+
+  <details>
+    <summary class="muted"><small>17 other sources without hits</small></summary>
+    <p class="muted"><small>company_profile.json; DMS-00000205_KR-009_v1.1_de.txt; DMS-00000260_KR-017_v1.1_de.txt; DMS-00000300_SDB-10564-DE_de_v8.3.txt; DMS-00000420_KR-009_v2.0_de.txt; DMS-00000443_KR-009_v2.0_en.txt; DMS-00000671_KR-017_v2.0_de.txt; DMS-00001406_V000074_Nachweis.txt; REG_Compliance_Roles_CMS-DE-01.txt; REG_Incidents_CMS-DE-01.txt; REG_Legal_Obligations_CMS-DE-01.txt; REG_Risk_Register_CMS-DE-01.txt; Zwilling — Faktenkatalog.txt; Zwilling — Gesellschaften.txt; Zwilling — Produkte.txt; legal_entities.csv; twin_questions.csv</small></p>
+  </details>
+</details>
+<details>
+  <summary>Follow-up and corrective action – search terms: nachbesser*, korrekturmassnahme*, *korrektur*, corrective*, massnahmenplan*, fortschreib*
+    <span class="muted"><small>(1 of 18 sources with hits)</small></span></summary>
+
+  <table>
+    <tr><th>Source</th><th>Kind</th><th>Hits</th><th>Outcome</th></tr>
+    <tr>
+      <td>Register of legal and internal obligations - Marenthal Chemie AG<br><small>documents/REG_Legal_Obligations_CMS-DE-01.txt</small></td>
+      <td>register</td>
+      <td>3</td>
+      <td>Scope mismatch, Supporting record</td>
+    </tr>
+  </table>
+
+
+  <details>
+    <summary class="muted"><small>17 other sources without hits</small></summary>
+    <p class="muted"><small>company_profile.json; DMS-00000205_KR-009_v1.1_de.txt; DMS-00000260_KR-017_v1.1_de.txt; DMS-00000300_SDB-10564-DE_de_v8.3.txt; DMS-00000420_KR-009_v2.0_de.txt; DMS-00000443_KR-009_v2.0_en.txt; DMS-00000671_KR-017_v2.0_de.txt; DMS-00001406_V000074_Nachweis.txt; REG_Compliance_Roles_CMS-DE-01.txt; REG_Incidents_CMS-DE-01.txt; REG_Internal_Controls_CMS-DE-01.txt; REG_Risk_Register_CMS-DE-01.txt; Zwilling — Faktenkatalog.txt; Zwilling — Gesellschaften.txt; Zwilling — Produkte.txt; legal_entities.csv; twin_questions.csv</small></p>
+  </details>
+</details>
+</div>
+  </div>
+</section></div>
+
+<div class="mpanel" id="comparison">
+
+
+
+<div class="card meta stats">
+  <div><span>Document pairs with multiple versions</span><b>2</b></div>
+  <div><span>Document pairs with multiple translations</span><b>1</b></div>
+  <div><span>Mismatched pairs</span><b>1</b></div>
+</div>
+
+
+<section class="card fold">
+  <div class="elhead">
+    <h3>Language versions: KR-009 v2.0 DE (master) ↔ EN</h3>
+<span class="badge warn">Content likely differs</span>
+<span class="badge bad">2 sentences in the wrong language</span>    <button class="toggle" aria-expanded="true" aria-label="Collapse" title="Collapse">▾</button>
+  </div>
+  <div class="dbody">
+  <div class="kv">
+    <div>Master</div><div>DMS-00000420 · documents/DMS-00000420_KR-009_v2.0_de.txt · valid from 2024-07-09</div>
+    <div>Translation</div><div>DMS-00000443 · documents/DMS-00000443_KR-009_v2.0_en.txt · valid from 2024-08-13</div>
+  </div>
+  <p><b>3 sentence pairs</b> likely the same content.</p>
+  <h4>Sentences to check</h4>
+  <table>
+    <tr><th>DE master</th><th>EN version</th><th>Match</th></tr>
+    <tr>
+      <td>–</td>
+      <td><small>L22–23</small> Notfall- und Wiederanlaufübung der IT durchführen – Wiederherstellung kritischer Systeme (ERP,
+Prozessleitsystem) üben und Ergebnisse dokumentieren.
+        · <a href="/c/marenthal/source/7b10774b-53cf-47cf-9d3e-1307061f33c0?ls=22&amp;le=23" target="_blank" title="Open the source with this location highlighted">View source</a></td>
+      <td>
+<span class="badge warn">Only in EN</span><span class="badge bad">DE sentence detected</span>      </td>
+    </tr>
+    <tr>
+      <td><small>L22–23</small> Dieses Dokument wird im Dokumentenmanagement der Marenthal-Gruppe geführt und ist in der
+jeweils gültigen Fassung verbindlich.</td>
+      <td>–</td>
+      <td>
+<span class="badge warn">Only in DE</span>      </td>
+    </tr>
+    <tr>
+      <td>–</td>
+      <td><small>L24</small> Regalanlagen inspizieren – Duisburg – Regalinspektion nach DIN EN 15635 durch eine befähigte Person.
+        · <a href="/c/marenthal/source/7b10774b-53cf-47cf-9d3e-1307061f33c0?ls=24&amp;le=24" target="_blank" title="Open the source with this location highlighted">View source</a></td>
+      <td>
+<span class="badge warn">Only in EN</span><span class="badge bad">DE sentence detected</span>      </td>
+    </tr>
+  </table>
+  </div>
+</section>
+
+
+<details class="nodiff">
+  <summary>2 comparisons without differences</summary>
+<section class="card fold collapsed">
+  <div class="elhead">
+    <h3>Version comparison: KR-009 Informationssicherheitsrichtlinie · v1.1 → v2.0 DE</h3>
+    <span class="badge ok">Body identical</span>
+    <button class="toggle" aria-expanded="false" aria-label="Expand" title="Expand">▾</button>
+  </div>
+  <div class="dbody">
+  <div class="kv">
+    <div>Superseded</div>
+    <div>DMS-00000205 v1.1 DE · documents/DMS-00000205_KR-009_v1.1_de.txt · valid from 2023-01-04 until 2024-07-08</div>
+    <div>Current</div>
+    <div>DMS-00000420 v2.0 DE · documents/DMS-00000420_KR-009_v2.0_de.txt · valid from 2024-07-09</div>
+  </div>
+
+  <h4>Metadata</h4>
+  <table>
+    <tr><th>Field</th><th>DMS-00000205 <small>documents/DMS-00000205_KR-009_v1.1_de.txt</small></th><th>DMS-00000420 <small>documents/DMS-00000420_KR-009_v2.0_de.txt</small></th></tr>
+    <tr class="changed">
+      <td>Document number</td>
+      <td>DMS-00000205 <small>L6</small></td>
+      <td>DMS-00000420 <small>L6</small></td>
+    </tr>
+    <tr class="changed">
+      <td>Version</td>
+      <td>1.1 <small>L8</small></td>
+      <td>2.0 <small>L8</small></td>
+    </tr>
+    <tr class="changed">
+      <td>Valid from (header)</td>
+      <td>2023-01-04 <small>L10</small></td>
+      <td>2024-07-09 <small>L10</small></td>
+    </tr>
+    <tr class="changed">
+      <td>Status (header)</td>
+      <td>Superseded <small>L14</small></td>
+      <td>Approved <small>L14</small></td>
+    </tr>
+    <tr class="changed">
+      <td>Version status</td>
+      <td>Ersetzt <small>L37</small></td>
+      <td>Gültig <small>L37</small></td>
+    </tr>
+    <tr class="">
+      <td>Language</td>
+      <td>de <small>L36</small></td>
+      <td>de <small>L36</small></td>
+    </tr>
+    <tr class="changed">
+      <td>Valid from</td>
+      <td>2023-01-04 <small>L38</small></td>
+      <td>2024-07-09 <small>L38</small></td>
+    </tr>
+    <tr class="changed">
+      <td>Valid until</td>
+      <td>2024-07-08 <small>L39</small></td>
+      <td>– <small></small></td>
+    </tr>
+    <tr class="changed">
+      <td>Approval date</td>
+      <td>2023-01-02 <small>L40</small></td>
+      <td>2024-07-08 <small>L39</small></td>
+    </tr>
+    <tr class="">
+      <td>Reason for change</td>
+      <td>Anpassung an die aktuelle Bedrohungslage <small>L41</small></td>
+      <td>Anpassung an die aktuelle Bedrohungslage <small>L40</small></td>
+    </tr>
+    <tr class="">
+      <td>Policy-level: current version</td>
+      <td>2.0 <small>L29</small></td>
+      <td>2.0 <small>L29</small></td>
+    </tr>
+    <tr class="">
+      <td>Policy-level: status</td>
+      <td>gültig <small>L30</small></td>
+      <td>gültig <small>L30</small></td>
+    </tr>
+    <tr class="">
+      <td>Policy-level: next review</td>
+      <td>2027-06-23 <small>L31</small></td>
+      <td>2027-06-23 <small>L31</small></td>
+    </tr>
+    <tr class="">
+      <td>Policy-level: master language</td>
+      <td>de <small>L32</small></td>
+      <td>de <small>L32</small></td>
+    </tr>
+  </table>
+
+  <h4>Body text</h4>
+  <p>Identical in both versions (4 sentences).</p>
+  </div>
+</section>
+<section class="card fold collapsed">
+  <div class="elhead">
+    <h3>Version comparison: KR-017 Notfall- und Krisenmanagement · v1.1 → v2.0 DE</h3>
+    <span class="badge ok">Body identical</span>
+    <button class="toggle" aria-expanded="false" aria-label="Expand" title="Expand">▾</button>
+  </div>
+  <div class="dbody">
+  <div class="kv">
+    <div>Superseded</div>
+    <div>DMS-00000260 v1.1 DE · documents/DMS-00000260_KR-017_v1.1_de.txt · valid from 2023-05-12 until 2025-03-24</div>
+    <div>Current</div>
+    <div>DMS-00000671 v2.0 DE · documents/DMS-00000671_KR-017_v2.0_de.txt · valid from 2025-03-25</div>
+  </div>
+
+  <h4>Metadata</h4>
+  <table>
+    <tr><th>Field</th><th>DMS-00000260 <small>documents/DMS-00000260_KR-017_v1.1_de.txt</small></th><th>DMS-00000671 <small>documents/DMS-00000671_KR-017_v2.0_de.txt</small></th></tr>
+    <tr class="changed">
+      <td>Document number</td>
+      <td>DMS-00000260 <small>L6</small></td>
+      <td>DMS-00000671 <small>L6</small></td>
+    </tr>
+    <tr class="changed">
+      <td>Version</td>
+      <td>1.1 <small>L8</small></td>
+      <td>2.0 <small>L8</small></td>
+    </tr>
+    <tr class="changed">
+      <td>Valid from (header)</td>
+      <td>2023-05-12 <small>L10</small></td>
+      <td>2025-03-25 <small>L10</small></td>
+    </tr>
+    <tr class="changed">
+      <td>Status (header)</td>
+      <td>Superseded <small>L14</small></td>
+      <td>Approved <small>L14</small></td>
+    </tr>
+    <tr class="changed">
+      <td>Version status</td>
+      <td>Ersetzt <small>L47</small></td>
+      <td>Gültig <small>L47</small></td>
+    </tr>
+    <tr class="">
+      <td>Language</td>
+      <td>de <small>L46</small></td>
+      <td>de <small>L46</small></td>
+    </tr>
+    <tr class="changed">
+      <td>Valid from</td>
+      <td>2023-05-12 <small>L48</small></td>
+      <td>2025-03-25 <small>L48</small></td>
+    </tr>
+    <tr class="changed">
+      <td>Valid until</td>
+      <td>2025-03-24 <small>L49</small></td>
+      <td>– <small></small></td>
+    </tr>
+    <tr class="changed">
+      <td>Approval date</td>
+      <td>2023-05-10 <small>L50</small></td>
+      <td>2025-03-25 <small>L49</small></td>
+    </tr>
+    <tr class="changed">
+      <td>Reason for change</td>
+      <td>Anpassung nach Umstrukturierung der Organisation <small>L51</small></td>
+      <td>Anpassung an geänderten Rechtsstand <small>L50</small></td>
+    </tr>
+    <tr class="">
+      <td>Policy-level: current version</td>
+      <td>2.0 <small>L39</small></td>
+      <td>2.0 <small>L39</small></td>
+    </tr>
+    <tr class="">
+      <td>Policy-level: status</td>
+      <td>gültig <small>L40</small></td>
+      <td>gültig <small>L40</small></td>
+    </tr>
+    <tr class="">
+      <td>Policy-level: next review</td>
+      <td>2026-09-16 <small>L41</small></td>
+      <td>2026-09-16 <small>L41</small></td>
+    </tr>
+    <tr class="">
+      <td>Policy-level: master language</td>
+      <td>de <small>L42</small></td>
+      <td>de <small>L42</small></td>
+    </tr>
+  </table>
+
+  <h4>Body text</h4>
+  <p>Identical in both versions (10 sentences).</p>
+  </div>
+</section>
+</details>
+</div>
+</main>
+<script>
+const RUN = {"run_id": "20261122T090310534799Z", "slug": "marenthal"};
+// Behaviour of the report page: tabs, collapsible duty cards, deep links and reviewer decisions.
+// `RUN` ({slug, run_id}) is defined by the template right before this script.
+
+// ---- main tabs (Overview / Duty results / Version comparison)
+function mainTab(id) {
+  document.querySelectorAll('.mtabs button').forEach(b => b.classList.toggle('on', b.dataset.main === id));
+  document.querySelectorAll('.mpanel').forEach(p => p.classList.toggle('on', p.id === id));
+}
+document.querySelectorAll('.mtabs button').forEach(b => b.onclick = () => {
+  mainTab(b.dataset.main);
+  history.replaceState(null, '', '#' + b.dataset.main);
+});
+
+// ---- deep links (#duty-…, #el-…): open the right tab and card, then scroll
+function followHash() {
+  const id = decodeURIComponent(location.hash.slice(1));
+  if (!id) return;
+  const el = document.getElementById(id);
+  if (!el) return;
+  const panel = el.closest('.mpanel');
+  if (panel) mainTab(panel.id);
+  const card = el.closest('.fold');
+  if (card) setCard(card, true);
+  if (el === panel) window.scrollTo(0, 0); else el.scrollIntoView();
+}
+window.addEventListener('hashchange', followHash);
+
+// ---- collapse / expand a card (duty results and comparisons)
+function setCard(card, open) {
+  card.classList.toggle('collapsed', !open);
+  const b = card.querySelector('.toggle');
+  const label = open ? 'Collapse' : 'Expand';
+  b.title = label;
+  b.setAttribute('aria-label', label);
+  b.setAttribute('aria-expanded', open);
+}
+document.querySelectorAll('.fold .toggle').forEach(b => b.onclick = () => {
+  const card = b.closest('.fold');
+  setCard(card, card.classList.contains('collapsed'));
+});
+
+// ---- sub-tabs inside a duty card (Mapping / Evidence / Missing information / Sources checked)
+document.querySelectorAll('.tabs').forEach(t => t.addEventListener('click', ev => {
+  const b = ev.target.closest('button');
+  if (!b) return;
+  const section = t.parentElement;
+  t.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  section.querySelectorAll('.panel').forEach(p => p.classList.toggle('on', p.id === b.dataset.tab));
+}));
+
+// ---- reviewer decisions (stored by the local server)
+const api = `/api/c/${RUN.slug}/runs/${RUN.run_id}/reviews`;
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const DECISION_CLASS = {confirmed: 'ok', rejected: 'bad', needs_clarification: 'warn'};
+
+// overview counts: reviewed = confirmed or rejected; a decision made on an older proposal counts as pending again
+function showCounts(data) {
+  const n = {pending: 0, reviewed: 0, needs_clarification: 0};
+  document.querySelectorAll('.ovrev').forEach(cell => {
+    const c = data[cell.dataset.key] && data[cell.dataset.key].current;
+    if (!c || c.stale) n.pending++;
+    else if (c.decision === 'needs_clarification') n.needs_clarification++;
+    else n.reviewed++;
+  });
+  Object.entries(n).forEach(([k, v]) => { const el = document.querySelector(`[data-count="${k}"]`); if (el) el.textContent = v; });
+}
+
+function show(data) {
+  showCounts(data);
+  Object.entries(data).forEach(([key, d]) => {
+    const c = d && d.current;
+    if (!c) return;
+
+    // overview table
+    const ov = document.querySelector(`.ovrev[data-key="${key}"]`);
+    if (ov) ov.innerHTML = `<small><b>${esc(c.label)}</b><br>${esc(c.reviewer)}${c.stale ? '<br><span class="stale">Re-review needed</span>' : ''}</small>`;
+
+    // the "System proposal" label becomes the decision badge
+    const pb = document.querySelector(`.proposal[data-key="${key}"]`);
+    if (pb) {
+      pb.className = 'badge ' + (c.stale ? 'bad' : (DECISION_CLASS[c.decision] || 'muted'));
+      pb.textContent = c.stale ? `Re-review needed (was: ${c.label})` : `${c.label} by ${c.reviewer} · ${String(c.at).slice(0, 10)}`;
+      pb.title = c.stale ? 'The system proposal changed after this decision' : (c.comment || 'Reviewer decision');
+    }
+
+    // the review box: current decision and history
+    const box = document.querySelector(`.review[data-key="${key}"]`);
+    if (!box) return;
+    const stale = c.stale ? ' <span class="stale">Re-review needed – the proposal changed since this decision</span>' : '';
+    const cur = box.querySelector('.curtxt');
+    cur.innerHTML = `<b>${esc(c.label)}</b> by ${esc(c.reviewer)} on ${esc(c.at)}${c.comment ? ': “' + esc(c.comment) + '”' : ''}${stale}`;
+    cur.classList.remove('muted');
+    box.querySelector('.histbody').innerHTML = d.history.map(h =>
+      `<div>${esc(h.at)} · ${esc(h.reviewer)} · <b>${esc(h.decision)}</b> ${esc(h.comment)} <small>(run ${esc(h.run_id)})</small></div>`).join('');
+  });
+}
+
+function load() {
+  fetch(api).then(r => r.json()).then(show).catch(() => {
+    // opened as a file, without the server: reviews are not available
+    document.querySelectorAll('.ovrev').forEach(x => x.innerHTML = '<small class="muted">needs the local server</small>');
+    document.querySelectorAll('.review .curtxt').forEach(x => x.textContent = 'Reviews need the local server (python3 app.py).');
+    document.querySelectorAll('.review button').forEach(b => b.disabled = true);
+  });
+}
+
+document.querySelectorAll('.review').forEach(box => box.addEventListener('click', ev => {
+  const b = ev.target.closest('button[data-d]');
+  if (!b) return;
+  const name = localStorage.getItem('reviewer') || prompt('Your name (stored with the decision):');
+  if (!name) return;
+  localStorage.setItem('reviewer', name);
+  fetch(api, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({duty_id: box.dataset.duty, element_id: box.dataset.element, decision: b.dataset.d,
+                          comment: box.querySelector('textarea').value, reviewer: name}),
+  })
+    .then(r => r.json().then(j => { if (!r.ok) throw new Error(j.error); return j; }))
+    .then(() => { box.querySelector('textarea').value = ''; load(); })
+    .catch(err => alert('Could not save: ' + err.message));
+}));
+
+load();
+followHash();
+window.addEventListener('load', () => setTimeout(followHash, 0));
+
+</script>
+</body>
+</html>

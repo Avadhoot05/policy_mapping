@@ -80,6 +80,12 @@ docker run --rm -p 127.0.0.1:8000:8000 \
 3. In Duty results, each element has **Confirm / Reject / Needs clarification**. Decisions are saved per company with
    your name and the time.
 
+### Sample report
+
+`sample_report/` holds a report generated from the Marenthal data (`report.html`) and its
+`mapping_result.json`. It is for a quick look only: the links to the highlighted sources and the legal duties, and the
+review buttons, need the running app.
+
 ## How a duty is related to a passage
 
 ```
@@ -169,6 +175,7 @@ mapper/server.py        local web server (Python standard library)
 config/duty_elements.json  law-level configuration (elements, terms, facets, questions)
 companies/marenthal/company.json
 tests/                  unit and integration tests, synthetic test company
+sample_report/          a generated report from the Marenthal data, for a quick look
 setup.sh, start.sh, test.sh   install, start, test (Linux/macOS)
 Dockerfile, .dockerignore     the same app as a container (any OS)
 ```
