@@ -45,7 +45,7 @@ The app only reads these files and never changes them. Nothing from the input pa
 cd coback_policy_mapping
 ./setup.sh               # 1. creates .venv, installs the packages and the model (~1 GB, once), checks the inputs
 ./start.sh               # 2. starts http://127.0.0.1:8000/  (--port 8080 for another port)
-./test.sh                # 3. optional: runs the 25 tests
+./test.sh                # 3. optional: runs the 26 tests
 ```
 
 The scripts are safe to run again: steps that are already done are skipped.
